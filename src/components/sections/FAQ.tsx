@@ -34,8 +34,9 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-white">
-      <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <section id="faq" className="relative isolate overflow-hidden bg-white">
+      <div aria-hidden className="hue-blue" />
+      <div className="relative z-10 mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="text-center">
           <h2 className="text-balance text-3xl font-semibold tracking-tight text-ink-300 sm:text-4xl">
             Questions, answered plainly.

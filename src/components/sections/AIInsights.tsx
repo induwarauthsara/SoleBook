@@ -41,16 +41,13 @@ const toneIconStyles: Record<(typeof insights)[number]["tone"], string> = {
 export function AIInsights() {
   return (
     <section className="relative isolate overflow-hidden bg-[#0F172A]">
+      <div aria-hidden className="hue-duotone-dark absolute inset-0" />
       <div
         aria-hidden
         className="bg-dot-grid-dark pointer-events-none absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_top,black_40%,transparent_75%)]"
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 left-1/2 h-[420px] w-[680px] -translate-x-1/2 rounded-full bg-[#F27344]/15 blur-3xl"
-      />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-snow-100">

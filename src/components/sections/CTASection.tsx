@@ -56,17 +56,14 @@ export function CTASection() {
       className="relative isolate overflow-hidden bg-[#F8FAFC]"
     >
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="relative overflow-hidden rounded-3xl bg-[#0F172A] px-6 py-14 sm:px-10 sm:py-20 lg:px-16">
+        <div className="relative isolate overflow-hidden rounded-3xl bg-[#0F172A] px-6 py-14 sm:px-10 sm:py-20 lg:px-16">
+          <div aria-hidden className="hue-duotone-dark absolute inset-0" />
           <div
             aria-hidden
-            className="bg-dot-grid-dark pointer-events-none absolute inset-0 opacity-50"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-24 right-[-10%] h-[420px] w-[420px] rounded-full bg-[#F27344]/20 blur-3xl"
+            className="bg-dot-grid-dark pointer-events-none absolute inset-0 z-[1] opacity-50"
           />
 
-          <div className="relative mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-2">
+          <div className="relative z-10 mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-2">
             <div>
               <h2 className="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-[44px] lg:leading-[1.1]">
                 Run your business <br />
@@ -80,7 +77,7 @@ export function CTASection() {
 
             <form
               onSubmit={onSubmit}
-              className="rounded-2xl border border-white/10 bg-[#1E293B] p-4 shadow-xl sm:p-5"
+              className="glass-dark rounded-2xl p-4 shadow-xl sm:p-5"
             >
               <label
                 htmlFor="cta-email"
