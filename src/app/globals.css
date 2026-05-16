@@ -53,7 +53,7 @@
   --color-ink-200: #1F2937;
   --color-ink-300: #111827;   /* Ink Black */
 
-  /* Semantic aliases */
+  /* Semantic aliases (light/white theme for the dashboard app) */
   --color-background: #F8FAFC;
   --color-foreground: #111827;
   --color-primary: #F27344;
@@ -61,8 +61,35 @@
   --color-surface-dark: #0F172A;
   --color-surface-card: #1E293B;
 
+  /* App semantic tokens — white surfaces, ink text, peach primary */
+  --color-app-bg: #F8FAFC;
+  --color-app-surface: #FFFFFF;
+  --color-app-surface-muted: #F1F5F9;
+  --color-app-border: #E2E8F0;
+  --color-app-border-strong: #CBD5E1;
+  --color-app-ink: #0F172A;
+  --color-app-ink-muted: #475569;
+  --color-app-ink-soft: #94A3B8;
+  --color-app-ring: #F27344;
+
+  /* Status tokens (used by metric cards, badges, charts) */
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #3B82F6;
+
+  /* Bucket colors (consistent across allocation/buckets/charts) */
+  --color-bucket-operations: #3B82F6;
+  --color-bucket-obligations: #F59E0B;
+  --color-bucket-reserve: #22C55E;
+  --color-bucket-salary: #F27344;
+  --color-bucket-growth: #8B5CF6;
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-heading: var(--font-dm-sans), var(--font-inter), ui-sans-serif,
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
 }
 
 /* Base */
@@ -262,4 +289,60 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
   outline: 2px solid #F27344;
   outline-offset: 2px;
   border-radius: 6px;
+}
+
+/* ============================================================
+   App (signed-in) surfaces — white theme
+   These classes are used across the dashboard widgets to keep
+   styling consistent and easy to retune from one place.
+   ============================================================ */
+.app-surface {
+  background: var(--color-app-surface);
+  border: 1px solid var(--color-app-border);
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.02),
+    0 12px 28px -16px rgba(15, 23, 42, 0.08);
+}
+.app-surface-muted {
+  background: var(--color-app-surface-muted);
+  border: 1px solid var(--color-app-border);
+  border-radius: 1rem;
+}
+.app-divider {
+  border-color: var(--color-app-border);
+}
+
+/* Subtle hairline at the top of hero/control rooms */
+.peach-rule-light {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(242, 115, 68, 0.5),
+    transparent
+  );
+}
+
+/* Hide scrollbar (used by horizontal carousels) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Slow shimmer for skeletons */
+@keyframes app-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.app-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(226, 232, 240, 0.6) 0%,
+    rgba(241, 245, 249, 1) 50%,
+    rgba(226, 232, 240, 0.6) 100%
+  );
+  background-size: 200% 100%;
+  animation: app-shimmer 1.8s linear infinite;
 }
