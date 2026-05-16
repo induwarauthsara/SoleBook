@@ -13,16 +13,20 @@ import { useLocale } from "@/components/providers/LocaleProvider";
 export default function RegisterPage() {
   const router = useRouter();
   const { t } = useLocale();
-  const { signIn } = useAuth();
+  const { signUp } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    signIn({ name: name || undefined, email });
-    window.localStorage.removeItem("solebook.onboarded");
-    router.push("/onboarding");
+    try {
+      await signUp({ email, password, full_name: name, business_name: name || "My Business", business_type: "other" });
+      window.localStorage.removeItem("solebook.onboarded");
+      router.push("/onboarding");
+    } catch {
+      // handle error
+    }
   };
 
   return (

@@ -220,7 +220,7 @@ export default function OnboardingPage() {
                   variant="outline"
                   className="flex-1"
                   onClick={() => {
-                    signIn();
+                    signIn("demo@solebook.app", "demo-password").catch(() => {});
                     finish();
                   }}
                 >

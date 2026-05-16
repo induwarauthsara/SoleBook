@@ -269,3 +269,26 @@ export async function refundMerchantQR(
     { method: "POST", body: { MerchantRefund_Request: req } },
   );
 }
+
+export const seylanClient = {
+  transferFunds,
+  ceftsTransfer: initiateCEFTS,
+  getAccountBalance,
+  getTransactionHistory,
+  justPayRegister,
+  justPayVerify: (req: { referenceId: string; otp: string }) => justPayVerify(req.referenceId, req.otp),
+  justPayGetCertificate,
+  justPaySignMandate,
+  justPayInitiateTransaction,
+  justPayGetStatus: (req: { transactionId: string }) => justPayGetStatus(req.transactionId, req.transactionId),
+  justPayRefund,
+  initiateLankaQR,
+  inquireLankaQR,
+  generateLankaQR: initiateLankaQR,
+  initiateVMQR,
+  inquireVMQR,
+  generateMerchantQR,
+  inquireMerchantQRTransaction,
+  inquireLankaQRTransaction: inquireLankaQR,
+  refundMerchantQR,
+};

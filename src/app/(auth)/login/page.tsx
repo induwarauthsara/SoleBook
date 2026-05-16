@@ -18,15 +18,20 @@ export default function LoginPage() {
   const [password, setPassword] = useState("demo-password");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    signIn({ email });
-    // Brief delay so the button visibly settles; auth context is sync.
-    setTimeout(() => {
-      const hasOnboarded = window.localStorage.getItem("solebook.onboarded");
-      router.push(hasOnboarded === "true" ? "/dashboard" : "/onboarding");
-    }, 200);
+    try {
+      const result = await signIn(email, password);
+      if (result.requires_2fa) {
+        router.push(`/auth/2fa?token=${result.session_token}`);
+      } else {
+        const hasOnboarded = window.localStorage.getItem("solebook.onboarded");
+        router.push(hasOnboarded === "true" ? "/dashboard" : "/onboarding");
+      }
+    } catch {
+      setSubmitting(false);
+    }
   };
 
   return (
