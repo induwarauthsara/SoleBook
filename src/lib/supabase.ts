@@ -1,24 +1,73 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-
 /**
- * Server-side Supabase client.
+ * Supabase clients for SoleBook.
  *
- * Reads from environment variables:
- *   NEXT_PUBLIC_SUPABASE_URL
- *   SUPABASE_SERVICE_ROLE_KEY   (server only — never expose to the browser)
+ * Two flavors:
+ *   - `getSupabaseAnon()`  — public anon key. Subject to RLS. Use from
+ *                            client components, route handlers that act
+ *                            on behalf of the signed-in user, etc.
+ *   - `getSupabaseAdmin()` — service-role key. **Bypasses RLS.** Server
+ *                            only. Reserved for ingestion workers, the
+ *                            deterministic finance engine, and admin
+ *                            jobs. Never import from a "use client"
+ *                            module.
  *
- * Returns null when env vars are not configured so the app remains
+ * Both return `null` when env vars aren't configured so the app stays
  * runnable locally without Supabase credentials.
  */
-export function getSupabaseAdmin(): SupabaseClient | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-  if (!url || !key) return null;
+let cachedAnon: SupabaseClient | null | undefined;
+let cachedAdmin: SupabaseClient | null | undefined;
 
-  return createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
+function readEnv(name: string): string | undefined {
+  const v = process.env[name];
+  return typeof v === "string" && v.length > 0 ? v : undefined;
+}
+
+export function getSupabaseAnon(): SupabaseClient | null {
+  if (cachedAnon !== undefined) return cachedAnon;
+
+  const url = readEnv("NEXT_PUBLIC_SUPABASE_URL");
+  const anonKey =
+    readEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY") ??
+    readEnv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
+
+  if (!url || !anonKey) {
+    cachedAnon = null;
+    return null;
+  }
+
+  cachedAnon = createClient(url, anonKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
   });
+  return cachedAnon;
+}
+
+export function getSupabaseAdmin(): SupabaseClient | null {
+  if (cachedAdmin !== undefined) return cachedAdmin;
+
+  if (typeof window !== "undefined") {
+    // Hard guard: refuse to instantiate the service-role client in any
+    // browser context, even if env was accidentally exposed.
+    cachedAdmin = null;
+    return null;
+  }
+
+  const url = readEnv("NEXT_PUBLIC_SUPABASE_URL");
+  const serviceKey = readEnv("SUPABASE_SERVICE_ROLE_KEY");
+
+  if (!url || !serviceKey) {
+    cachedAdmin = null;
+    return null;
+  }
+
+  cachedAdmin = createClient(url, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: { headers: { "x-solebook-client": "admin" } },
+  });
+  return cachedAdmin;
 }

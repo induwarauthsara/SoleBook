@@ -11,35 +11,30 @@ const buckets = [
   {
     icon: Briefcase,
     name: "Operations",
-    pct: "55%",
     body: "Daily working cash — suppliers, inventory, transport, utilities.",
     tone: "peach",
   },
   {
     icon: CalendarClock,
     name: "Obligations Reserve",
-    pct: "25%",
     body: "Reserved before they bite — payroll, rent, loans, utility bills, taxes.",
     tone: "peach-soft",
   },
   {
     icon: ShieldCheck,
     name: "Profit Reserve",
-    pct: "10%",
     body: "Your business cushion. Survives a bad week, funds the next move.",
     tone: "prussian",
   },
   {
     icon: Coins,
     name: "Owner Salary",
-    pct: "10%",
     body: "Pay yourself like an employee. Stable. Predictable. Disciplined.",
     tone: "prussian-soft",
   },
   {
     icon: Sprout,
     name: "Growth & Investment",
-    pct: "Flex",
     body: "When the numbers permit — new equipment, new market, new hires.",
     tone: "ink",
   },
@@ -57,15 +52,15 @@ export function SmartBuckets() {
   return (
     <section id="for-smes" className="relative isolate overflow-hidden bg-[#F8FAFC]">
       <div aria-hidden className="hue-blue" />
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-2 lg:gap-12">
           <div className="lg:sticky lg:top-24">
             <Image
               src="/assets/clipart4.png"
               alt=""
               width={500}
               height={500}
-              className="mb-5 h-auto w-60 sm:w-72"
+              className="mb-3 h-auto w-52 sm:w-64"
               aria-hidden
             />
             <span className="inline-flex items-center gap-2 rounded-full bg-snow-200 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-ink-100">
@@ -81,7 +76,7 @@ export function SmartBuckets() {
               rupee already knows where it&apos;s going.
             </p>
 
-            <div className="mt-7 rounded-2xl border border-snow-300 bg-white p-5 shadow-sm">
+            <div className="mt-5 rounded-2xl border border-snow-300 bg-white p-5 shadow-sm">
               <div className="flex items-baseline justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wider text-ink-50">
                   Current account balance
@@ -105,7 +100,7 @@ export function SmartBuckets() {
             </div>
           </div>
 
-          <ul className="space-y-3.5">
+          <ul className="space-y-3">
             {buckets.map((b) => (
               <li
                 key={b.name}
@@ -117,13 +112,10 @@ export function SmartBuckets() {
                   <b.icon className="size-5" aria-hidden />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <div>
                     <h3 className="text-base font-semibold text-ink-300">
                       {b.name}
                     </h3>
-                    <span className="rounded-md bg-snow-200 px-2 py-0.5 text-xs font-semibold text-ink-200">
-                      {b.pct}
-                    </span>
                   </div>
                   <p className="mt-1.5 text-sm leading-relaxed text-ink-100">
                     {b.body}

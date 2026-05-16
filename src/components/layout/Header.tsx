@@ -88,7 +88,7 @@ export function Header() {
             {t.nav.signIn}
           </a>
           <a
-            href="#waitlist"
+            href="/dashboard"
             className="group hidden items-center gap-1.5 rounded-full bg-[#F27344] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#D45F33] sm:inline-flex"
           >
             {t.nav.getStarted}
@@ -123,7 +123,7 @@ export function Header() {
             <div className="flex items-center justify-between gap-3 pt-3">
               <LanguageSwitcher tone="light" />
               <a
-                href="#waitlist"
+                href="/dashboard"
                 onClick={() => setOpen(false)}
                 className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#F27344] px-4 py-2.5 text-sm font-semibold text-white"
               >
