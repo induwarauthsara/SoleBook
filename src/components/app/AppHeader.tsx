@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { Menu, Bell, LogOut, Settings, User } from "lucide-react";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { Avatar } from "@/components/ui/Avatar";
-import { Badge } from "@/components/ui/Badge";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useAppData } from "@/components/providers/AppDataProvider";
@@ -148,13 +147,8 @@ export function AppHeader({ onOpenMobileNav }: AppHeaderProps) {
               color={user?.avatarColor ?? "#F27344"}
               size={32}
             />
-            <span className="hidden md:flex flex-col text-left">
-              <span className="text-xs font-semibold text-ink-300 leading-tight">
-                {user?.name ?? "Owner"}
-              </span>
-              <Badge variant="peach" className="self-start mt-0.5">
-                Pro
-              </Badge>
+            <span className="hidden md:block text-left text-xs font-semibold text-ink-300 leading-tight">
+              {user?.name ?? "Owner"}
             </span>
           </button>
           {profileOpen && (

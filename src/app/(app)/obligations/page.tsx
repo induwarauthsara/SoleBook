@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
+import { Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -22,6 +23,11 @@ export default function ObligationsPage() {
   const { obligations } = useAppData();
   const { t } = useLocale();
   const [tab, setTab] = useState<Tab>("all");
+  const [paidIds, setPaidIds] = useState<Set<string>>(new Set());
+
+  const handleMarkPaid = (id: string) => {
+    setPaidIds((prev) => new Set(prev).add(id));
+  };
 
   const filter = (o: Obligation) => {
     if (tab === "all") return true;
@@ -61,7 +67,12 @@ export default function ObligationsPage() {
             <CardContent className="p-0">
               <ul className="divide-y divide-snow-200">
                 {filtered.map((o) => (
-                  <ObligationRow key={o.id} obligation={o} />
+                  <ObligationRow
+                    key={o.id}
+                    obligation={o}
+                    markedPaid={paidIds.has(o.id)}
+                    onMarkPaid={handleMarkPaid}
+                  />
                 ))}
               </ul>
             </CardContent>
@@ -72,15 +83,32 @@ export default function ObligationsPage() {
   );
 }
 
-function ObligationRow({ obligation }: { obligation: Obligation }) {
+function ObligationRow({
+  obligation,
+  markedPaid,
+  onMarkPaid,
+}: {
+  obligation: Obligation;
+  markedPaid: boolean;
+  onMarkPaid: (id: string) => void;
+}) {
   const { t } = useLocale();
   const days = getDaysUntil(obligation.dueDate);
-  const tone =
-    days <= 3 ? "danger" : days <= 7 ? "warning" : "success";
+  const isPaid = obligation.status === "paid" || markedPaid;
+  const tone = isPaid
+    ? "success"
+    : days <= 3
+      ? "danger"
+      : days <= 7
+        ? "warning"
+        : "success";
   const dateLabel = format(parseISO(obligation.dueDate), "MMM d");
 
   return (
-    <li className="flex flex-wrap items-center gap-3 px-5 py-4 hover:bg-snow-100 transition-colors">
+    <li className={cn(
+      "flex flex-wrap items-center gap-3 px-5 py-4 transition-colors",
+      isPaid ? "bg-[#F0FDF4]/60 opacity-75" : "hover:bg-snow-100",
+    )}>
       <div
         className={cn(
           "flex size-11 flex-col items-center justify-center rounded-xl border text-[11px] font-semibold",
@@ -100,7 +128,7 @@ function ObligationRow({ obligation }: { obligation: Obligation }) {
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-ink-300 truncate">
+        <p className={cn("text-sm font-semibold truncate", isPaid ? "text-ink-50 line-through" : "text-ink-300")}>
           {obligation.name}
         </p>
         <p className="text-xs text-ink-50">
@@ -121,15 +149,9 @@ function ObligationRow({ obligation }: { obligation: Obligation }) {
           {t.obligations.priority[obligation.priority]}
         </Badge>
         <Badge
-          variant={
-            obligation.status === "paid"
-              ? "success"
-              : obligation.status === "overdue"
-                ? "danger"
-                : "secondary"
-          }
+          variant={isPaid ? "success" : obligation.status === "overdue" ? "danger" : "secondary"}
         >
-          {t.obligations.status[obligation.status]}
+          {isPaid ? t.obligations.status.paid : t.obligations.status[obligation.status]}
         </Badge>
       </div>
 
@@ -137,9 +159,20 @@ function ObligationRow({ obligation }: { obligation: Obligation }) {
         {formatShortCurrency(obligation.amount)}
       </p>
 
-      <Button size="sm" variant="outline" className="ml-auto sm:ml-0">
-        {t.common.viewAll}
-      </Button>
+      {isPaid ? (
+        <span className="ml-auto sm:ml-0 inline-flex items-center gap-1 text-xs font-medium text-[#15803D]">
+          <Check className="size-3.5" /> {t.obligations.status.paid}
+        </span>
+      ) : (
+        <Button
+          size="sm"
+          variant="outline"
+          className="ml-auto sm:ml-0"
+          onClick={() => onMarkPaid(obligation.id)}
+        >
+          {t.common.markPaid}
+        </Button>
+      )}
     </li>
   );
 }

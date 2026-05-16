@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 import { useAppData } from "@/components/providers/AppDataProvider";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { cn, formatShortCurrency, getDaysUntil } from "@/lib/utils";
@@ -24,6 +26,11 @@ function getTone(daysUntil: number) {
 export function UpcomingPayments() {
   const { obligations } = useAppData();
   const { t } = useLocale();
+  const [paidIds, setPaidIds] = useState<Set<string>>(new Set());
+
+  const handlePay = (id: string) => {
+    setPaidIds((prev) => new Set(prev).add(id));
+  };
 
   const upcoming = obligations
     .filter((o) => o.status === "pending")
@@ -60,6 +67,7 @@ export function UpcomingPayments() {
           {upcoming.map((o) => {
             const days = getDaysUntil(o.dueDate);
             const tone = getTone(days);
+            const paid = paidIds.has(o.id);
             const dayLabel =
               days === 0
                 ? t.dashboard.upcoming.today
@@ -72,16 +80,21 @@ export function UpcomingPayments() {
             return (
               <li
                 key={o.id}
-                className="flex items-center gap-4 px-5 py-3 hover:bg-snow-100 transition-colors"
+                className={cn(
+                  "flex items-center gap-4 px-5 py-3 transition-colors",
+                  paid ? "bg-[#F0FDF4]/60 opacity-75" : "hover:bg-snow-100",
+                )}
               >
                 <div
                   className={cn(
                     "flex size-11 flex-col items-center justify-center rounded-xl border text-[11px] font-semibold",
-                    tone === "danger"
-                      ? "border-[#FECACA] bg-[#FEF2F2] text-[#B91C1C]"
-                      : tone === "warning"
-                        ? "border-[#FEF3C7] bg-[#FFFBEB] text-[#B45309]"
-                        : "border-[#D1FAE5] bg-[#ECFDF5] text-[#15803D]",
+                    paid
+                      ? "border-[#D1FAE5] bg-[#ECFDF5] text-[#15803D]"
+                      : tone === "danger"
+                        ? "border-[#FECACA] bg-[#FEF2F2] text-[#B91C1C]"
+                        : tone === "warning"
+                          ? "border-[#FEF3C7] bg-[#FFFBEB] text-[#B45309]"
+                          : "border-[#D1FAE5] bg-[#ECFDF5] text-[#15803D]",
                   )}
                   aria-hidden
                 >
@@ -93,17 +106,35 @@ export function UpcomingPayments() {
                   </span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-ink-300 truncate">
+                  <p className={cn(
+                    "text-sm font-medium truncate",
+                    paid ? "text-ink-50 line-through" : "text-ink-300",
+                  )}>
                     {o.name}
                   </p>
                   <p className="text-xs text-ink-50">
                     {o.category} ·{" "}
-                    <span className={TONE_CLASS[tone]}>{dayLabel}</span>
+                    <span className={paid ? "text-[#15803D]" : TONE_CLASS[tone]}>
+                      {paid ? t.obligations.status.paid : dayLabel}
+                    </span>
                   </p>
                 </div>
                 <p className="text-sm font-bold text-ink-300 shrink-0">
                   {formatShortCurrency(o.amount)}
                 </p>
+                {paid ? (
+                  <span className="inline-flex items-center gap-1 text-xs font-medium text-[#15803D] shrink-0">
+                    <Check className="size-3.5" />
+                  </span>
+                ) : (
+                  <Button
+                    size="sm"
+                    onClick={() => handlePay(o.id)}
+                    className="shrink-0"
+                  >
+                    {t.common.pay}
+                  </Button>
+                )}
               </li>
             );
           })}

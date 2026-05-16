@@ -21,11 +21,11 @@ export interface NavItem {
 
 export const primaryNav: NavItem[] = [
   { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
+  { href: "/allocation", labelKey: "allocation", icon: ArrowLeftRight },
+  { href: "/obligations", labelKey: "obligations", icon: CalendarClock },
   { href: "/history", labelKey: "history", icon: History },
   { href: "/chat", labelKey: "chat", icon: Sparkles },
   { href: "/insights", labelKey: "insights", icon: Lightbulb },
-  { href: "/allocation", labelKey: "allocation", icon: ArrowLeftRight },
-  { href: "/obligations", labelKey: "obligations", icon: CalendarClock },
   { href: "/owner-withdrawal", labelKey: "ownerWithdrawal", icon: Wallet },
   { href: "/accounts", labelKey: "accounts", icon: CreditCard },
   { href: "/loan-readiness", labelKey: "loanReadiness", icon: TrendingUp },
