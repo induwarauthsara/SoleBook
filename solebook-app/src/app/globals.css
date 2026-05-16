@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* ============================================================
+   SoleBook Design Tokens
+   Strict palette — only these colors and their shades allowed.
+   ============================================================ */
+
+@theme {
+  /* Brand palette */
+  --color-peach-50:  #FFF3EC;
+  --color-peach-100: #FFE2D2;
+  --color-peach-200: #FFC4A4;
+  --color-peach-300: #FBA378;
+  --color-peach-400: #F58A5A;
+  --color-peach-500: #F27344;   /* Primary action — Burnt Peach */
+  --color-peach-600: #D45F33;
+  --color-peach-700: #B14A24;
+  --color-peach-800: #823516;
+  --color-peach-900: #4F1F0A;
+
+  --color-prussian-50:  #E5EAF2;
+  --color-prussian-100: #BFCAD9;
+  --color-prussian-200: #93A2BB;
+  --color-prussian-300: #5C7396;
+  --color-prussian-400: #324C76;
+  --color-prussian-500: #1E365D;
+  --color-prussian-600: #162848;
+  --color-prussian-700: #0F172A;   /* Dark background — Prussian Blue */
+  --color-prussian-800: #0A1020;
+  --color-prussian-900: #050811;
+
+  --color-deepspace-50:  #E8ECF3;
+  --color-deepspace-100: #C3CCDD;
+  --color-deepspace-200: #94A2BC;
+  --color-deepspace-300: #5E6F8E;
+  --color-deepspace-400: #364865;
+  --color-deepspace-500: #1E293B;   /* Card surface — Deep Space Blue */
+  --color-deepspace-600: #182132;
+  --color-deepspace-700: #131A28;
+  --color-deepspace-800: #0D131E;
+  --color-deepspace-900: #070A11;
+
+  --color-snow-50:  #FFFFFF;
+  --color-snow-100: #F8FAFC;   /* Light background — Bright Snow */
+  --color-snow-200: #EEF2F7;
+  --color-snow-300: #DDE4ED;
+  --color-snow-400: #C4CFDD;
+  --color-snow-500: #A5B3C6;
+  --color-snow-600: #7E8DA3;
+
+  --color-ink-50:  #4B5563;
+  --color-ink-100: #374151;
+  --color-ink-200: #1F2937;
+  --color-ink-300: #111827;   /* Ink Black */
+
+  /* Semantic aliases */
+  --color-background: #F8FAFC;
+  --color-foreground: #111827;
+  --color-primary: #F27344;
+  --color-primary-hover: #D45F33;
+  --color-surface-dark: #0F172A;
+  --color-surface-card: #1E293B;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Base */
+html, body { background: var(--color-background); color: var(--color-foreground); }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+/* Smooth selection */
+::selection { background: #F27344; color: #FFFFFF; }
+
+/* Custom scrollbar (subtle, on-palette) */
+* { scrollbar-width: thin; scrollbar-color: #C4CFDD #F8FAFC; }
+
+/* Subtle dotted grid for hero backdrop */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(17,24,39,0.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.bg-dot-grid-dark {
+  background-image: radial-gradient(rgba(248,250,252,0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Soft glow used on dark hero card */
+.shadow-peach-glow {
+  box-shadow: 0 30px 80px -30px rgba(242,115,68,0.45),
+              0 12px 32px -12px rgba(15,23,42,0.35);
+}
+
+/* Reveal animations on scroll */
+@keyframes solebook-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-rise { animation: solebook-rise 0.7s ease-out both; }
+
+@keyframes solebook-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade { animation: solebook-fade 0.9s ease-out both; }
+
+@keyframes solebook-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float { animation: solebook-float 4.5s ease-in-out infinite; }
+
+@keyframes solebook-pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.animate-pulse-ring { animation: solebook-pulse-ring 2.2s ease-out infinite; }
+
+/* Focus ring (accessibility, on-palette) */
+:where(button, a, input, textarea):focus-visible {
+  outline: 2px solid #F27344;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
