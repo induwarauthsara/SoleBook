@@ -8,6 +8,7 @@ import {
   Wallet,
   CreditCard,
   TrendingUp,
+  BadgeDollarSign,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -29,5 +30,6 @@ export const primaryNav: NavItem[] = [
   { href: "/owner-withdrawal", labelKey: "ownerWithdrawal", icon: Wallet },
   { href: "/accounts", labelKey: "accounts", icon: CreditCard },
   { href: "/loan-readiness", labelKey: "loanReadiness", icon: TrendingUp },
+  { href: "/subscription", labelKey: "subscription", icon: BadgeDollarSign },
   { href: "/settings", labelKey: "settings", icon: Settings },
 ];

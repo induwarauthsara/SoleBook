@@ -1,7 +1,9 @@
 "use client";
 
-import { Activity, Clock, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { Activity, Clock, Sparkles, ArrowLeftRight } from "lucide-react";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { useAppData } from "@/components/providers/AppDataProvider";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useLocale } from "@/components/providers/LocaleProvider";
@@ -30,9 +32,17 @@ export function DashboardHero() {
 
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-peach-700">
-            {t.dashboard.controlRoom}
-          </p>
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-peach-700">
+              {t.dashboard.controlRoom}
+            </p>
+            <Link href="/allocation" className="lg:hidden">
+              <Button size="sm">
+                <ArrowLeftRight className="size-3.5" />
+                {t.allocation.title}
+              </Button>
+            </Link>
+          </div>
           <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-ink-300 tracking-tight">
             {t.dashboard.greeting}, {user?.name?.split(" ")[0] ?? "Owner"}.
           </h2>
@@ -60,7 +70,14 @@ export function DashboardHero() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 text-center">
+        <div className="flex flex-col items-end gap-3">
+          <Link href="/allocation" className="hidden lg:block">
+            <Button size="sm">
+              <ArrowLeftRight className="size-3.5" />
+              {t.allocation.title}
+            </Button>
+          </Link>
+          <div className="grid grid-cols-3 gap-3 text-center">
           <Stat
             icon={<Activity className="size-3.5" />}
             label={t.dashboard.risk}
@@ -81,6 +98,7 @@ export function DashboardHero() {
             tone="peach"
             valueColor={getScoreColor(score.overall)}
           />
+          </div>
         </div>
       </div>
     </Card>

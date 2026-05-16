@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { Progress } from "@/components/ui/Progress";
 import { useAppData } from "@/components/providers/AppDataProvider";
 import { useLocale } from "@/components/providers/LocaleProvider";
-import { formatShortCurrency } from "@/lib/utils";
+import { cn, formatShortCurrency } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function OwnerWithdrawalPage() {
@@ -24,6 +24,8 @@ export default function OwnerWithdrawalPage() {
   );
   const remaining = Math.max(0, business.salaryGoal - taken);
   const progress = Math.min(100, (taken / business.salaryGoal) * 100);
+  const exceeded = taken > business.salaryGoal;
+  const excessAmount = taken - business.salaryGoal;
 
   const handleWithdraw = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +52,28 @@ export default function OwnerWithdrawalPage() {
         <h2 className="text-xl font-semibold text-ink-300">{t.owner.title}</h2>
         <p className="text-sm text-ink-50">{t.owner.sub}</p>
       </header>
+
+      {exceeded && (
+        <div className="relative overflow-hidden rounded-2xl border-2 border-[#EF4444] bg-[#FEF2F2] p-5 shadow-lg shadow-red-100">
+          <div className="absolute -right-6 -top-6 size-28 rounded-full bg-[#EF4444]/10 blur-2xl" aria-hidden />
+          <div className="relative flex items-start gap-4">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#EF4444] text-white">
+              <AlertTriangle className="size-6" />
+            </span>
+            <div>
+              <h3 className="text-base font-bold text-[#991B1B]">
+                {t.owner.exceededTitle}
+              </h3>
+              <p className="mt-1 text-sm leading-relaxed text-[#B91C1C]">
+                {t.owner.exceeded.replace("{{amount}}", formatShortCurrency(excessAmount))}
+              </p>
+              <p className="mt-2 text-2xl font-bold text-[#DC2626]">
+                -{formatShortCurrency(excessAmount)}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Card>
         <CardHeader>
@@ -88,14 +112,6 @@ export default function OwnerWithdrawalPage() {
               {t.owner.withdraw}
             </Button>
           </form>
-          {taken > business.salaryGoal && (
-            <p className="mt-3 flex items-center gap-2 rounded-lg bg-[#FEF2F2] px-3 py-2 text-xs text-[#B91C1C]">
-              <AlertTriangle className="size-4 shrink-0" />
-              You’ve exceeded the planned monthly salary by{" "}
-              {formatShortCurrency(taken - business.salaryGoal)} — this can
-              squeeze upcoming payroll.
-            </p>
-          )}
         </CardContent>
       </Card>
 
@@ -108,11 +124,11 @@ export default function OwnerWithdrawalPage() {
             {formatShortCurrency(business.salaryGoal)}
           </p>
         </Card>
-        <Card padded>
+        <Card padded className={cn(exceeded && "border-[#EF4444] bg-[#FEF2F2]")}>
           <p className="text-[11px] uppercase tracking-wider text-ink-50">
             {t.owner.taken}
           </p>
-          <p className="mt-2 text-2xl font-bold text-ink-300">
+          <p className={cn("mt-2 text-2xl font-bold", exceeded ? "text-[#DC2626]" : "text-ink-300")}>
             {formatShortCurrency(taken)}
           </p>
           <Progress value={progress} className="mt-2" />
@@ -121,8 +137,8 @@ export default function OwnerWithdrawalPage() {
           <p className="text-[11px] uppercase tracking-wider text-ink-50">
             {t.owner.remaining}
           </p>
-          <p className="mt-2 text-2xl font-bold text-ink-300">
-            {formatShortCurrency(remaining)}
+          <p className={cn("mt-2 text-2xl font-bold", exceeded ? "text-[#DC2626]" : "text-ink-300")}>
+            {exceeded ? `-${formatShortCurrency(excessAmount)}` : formatShortCurrency(remaining)}
           </p>
         </Card>
       </section>

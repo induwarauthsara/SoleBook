@@ -151,3 +151,42 @@ export interface ChatMessage {
   content: string;
   createdAt: string;
 }
+
+// ── Payment & Subscription ──
+
+export type PaymentMethod = "justpay" | "lanka_qr" | "vm_qr" | "merchant_qr";
+export type PaymentStatus = "pending" | "processing" | "success" | "failed" | "refunded";
+export type SubscriptionStatus = "active" | "expired" | "cancelled" | "trial";
+
+export interface SubscriptionPlan {
+  id: string;
+  name: string;
+  monthlyPrice: number;
+  annualPrice: number;
+  features: string[];
+  recommended?: boolean;
+}
+
+export interface PaymentTransaction {
+  id: string;
+  businessId: string;
+  planId: string;
+  amount: number;
+  currency: "LKR";
+  method: PaymentMethod;
+  status: PaymentStatus;
+  bankReference?: string;
+  retrievalReference?: string;
+  createdAt: string;
+  completedAt?: string;
+}
+
+export interface Subscription {
+  id: string;
+  businessId: string;
+  planId: string;
+  status: SubscriptionStatus;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  lastPaymentId?: string;
+}

@@ -54,7 +54,10 @@ export default function SettingsPage() {
     email: user?.email ?? "",
     phone: user?.phone ?? "",
   });
-  const [biz, setBiz] = useState({ name: business.name });
+  const [biz, setBiz] = useState({
+    name: business.name,
+    salaryGoal: String(business.salaryGoal),
+  });
   const [prefs, setPrefs] = useState({
     push: true,
     email: true,
@@ -82,7 +85,7 @@ export default function SettingsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-4">
         <Card padded className="h-fit">
-          <ul className="flex flex-row overflow-x-auto lg:flex-col lg:space-y-1 gap-1">
+          <ul className="flex flex-row flex-wrap lg:flex-col lg:space-y-1 gap-1">
             {sections.map((s) => {
               const Icon = SECTION_ICONS[s.id];
               const active = section === s.id;
@@ -259,16 +262,37 @@ export default function SettingsPage() {
           {section === "business" && (
             <SectionCard title={t.settings.sections.business}>
               <FieldGrid>
-                <Field label="Business name">
+                <Field label={t.settings.business.name}>
                   <Input
                     value={biz.name}
-                    onChange={(e) => setBiz({ name: e.target.value })}
+                    onChange={(e) =>
+                      setBiz((prev) => ({ ...prev, name: e.target.value }))
+                    }
                   />
+                </Field>
+                <Field label={t.settings.business.plannedSalary}>
+                  <Input
+                    type="number"
+                    inputMode="decimal"
+                    value={biz.salaryGoal}
+                    onChange={(e) =>
+                      setBiz((prev) => ({ ...prev, salaryGoal: e.target.value }))
+                    }
+                  />
+                  <p className="mt-1 text-[11px] text-ink-50">
+                    {t.settings.business.plannedSalaryHint}
+                  </p>
                 </Field>
               </FieldGrid>
               <SaveRow
                 onSave={() => {
-                  updateBusiness(biz);
+                  const salary = Number(biz.salaryGoal);
+                  updateBusiness({
+                    name: biz.name,
+                    ...(Number.isFinite(salary) && salary > 0
+                      ? { salaryGoal: salary }
+                      : {}),
+                  });
                   toast.success("Business updated");
                 }}
               />

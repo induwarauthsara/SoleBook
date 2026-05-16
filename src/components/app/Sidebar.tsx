@@ -45,7 +45,6 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             const active =
               pathname === item.href ||
               (item.href !== "/dashboard" && pathname.startsWith(item.href));
-            const isAllocation = item.href === "/allocation";
             const Icon = item.icon;
             return (
               <li key={item.href}>
@@ -55,16 +54,14 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                     active
                       ? "bg-peach-50 text-peach-700"
-                      : isAllocation
-                        ? "bg-peach-500/10 text-peach-700 hover:bg-peach-100"
-                        : "text-ink-100 hover:bg-snow-100 hover:text-ink-300",
+                      : "text-ink-100 hover:bg-snow-100 hover:text-ink-300",
                   )}
                   title={collapsed ? t.nav2[item.labelKey] : undefined}
                 >
                   <Icon
                     className={cn(
                       "size-4 shrink-0",
-                      active ? "text-peach-600" : isAllocation ? "text-peach-500" : "text-ink-50",
+                      active ? "text-peach-600" : "text-ink-50",
                     )}
                   />
                   {!collapsed && <span>{t.nav2[item.labelKey]}</span>}
