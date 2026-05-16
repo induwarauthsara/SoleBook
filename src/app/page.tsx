@@ -1,4 +1,3 @@
-import { LocaleProvider } from "@/components/providers/LocaleProvider";
 import { SplashScreen } from "@/components/brand/SplashScreen";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -17,7 +16,7 @@ import { CTASection } from "@/components/sections/CTASection";
 
 export default function HomePage() {
   return (
-    <LocaleProvider>
+    <>
       <SplashScreen />
       <Header />
       <main className="flex-1">
@@ -35,6 +34,6 @@ export default function HomePage() {
         <CTASection />
       </main>
       <Footer />
-    </LocaleProvider>
+    </>
   );
 }
