@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Briefcase,
   CalendarClock,
@@ -54,10 +55,19 @@ const toneStyles: Record<(typeof buckets)[number]["tone"], string> = {
 
 export function SmartBuckets() {
   return (
-    <section id="for-smes" className="bg-[#F8FAFC]">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <section id="for-smes" className="relative isolate overflow-hidden bg-[#F8FAFC]">
+      <div aria-hidden className="hue-blue" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="lg:sticky lg:top-24">
+            <Image
+              src="/assets/clipart4.png"
+              alt=""
+              width={500}
+              height={500}
+              className="mb-5 h-auto w-60 sm:w-72"
+              aria-hidden
+            />
             <span className="inline-flex items-center gap-2 rounded-full bg-snow-200 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-ink-100">
               Smart reserve buckets
             </span>

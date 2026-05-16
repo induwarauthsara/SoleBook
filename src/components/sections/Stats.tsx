@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const stats = [
   { value: "8 in 10", label: "SMEs fail from cash discipline, not lack of revenue" },
   { value: "< 5 min", label: "Onboarding — connect, choose, done" },
@@ -7,19 +9,30 @@ const stats = [
 
 export function Stats() {
   return (
-    <section className="relative bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-snow-300 bg-[#F8FAFC] px-6 py-10 sm:px-10">
-          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((s) => (
-              <li key={s.label} className="text-center sm:text-left">
-                <div className="text-3xl font-semibold tracking-tight text-ink-300 sm:text-4xl">
-                  {s.value}
-                </div>
-                <p className="mt-2 text-sm text-ink-100">{s.label}</p>
-              </li>
-            ))}
-          </ul>
+    <section className="relative isolate overflow-hidden bg-white">
+      <div aria-hidden className="hue-orange opacity-70" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-3xl border border-[#F27344]/20 bg-[#F8FAFC]/85 px-6 py-10 shadow-sm backdrop-blur-sm sm:px-10">
+          <div className="grid items-center gap-8 lg:grid-cols-[auto_1fr] lg:gap-12">
+            <Image
+              src="/assets/clipart2.png"
+              alt=""
+              width={520}
+              height={520}
+              className="mx-auto h-auto w-52 shrink-0 sm:w-60 lg:mx-0"
+              aria-hidden
+            />
+            <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {stats.map((s) => (
+                <li key={s.label} className="text-center sm:text-left">
+                  <div className="text-3xl font-semibold tracking-tight text-ink-300 sm:text-4xl">
+                    {s.value}
+                  </div>
+                  <p className="mt-2 text-sm text-ink-100">{s.label}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

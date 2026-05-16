@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   AlertOctagon,
   Bell,
@@ -63,23 +64,34 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-peach-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#B14A24]">
-            <Sparkles className="size-3.5" aria-hidden />
-            Everything you need, nothing you don&apos;t
-          </span>
-          <h2 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-ink-300 sm:text-4xl">
-            A focused financial OS — built for sole proprietors.
-          </h2>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-ink-100 sm:text-lg">
-            Not accounting. Not ERP. Not another expense tracker. SoleBook is
-            the discipline layer above all of them.
-          </p>
+    <section id="features" className="relative isolate overflow-hidden bg-white">
+      <div aria-hidden className="hue-duotone opacity-70" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center md:flex-row md:items-center md:gap-10 md:text-left">
+          <Image
+            src="/assets/clipart3.png"
+            alt=""
+            width={400}
+            height={360}
+            className="h-auto w-44 shrink-0 sm:w-52 md:w-56"
+            aria-hidden
+          />
+          <div className="flex-1">
+            <span className="inline-flex items-center gap-2 rounded-full bg-peach-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#B14A24]">
+              <Sparkles className="size-3.5" aria-hidden />
+              Everything you need, nothing you don&apos;t
+            </span>
+            <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-ink-300 sm:text-4xl">
+              A focused financial OS — built for sole proprietors.
+            </h2>
+            <p className="mt-3 text-pretty text-base leading-relaxed text-ink-100 sm:text-lg">
+              Not accounting. Not ERP. Not another expense tracker. SoleBook is
+              the discipline layer above all of them.
+            </p>
+          </div>
         </div>
 
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) => (
             <li
               key={f.title}

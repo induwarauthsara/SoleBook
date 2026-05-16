@@ -1,4 +1,5 @@
 import { LocaleProvider } from "@/components/providers/LocaleProvider";
+import { SplashScreen } from "@/components/brand/SplashScreen";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
@@ -11,13 +12,13 @@ import { AIInsights } from "@/components/sections/AIInsights";
 import { OwnerSalary } from "@/components/sections/OwnerSalary";
 import { Stats } from "@/components/sections/Stats";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
 import { CTASection } from "@/components/sections/CTASection";
 
 export default function HomePage() {
   return (
     <LocaleProvider>
+      <SplashScreen />
       <Header />
       <main className="flex-1">
         <Hero />
@@ -30,7 +31,6 @@ export default function HomePage() {
         <OwnerSalary />
         <Stats />
         <Testimonials />
-        <Pricing />
         <FAQ />
         <CTASection />
       </main>
