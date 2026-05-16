@@ -31,11 +31,13 @@ export function ProblemSection() {
             The real reason SMEs struggle
           </span>
           <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-ink-300 sm:text-4xl">
-            Most SMEs don&apos;t fail from <span className="text-ink-50 line-through decoration-[#F27344]/40">lack of revenue</span>.
+            Most SMEs don&apos;t fail from lack of revenue.
           </h2>
-          <p className="mt-3 text-pretty text-base leading-relaxed text-ink-100 sm:text-lg">
-            They fail because money moves faster than discipline. One account does
-            everything — and nothing is reserved for what&apos;s coming next.
+          <p className="mt-3 text-pretty text-lg font-semibold leading-relaxed text-[#F27344] sm:text-xl">
+            They fail because money moves faster than discipline.
+          </p>
+          <p className="mt-2 text-pretty text-base leading-relaxed text-ink-100 sm:text-lg">
+            One account does everything — and nothing is reserved for what&apos;s coming next.
           </p>
         </div>
 

@@ -33,7 +33,7 @@ export function Hero() {
           />
 
           <Image
-            src="/assets/hero.jpg"
+            src="/assets/hero.png"
             alt=""
             fill
             priority
@@ -79,14 +79,14 @@ export function Hero() {
 
             <div className="animate-rise mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
-                href="#waitlist"
+                href="/dashboard"
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#F27344] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#F27344]/25 transition hover:bg-[#D45F33]"
               >
                 {t.hero.ctaPrimary}
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
               <a
-                href="#how-it-works"
+                href="#features"
                 className="glass-light inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-ink-200 transition hover:bg-white"
               >
                 {t.hero.ctaSecondary}
@@ -117,7 +117,7 @@ export function Hero() {
                 className="pointer-events-none absolute -inset-6 -z-10 rounded-[3rem] bg-gradient-to-br from-[#F27344]/20 via-[#F27344]/5 to-transparent blur-2xl"
               />
               <Image
-                src="/assets/hero.jpg"
+                src="/assets/hero.png"
                 alt="SoleBook mobile app — dashboard, send money, and pay screens"
                 fill
                 priority

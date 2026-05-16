@@ -1,5 +1,4 @@
 import {
-  ArrowRight,
   Brain,
   Building2,
   CheckCircle2,
@@ -58,7 +57,7 @@ export function HowItWorks() {
         </div>
 
         <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s, i) => (
+          {steps.map((s) => (
             <li key={s.n} className="relative">
               <SpotlightCard
                 className="h-full rounded-2xl border border-snow-300 bg-white p-6 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-prussian-500/30 hover:shadow-md"
@@ -81,13 +80,6 @@ export function HowItWorks() {
                 />
               </SpotlightCard>
 
-              {/* Connector arrow on lg screens between cards */}
-              {i < steps.length - 1 && (
-                <ArrowRight
-                  className="absolute top-1/2 -right-3 hidden size-5 -translate-y-1/2 text-snow-400 lg:block"
-                  aria-hidden
-                />
-              )}
             </li>
           ))}
         </ol>

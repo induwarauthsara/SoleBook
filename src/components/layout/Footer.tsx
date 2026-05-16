@@ -43,16 +43,15 @@ const groups = [
 export function Footer() {
   return (
     <footer className="bg-[#0F172A] text-snow-200">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-5">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-12">
+        <div className="grid gap-8 lg:grid-cols-5 lg:gap-6">
           <div className="lg:col-span-2">
             <Logo variant="light" />
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-snow-200">
-              SoleBook is an AI-powered financial discipline engine for Sri
-              Lankan sole proprietors and small businesses. Built on top of
-              your existing bank.
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-snow-200">
+              AI-powered financial discipline for Sri Lankan sole proprietors
+              and small businesses. Built on top of your existing bank.
             </p>
-            <p className="mt-4 text-xs text-snow-500">
+            <p className="mt-2 text-xs text-snow-500">
               Made in Colombo · Sinhala · Tamil · English
             </p>
           </div>
@@ -62,7 +61,7 @@ export function Footer() {
               <h3 className="text-xs font-semibold uppercase tracking-wider text-snow-500">
                 {g.title}
               </h3>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3 space-y-2">
                 {g.links.map((l) => (
                   <li key={l.label}>
                     <Link
@@ -78,7 +77,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-start gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col items-start gap-2 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-snow-500">
             © {new Date().getFullYear()} SoleBook. All rights reserved.
           </p>

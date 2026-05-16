@@ -13,9 +13,9 @@ export function OwnerSalary() {
     <section className="relative isolate overflow-hidden bg-[#F8FAFC]">
       <div aria-hidden className="hue-orange opacity-80" />
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-14">
           {/* Visual: before / after */}
-          <div className="order-2 grid gap-4 sm:grid-cols-2 lg:order-1">
+          <div className="order-2 grid gap-4 sm:grid-cols-2 lg:order-2">
             {/* Before */}
             <div className="rounded-2xl border border-snow-300 bg-white p-5">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-ink-100">
@@ -73,7 +73,7 @@ export function OwnerSalary() {
           </div>
 
           {/* Copy */}
-          <div className="order-1 lg:order-2">
+          <div className="order-1 lg:order-1">
             <Image
               src="/assets/clipart1.png"
               alt=""
@@ -114,7 +114,7 @@ export function OwnerSalary() {
             </ul>
 
             <a
-              href="#waitlist"
+              href="/dashboard"
               className="group mt-7 inline-flex items-center gap-1.5 rounded-full bg-[#F27344] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#D45F33]"
             >
               Set my owner salary
