@@ -1,12 +1,21 @@
 ---
 name: SoleBook Implementation
-overview: Implement SoleBook as a greenfield Next.js + TypeScript fintech MVP that demonstrates AI-powered SME financial discipline, then extend it through production phases. The first deliverable after approval is a root-level `SoleBook_Implementation_Plan.txt` plus the app foundation and core MVP screens/logic.
+overview: Implement SoleBook as a greenfield Next.js + TypeScript fintech MVP that demonstrates AI-powered SME financial discipline, ships as a full PWA (installable, app-like), and defaults to a simple, jargon-light experience for non-technical SME owners. Extend through production phases after the MVP. The first deliverable after approval is a root-level `SoleBook_Implementation_Plan.txt` plus the app foundation and core MVP screens/logic.
 todos:
   - id: create-plan-txt
     content: Create `SoleBook_Implementation_Plan.txt` in the workspace root with the approved plan.
     status: pending
   - id: bootstrap-next-app
     content: Bootstrap a Next.js + TypeScript app structure in the empty SoleBook workspace.
+    status: pending
+  - id: pwa-install-foundation
+    content: Add full PWA foundation—web app manifest, required icons, metadata (theme, display standalone, safe areas), service worker for installability and sensible offline/shell behavior, and HTTPS-ready deployment assumptions.
+    status: pending
+  - id: simple-install-ux
+    content: Ship a minimal, friendly “Add SoleBook to your phone/computer” path (one primary CTA, plain-language copy, no browser jargon); defer or hide advanced settings until explicitly requested.
+    status: pending
+  - id: simplicity-first-ui
+    content: Default UI for non-technical users—short labels, plain-language insights, progressive disclosure (essentials first; bank/ERP/API concepts behind “Connect” or “More options”), and avoid empty states that require technical setup to proceed.
     status: pending
   - id: define-domain-models
     content: Add TypeScript models for transactions, buckets, obligations, business profiles, insights, and scores.
@@ -31,6 +40,8 @@ isProject: false
 ## Assumptions
 - The current workspace appears empty, so implementation starts as a greenfield web app.
 - Use Next.js + TypeScript with mock Seylan Bank/API, ERP/POS, and manual-entry data for the hackathon MVP.
+- The product is a **Progressive Web App (PWA)** from day one: installable on supported mobile and desktop browsers, app-like shell (standalone display), and a deliberate offline story (at minimum cached shell + clear messaging when data cannot refresh).
+- Primary users include **non-technical SME owners**; the default experience should hide integration and implementation complexity, use plain language, and expose deeper controls only when the user seeks them.
 - First file to create after approval: [`SoleBook_Implementation_Plan.txt`](SoleBook_Implementation_Plan.txt), containing this implementation plan in plain text.
 
 ## Product Direction
@@ -60,6 +71,25 @@ flowchart TD
     aiEngine --> forecast[Cash Flow Forecast]
 ```
 
+## PWA, installation, and simplicity (cross-cutting)
+These requirements apply from Phase 1 onward; they are not a late add-on.
+
+**PWA and installation**
+- Meet installability criteria for target browsers: valid manifest, required icon sizes, start URL, display mode, theme/background colors, and a registered service worker with a defined caching strategy.
+- Treat “installed” SoleBook the same as in-tab: deep links, same core flows, respect safe areas on notched devices.
+- Document expected behavior when offline (what still works vs what shows a simple “connect to update” message).
+
+**Hiding complexity for new users**
+- Onboarding leads with outcomes (“see your cash picture,” “get one recommendation”) not architecture (no “PWA,” “API,” “sync,” or “service worker” in default copy).
+- Use **progressive disclosure**: one primary action per screen where possible; bank/ERP/manual paths as optional branches, not walls.
+- Provide a single, friendly **Add to home screen / Install app** prompt when the browser allows; if install is unavailable, show a short device-specific tip once—not persistent technical debug UI.
+- Settings or “advanced” area holds diagnostics, version/build info, and any future power-user toggles.
+
+**Everything simple**
+- Vocabulary: short labels, local business language where it helps, and AI insights written as sentences a non-accountant understands.
+- Visual hierarchy: fewer numbers on the first dashboard view; expand detail on tap.
+- Errors and empty states: always suggest the **next one thing** to do, without assuming technical literacy.
+
 ## Phase 1: Hackathon MVP
 Create a polished dashboard-driven demo focused on clarity and judge impact.
 
@@ -71,7 +101,7 @@ Planned structure:
 - [`src/types`](src/types): transaction, bucket, business profile, obligation, insight, and score models.
 
 MVP screens:
-- Onboarding: demo mode, business type selection, owner salary goal, AI-generated bucket setup.
+- Onboarding: demo-first path, business type selection, owner salary goal, AI-generated bucket setup—worded for non-specialists; integrations optional, never blocking the first win.
 - Dashboard: cash balance, smart buckets, AI recommendation card, discipline score, risk alerts.
 - Cash Allocation: incoming payment simulation and recommended split with Accept/Adjust UX.
 - Obligations: upcoming rent, salaries, utilities, loan payments, supplier dues, cheque dates.
@@ -126,3 +156,8 @@ The MVP is successful if judges can understand the value in under two minutes:
 - Obligations are reserved before they become emergencies.
 - The app predicts risk before cash-flow failure happens.
 - The product feels like SME financial discipline infrastructure, not another expense tracker.
+
+**PWA, install, and simplicity checks**
+- On a typical phone browser, SoleBook can be **installed** (or “added to home screen”) and launches in a standalone window with correct name and icon.
+- A new user can complete onboarding and reach the dashboard **without** encountering technical setup jargon.
+- Offline or flaky network: the app fails gracefully with plain-language guidance, not broken blank screens.
