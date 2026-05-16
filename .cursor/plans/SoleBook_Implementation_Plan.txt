@@ -1,0 +1,2162 @@
+Here are the common expense categories for a sole proprietor business, especially relevant for small and medium businesses in places like Sri Lanka:
+
+Daily Operational Expenses
+Shop rent / office rent
+Electricity bills
+Water bills
+Internet & Wi-Fi
+Telephone/mobile bills
+Fuel & transport
+Delivery expenses
+Vehicle maintenance
+Parking fees
+Inventory & Product Costs
+Stock purchases
+Raw materials
+Packaging materials
+Supplier payments
+Import/shipping charges
+Damaged goods losses
+Warehouse/storage costs
+Employee & Labor Expenses
+Staff salaries
+Daily wages
+Overtime payments
+EPF/ETF contributions
+Staff meals
+Uniforms
+Training costs
+Recruitment costs
+Financial & Banking Expenses
+Loan repayments
+Loan interest
+Credit card payments
+Bank charges
+Cheque return charges
+Payment gateway fees
+Late payment penalties
+Leasing payments
+Business Administration Expenses
+Accounting/bookkeeping
+Software subscriptions
+POS system fees
+Domain & hosting
+Printing & stationery
+Legal/documentation fees
+Business registration renewals
+Licenses & permits
+Marketing & Sales Expenses
+Facebook/Instagram ads
+Google ads
+Banner printing
+Promotional events
+Discounts & offers
+Sales commissions
+Influencer marketing
+Website maintenance
+Tax & Government Expenses
+Income tax
+VAT-related payments
+Municipal council fees
+Trade license fees
+Customs duties
+Equipment & Asset Expenses
+Laptop/computer purchases
+Printer expenses
+Machine maintenance
+Furniture
+Security cameras
+Tools & equipment repairs
+Unexpected / Hidden Expenses
+Emergency repairs
+Bad debts from customers
+Supply credit losses
+Theft/shrinkage
+Currency fluctuation losses
+Seasonal business downturns
+Personal-Business Mixed Expenses
+One of the biggest issues for sole proprietors:
+Personal withdrawals from business account
+Family expenses paid from business money
+Personal vehicle used for business
+Mixed savings/current account usage
+Cash Flow Related Problems
+These are not direct “expenses” but major financial burdens:
+Customer credit collections delayed
+Supplier payment deadlines
+Cheque due dates forgotten
+Insufficient cash reserve
+No emergency fund
+Unplanned spending
+For your SoleBook idea, you can group these into smart AI categories such as:
+Fixed Expenses
+Variable Expenses
+Urgent Payments
+Risky Expenses
+Growth Investments
+Personal Leakage
+Tax & Compliance
+Debt Obligations
+That categorization can power:
+AI alerts
+Cash-flow prediction
+Auto-saving rules
+Financial discipline scoring
+Loan readiness scoring
+Smart reminders
+Expense anomaly detection
+
+
+
+A typical sole proprietor business owner usually manages money in a very informal way. In many small businesses, there’s no accountant, no ERP system, and no clear separation between personal and business finances.
+Here’s a realistic flow of how many sole proprietors operate:
+
+Typical Sole Proprietor Financial Flow
+1. Business Receives Income
+Customers pay through:
+Cash
+Bank transfer
+QR payments
+Card payments
+Cheques
+Most of the time, all money goes into one:
+Personal current account
+Or business current account used like a personal account
+Example:
+Daily sales deposited into bank at end of day.
+
+2. Owner Uses Current Account as Main Wallet
+The current account becomes:
+Business account
+Personal wallet
+Emergency fund
+Supplier payment source
+Everything mixed together.
+Typical payments:
+Supplier payments
+Shop rent
+Utility bills
+Personal shopping
+Family expenses
+Loan payments
+Staff salaries
+
+3. Manual “Profit Transfer” to Savings Account
+When the owner feels:
+“There’s extra money now”
+They manually transfer:
+Fixed amount
+OR
+Remaining balance
+OR
+Random amount
+from:
+Current Account → Savings Account
+Purpose:
+Save money
+Prevent overspending
+Emergency reserve
+Future investments
+Child education
+Vehicle purchase
+But usually:
+No proper calculation of actual profit
+No cash-flow forecasting
+No reserve planning
+
+4. Expenses Paid from Multiple Accounts
+Current Account Usually Used For
+Supplier payments
+Daily operational costs
+Utility bills
+Inventory purchases
+Employee salaries
+Transport costs
+QR/card settlement flows
+Because:
+Easy access
+Connected to cheques/cards
+
+Savings Account Usually Used For
+Emergency expenses
+Large purchases
+Loan repayments
+Personal expenses
+Unexpected shortages
+Seasonal business downturns
+Sometimes owners:
+Withdraw from savings when business cash is low
+Then refill later
+This creates:
+Unstable savings habit
+No real profit tracking
+
+5. Credit & Due-Date Management
+Most sole proprietors heavily depend on:
+Supplier credit
+Customer credit
+Post-dated cheques
+Common problems:
+Forgetting cheque dates
+Missing supplier deadlines
+Paying penalties
+Poor cash timing
+Typical behavior:
+“Money comes → pay whoever is shouting most.”
+Not:
+“Follow structured financial planning.”
+
+6. End-of-Month Situation
+Usually owner checks:
+Current account balance
+Cash in hand
+Pending debts
+Upcoming supplier payments
+But often cannot answer:
+Actual monthly profit
+Real expenses
+Cash-flow trend
+Personal vs business spending
+Tax readiness
+Loan eligibility
+
+7. Emergency Cycle
+When emergency happens:
+Withdraw savings
+Borrow from friends/family
+Take informal loans
+Delay supplier payments
+Use credit cards
+This creates:
+Debt cycles
+No financial growth
+Poor banking history
+
+Real Financial Structure Behind the Scenes
+Income
+   ↓
+Current Account
+   ├── Business Expenses
+   ├── Personal Expenses
+   ├── Supplier Payments
+   ├── Loan Payments
+   └── Random Withdrawals
+            ↓
+      Remaining Money
+            ↓
+      Savings Account
+            ├── Emergency Usage
+            ├── Future Investments
+            └── Reused for Business Shortages
+
+
+Main Problems in This Workflow
+Financial Discipline Problems
+No automatic savings
+No budgeting
+Emotional spending
+Account Mixing
+Personal + business mixed together
+Cash Flow Blindness
+No future prediction
+No expense forecasting
+Credit Chaos
+Forgetting dues
+Late payments
+No Financial Identity
+Banks cannot clearly see:
+Stable revenue
+Actual profits
+Healthy cash management
+So getting:
+Business loans
+Credit facilities
+Investor trust
+becomes difficult.
+
+Where SoleBook Fits
+SoleBook can automate this messy workflow into:
+Income Received
+      ↓
+AI Detects Revenue
+      ↓
+Auto Allocate:
+   ├── Expense Reserve
+   ├── Savings
+   ├── Tax Reserve
+   ├── Emergency Fund
+   └── Personal Salary
+      ↓
+AI Tracks Upcoming Bills
+      ↓
+Smart Payment Reminders
+      ↓
+Cash Flow Prediction
+      ↓
+Loan Readiness Score
+
+This transforms:
+reactive money management
+into
+proactive financial discipline.
+
+
+Your core idea is strong because you are solving a real behavioral problem, not just accounting.
+Most SME owners already have:
+banking apps
+accounting apps
+spreadsheets
+ERP systems
+But they still fail financially because:
+no discipline
+no cash-flow planning
+personal/business money mixing
+delayed obligations
+no reserve building
+That is the real pain point.
+The biggest improvement needed is:
+SoleBook should NOT act like “30% fixed profit transfer accounting logic.”
+Instead:
+SoleBook should become an AI-powered Financial Discipline Layer on top of existing banking behavior.
+That shift makes the concept much stronger for judges from:
+banking
+fintech
+VC
+compliance
+payments
+
+Main Problem in Current Logic
+This part is risky:
+“Use 70% for inventory and 30% for all other expenses.”
+Real businesses don’t work with fixed ratios.
+Example:
+restaurant → high operational costs
+retail shop → high inventory costs
+software agency → low inventory, high salaries
+seasonal businesses → fluctuating margins
+businesses with loans → unpredictable obligations
+A fixed split can break cash flow.
+Judges will immediately notice this.
+
+Better Direction
+SoleBook = Financial Operating System
+Not:
+accounting software
+ERP replacement
+budgeting app
+But:
+“AI-powered behavioral financial management platform for SMEs.”
+
+Core Philosophy
+Businesses fail because owners:
+spend before planning
+mix personal/business money
+ignore future obligations
+react emotionally to cash balance
+SoleBook solves this through:
+guided financial discipline
+cash allocation intelligence
+payment prioritization
+behavioral nudges
+business health scoring
+
+Better Account Architecture
+Instead of only:
+Current Account
+Savings Account
+Use:
+SoleBook Smart Money Buckets
+Connected to:
+Existing bank current account
+Existing savings account
+Virtual pockets inside banking partner ecosystem
+
+Smart Buckets
+1. Operating Account
+Daily transactions:
+supplier payments
+inventory purchases
+QR settlements
+customer payments
+
+2. Profit Reserve
+Protected reserve fund.
+Purpose:
+emergency buffer
+growth capital
+future investments
+AI dynamically decides recommended reserve percentage.
+NOT fixed 30%.
+Example:
+healthy month → save 25%
+risky month → save 10%
+seasonal month → save 5%
+
+3. Obligations Bucket
+Reserved for:
+salaries
+utility bills
+rent
+taxes
+loan payments
+lease payments
+This is extremely important.
+Why?
+Businesses collapse mainly because:
+obligations are not reserved early.
+
+4. Owner Salary Bucket
+This is your strongest feature.
+Instead of:
+owner randomly taking money
+SoleBook encourages:
+owner becomes “employee of the business.”
+This is brilliant psychologically.
+Owner gets:
+monthly salary
+withdrawal limits
+personal spending insights
+This creates:
+discipline
+separation
+better financial identity
+Huge positive signal for judges.
+
+Key Concept:
+“Pay Yourself Properly”
+This is globally recognized business discipline.
+You should heavily market this idea.
+
+New Core Flow
+Customer Payments
+        ↓
+Main Current Account
+        ↓
+AI Cash Allocation Engine
+        ├── Operations
+        ├── Obligations
+        ├── Profit Reserve
+        ├── Owner Salary
+        └── Growth/Investment
+
+
+AI Layer (Critical for Judges)
+Without AI:
+project becomes banking automation.
+With AI:
+project becomes intelligent fintech infrastructure.
+
+AI Features You Should Focus On
+1. Cash Flow Prediction
+Predict:
+upcoming shortages
+risky weeks
+seasonal drops
+
+2. Payment Priority Engine
+AI determines:
+what must be paid first
+what can wait safely
+Example:
+HIGH PRIORITY:
+- salaries
+- electricity
+- loan payment
+
+MEDIUM:
+- supplier invoice
+
+LOW:
+- optional purchase
+
+
+3. Financial Discipline Score
+Gamify behavior.
+Score increases when:
+obligations paid on time
+owner salary stable
+savings maintained
+supplier delays reduced
+This is excellent for:
+banks
+future lending
+partnerships
+
+4. Personal Leakage Detection
+AI detects:
+unusual personal withdrawals
+emotional spending patterns
+excessive owner withdrawals
+But:
+DO NOT block.
+Instead:
+educate
+simulate future impact
+Example:
+“If this withdrawal continues, payroll may be delayed in 9 days.”
+That is powerful.
+
+Investment Logic (Very Important)
+Your investment idea is correct.
+But structure it clearly.
+
+Capital Sources
+Owner Investment
+Money injected by owner.
+Not revenue.
+Must track:
+total owner contribution
+optional repayment
+
+Loan Capital
+Track:
+principal
+interest
+repayment schedule
+settlement progress
+Interest:
+→ expense
+Principal:
+→ liability reduction
+Judges will like this distinction.
+
+ERP Integration Strategy
+Very smart direction.
+Do NOT position SoleBook as ERP replacement.
+Position as:
+“Financial Intelligence Layer”
+Works with:
+ERP systems
+bank statements
+manual entry
+POS systems
+
+Recommended Integrations
+Input Sources
+Bank transactions
+ERP systems
+POS systems
+QR payments
+Manual entry
+
+Output Intelligence
+discipline score
+cash forecast
+risk alerts
+salary recommendation
+savings guidance
+
+Biggest Real-World Improvement
+Do NOT call it:
+“Savings Account”
+Call it:
+Profit Reserve
+Business Reserve
+Stability Fund
+Cash Buffer
+Why?
+Because businesses sometimes need to use reserves.
+“Savings” psychologically feels untouchable.
+“Reserve” feels operationally intelligent.
+
+Strong Hackathon Positioning
+Your pitch should NOT be:
+“App for tracking SME expenses.”
+That sounds weak.
+
+Strong Positioning
+SoleBook
+“The AI Financial Discipline Engine for SMEs”
+or
+“Helping SMEs behave like financially mature businesses.”
+or
+“AI-powered cash discipline infrastructure for sole proprietors.”
+
+The Main Story Judges Will Remember
+Most SMEs fail not because they lack revenue.
+They fail because:
+money timing is unmanaged
+obligations are not reserved
+owners withdraw emotionally
+no separation exists between business survival and personal lifestyle
+SoleBook introduces:
+structured owner salary
+intelligent reserve allocation
+obligation forecasting
+behavioral financial coaching
+without forcing businesses to change banks or ERP systems.
+That is a very strong fintech story.
+
+Simplified MVP for 24h Hackathon
+DO NOT overbuild.
+Focus only on:
+Core MVP
+1. Connect or simulate bank account
+2. AI allocation engine
+Split cash into:
+operations
+obligations
+reserve
+owner salary
+3. Upcoming payment prediction
+4. Financial discipline score
+5. AI insights dashboard
+Example:
+“Inventory spending increased 18%, but reserve contribution dropped 40%.”
+
+One Very Important Thing
+Avoid acting like:
+accounting software
+bookkeeping platform
+expense tracker
+Because those markets are crowded.
+Your unique differentiator is:
+behavioral financial discipline infrastructure.
+That is what makes the concept feel venture-scalable and bank-partnership-ready.
+
+
+
+Your questions are exactly the kind senior judges will ask.
+The good thing is your idea becomes much stronger once you simplify the architecture and separate:
+mandatory features
+vs
+optional intelligence layers
+Right now the risk is:
+trying to become bank + ERP + accounting system + payroll + inventory manager.
+For a 24h hackathon, the winning approach is:
+“small core idea, deeply executed.”
+
+1. Should SoleBook Have an Owner Salary Bucket?
+YES — but simplified.
+This is actually one of your strongest differentiators.
+Most SME owners:
+take money randomly
+destroy cash flow unknowingly
+cannot measure real profitability
+Your “Owner Salary” idea solves this psychologically.
+
+BUT Important:
+SoleBook should NOT become a personal finance tracker.
+Do NOT force users to:
+add all personal expenses
+categorize personal lifestyle spending
+maintain household budgets
+That creates:
+friction
+onboarding complexity
+privacy concerns
+
+Better Approach
+SoleBook only tracks:
+Money transferred FROM business TO owner.
+That’s it.
+Example:
+Business Account
+      ↓
+Owner Salary Transfer
+      ↓
+Tracked as:
+"Owner Compensation"
+
+After transfer:
+ignore detailed personal usage
+optionally show summary insights only
+
+Smart Insight Example
+Owner withdrawals exceeded recommended limit by 22% this month.
+This may affect supplier obligations next week.
+
+That is enough.
+
+Final Recommendation
+Keep:
+✅ Owner Salary Bucket
+✅ Owner Withdrawal Tracking
+✅ Salary Stability Score
+Remove:
+❌ Personal expense management
+❌ Household finance tracking
+❌ Personal budgeting app features
+
+2. Should SoleBook Track Inventory?
+YES — but NOT full inventory management.
+This is critical.
+You should NOT build:
+stock management
+barcode systems
+warehouse software
+That becomes ERP territory.
+
+What SoleBook SHOULD track
+Only:
+Inventory Cash Flow Behavior
+Example:
+Inventory spending this month:
+Rs. 420,000
+
+Estimated inventory turnover:
+18 days
+
+Inventory investment increased 12%.
+
+
+Why This Matters
+Your financial health logic depends heavily on:
+inventory movement
+supplier payments
+operational spending
+But:
+you only need financial-level inventory intelligence.
+NOT operational inventory control.
+
+ERP Integration Should Pull
+ONLY HIGH-LEVEL DATA
+Example:
+sales totals
+purchase totals
+supplier payments
+inventory purchase value
+payroll totals
+outstanding invoices
+NOT:
+every SKU
+warehouse details
+serial numbers
+Keep it lightweight.
+
+3. How Should AI Cash Allocation Engine Work?
+This is your MOST IMPORTANT system.
+And:
+it should NOT feel like hardcoded accounting rules.
+
+BAD MODEL
+30% savings
+70% operations
+
+Too rigid.
+
+BETTER MODEL
+Dynamic Priority-Based Allocation
+The AI engine should:
+reserve money based on upcoming obligations and business behavior.
+
+Example Logic
+Step 1 — Detect Incoming Cash
++ Rs. 100,000 received
+
+
+Step 2 — Check Upcoming Obligations
+AI checks:
+salaries due
+rent due
+loan due
+utility bills
+supplier deadlines
+
+Step 3 — Assess Business Health
+Factors:
+average revenue
+spending patterns
+reserve stability
+seasonal trends
+late payment history
+
+Step 4 — Recommend Allocation
+Example:
+Operations: 55%
+Obligations Reserve: 25%
+Profit Reserve: 10%
+Owner Salary: 10%
+
+Next month:
+could be totally different.
+
+VERY IMPORTANT
+AI should RECOMMEND first.
+NOT auto-force.
+Why?
+Judges from banking/compliance will like:
+explainability
+user control
+transparency
+
+Final UX
+AI Recommendation Ready
+
+Rs. 25,000 should be reserved for upcoming obligations.
+
+[Accept]
+[Adjust]
+
+Excellent UX.
+
+4. How to Generalize Across Different Business Types?
+This is CRITICAL.
+Your app must NOT assume:
+all businesses work similarly
+all margins are same
+all cash cycles are same
+
+Solution:
+Business Behavior Profiles
+During onboarding:
+ask ONE question:
+“What type of business do you run?”
+Examples:
+Retail shop
+Restaurant
+Service business
+Wholesale
+Online business
+Freelancer
+
+Then AI changes behavior model
+Example:
+Business Type
+Priority
+Retail
+Inventory heavy
+Restaurant
+Utility + daily operations
+Service company
+Salary heavy
+Wholesale
+Supplier credit heavy
+Freelancer
+Irregular income
+
+
+This is enough.
+You do NOT need:
+complicated industry configuration
+advanced accounting setup
+
+5. How to Make Onboarding 3–5 Clicks?
+This is VERY important.
+Your biggest UX goal:
+“Invisible complexity.”
+
+Best Flow
+Screen 1
+Connect Bank Account
+(using Seylan API)
+OR
+“Try Demo Mode”
+
+Screen 2
+Select Business Type
+Retail / Restaurant / Services / etc.
+
+Screen 3
+Set Owner Monthly Salary Goal
+Optional:
+How much should you consistently pay yourself monthly?
+
+
+Screen 4
+AI Generates Initial Structure
+Recommended setup ready:
+✔ Operations
+✔ Obligations
+✔ Profit Reserve
+✔ Owner Salary
+
+
+Screen 5
+Dashboard Ready
+Done.
+
+IMPORTANT
+Do NOT ask:
+accounting questions
+tax questions
+chart of accounts
+balance sheets
+accounting periods
+That kills adoption.
+
+6. How to Hide Complexity?
+This is where most fintech apps fail.
+
+DO NOT SHOW:
+accounting terminology
+finance jargon
+complicated dashboards
+
+SHOW:
+Simple human language.
+Example:
+❌ “Liquidity ratio declining.”
+✅ “You may struggle to pay suppliers in 12 days.”
+
+Another Example
+❌ “Reserve contribution inconsistency.”
+✅ “Your safety buffer is shrinking.”
+
+Use:
+colors
+timelines
+predictions
+warnings
+AI cards
+NOT tables everywhere.
+
+7. What Data Should ERP Provide?
+ONLY financial summary events.
+
+Minimum ERP Data
+Sales
+total sales
+daily sales
+Purchases
+supplier payments
+inventory purchases
+Expenses
+salaries
+utilities
+rent
+Receivables/Payables
+unpaid invoices
+supplier dues
+
+DO NOT Pull:
+employee records
+customer lists
+warehouse details
+operational data
+
+8. How Frequently Should ERP Sync?
+Recommended:
+Real-time if possible
+for:
+bank transactions
+payments
+
+Hourly or Daily
+for:
+ERP summaries
+For hackathon:
+just simulate periodic sync.
+
+9. How Frequently Should Cash Allocation Engine Run?
+Recommended:
+Event-Driven
+Run when:
+new income received
+large expense happens
+payment deadline approaching
+NOT every second.
+
+Also:
+Run:
+Daily AI Health Check
+Example:
+Tomorrow's predicted obligations exceed available reserve.
+
+That creates intelligence feeling.
+
+Strong Product Positioning
+SoleBook is NOT:
+accounting software
+ERP
+bank app
+SoleBook IS:
+“AI Financial Discipline Layer for SMEs”
+This distinction is VERY important.
+
+Slogan Ideas for SoleBook
+Strong Professional
+“Discipline Builds Business.”
+“Where SME Money Gets Structured.”
+“Run Your Business Like It’s Meant to Grow.”
+“From Cash Chaos to Financial Control.”
+“The Financial Discipline Engine for SMEs.”
+
+Banking/Fintech Style
+“Smarter Cash Flow. Stronger Business.”
+“Turn Revenue Into Stability.”
+“Financial Discipline, Automated.”
+“Built for SME Growth.”
+“Every Rupee With a Purpose.”
+
+AI-Focused
+“AI That Guides Your Business Money.”
+“Your AI Co-Pilot for Business Finance.”
+“AI-Powered Financial Discipline.”
+“Predict. Allocate. Grow.”
+
+My Recommendation
+The strongest overall:
+“From Cash Chaos to Financial Control.”
+And the best investor/judge-facing subtitle:
+“AI-powered financial discipline infrastructure for SMEs.”
+
+
+
+
+2-Minute Hackathon Pitch Video Plan for SoleBook
+This structure is optimized for:
+fintech judges
+banking professionals
+VC mindset
+technical reviewers
+fast emotional understanding
+Goal:
+Make judges feel:
+“This is realistic, scalable, bank-integratable, and solves a real financial behavior problem.”
+
+VIDEO STYLE
+Use:
+cinematic fintech SaaS style
+fast cuts
+dashboard animations
+realistic SME scenes
+motion graphics
+bank/payment flows
+minimal text
+strong narration
+Target vibe:
+modern fintech startup
+not student project
+
+TOTAL DURATION
+120 seconds
+
+VIDEO STRUCTURE
+Section
+Time
+Hook + Problem
+0–20s
+Why SMEs Fail
+20–40s
+Introduce SoleBook
+40–60s
+How It Works
+60–95s
+AI Intelligence
+95–110s
+Impact + Closing
+110–120s
+
+
+FULL SCRIPT + VISUALS
+
+SCENE 1 — HOOK
+0s–10s
+Visuals
+Fast cinematic shots:
+small shop owner
+phone banking app
+handwritten book
+supplier calling
+unpaid bill notifications
+current account draining
+stressed owner
+Show:
+money entering and instantly disappearing.
+
+Narration
+“Millions of SMEs don’t fail because they lack revenue…
+They fail because they lack financial discipline.”
+
+On-Screen Text
+SMEs struggle with:
+• Delayed payments
+• Cash flow chaos
+• Personal/business money mixing
+• No financial planning
+
+
+SCENE 2 — WHY SMEs FAIL
+10s–25s
+Visuals
+Animated flow:
+Customer Payment
+      ↓
+Current Account
+      ↓
+Random Spending
+
+Show:
+owner withdrawing cash
+supplier overdue
+salary pending
+loan reminder
+red warning UI
+
+Narration
+“Most sole proprietors manage everything from one account.
+Inventory, bills, loans, salaries… even personal spending.
+No structure. No reserve planning. No visibility into future obligations.”
+
+SCENE 3 — INTRODUCE SOLEBOOK
+25s–40s
+Visuals
+Beautiful app reveal animation.
+Show:
+dashboard
+smart buckets
+AI insights
+reserve graph
+
+Narration
+“Introducing SoleBook.
+An AI-powered financial discipline platform for SMEs.
+Built on top of existing banking infrastructure.”
+
+On-Screen Text
+AI Financial Discipline Engine
+for SMEs
+
+
+SCENE 4 — CONNECT BANK + ERP
+40s–55s
+Visuals
+Split Screen:
+LEFT:
+Seylan Bank API connection
+RIGHT:
+ERP/POS integration
+Flow animation:
+Bank API → SoleBook
+ERP → SoleBook
+Manual Input → SoleBook
+
+
+Narration
+“SoleBook connects directly with bank accounts using Seylan APIs, while also syncing financial data from ERP systems, POS systems, or simple manual inputs.”
+
+On-Screen Text
+• Bank APIs
+• ERP Integration
+• Manual Entry
+
+
+SCENE 5 — HOW IT WORKS
+55s–80s
+Visuals
+Incoming payment animation:
++ Rs. 100,000 Received
+
+Then AI allocation animation:
+Operations
+Obligations
+Profit Reserve
+Owner Salary
+
+Money flows dynamically.
+
+Narration
+“When customer payments arrive, SoleBook’s AI allocation engine analyzes business behavior, upcoming obligations, and cash flow patterns.”
+“Instead of fixed rules, the system intelligently recommends how money should be allocated across operations, reserves, salaries, and upcoming payments.”
+
+Show Interactive UX
+Popup:
+AI Recommendation Ready
+Reserve Rs. 25,000 for upcoming salaries and utility bills.
+
+[Accept] [Adjust]
+
+VERY IMPORTANT.
+Judges will love this.
+
+SCENE 6 — OWNER SALARY FEATURE
+80s–92s
+Visuals
+Show:
+owner withdrawing randomly (red)
+then:
+structured salary transfer (green)
+
+Narration
+“SoleBook encourages business owners to pay themselves like employees… reducing emotional withdrawals and creating real financial discipline.”
+
+On-Screen Text
+Separate Business
+from Personal Spending
+
+
+SCENE 7 — AI INTELLIGENCE
+92s–110s
+Visuals
+Show AI insights cards:
+predicted shortage
+reserve declining
+late payment risk
+financial discipline score
+Animated graphs.
+
+Narration
+“Our AI continuously predicts cash flow risks, tracks financial discipline, detects unhealthy spending patterns, and warns businesses before financial problems happen.”
+
+Example AI Insight
+If current spending continues,
+supplier payments may fail in 9 days.
+
+This line is VERY strong.
+
+SCENE 8 — IMPACT + ENDING
+110s–120s
+Visuals
+Show:
+happy growing SME
+increasing reserve graph
+stable business dashboard
+bank partnership ecosystem
+End with logo animation.
+
+Narration
+“SoleBook transforms SME money management from reactive chaos… into structured financial growth.”
+“Because disciplined businesses build stronger economies.”
+
+Final Screen
+Logo + Tagline
+SoleBook
+“From Cash Chaos to Financial Control.”
+
+VERY IMPORTANT VIDEO STRATEGY
+DO NOT:
+explain too many features
+show complicated accounting
+use technical finance jargon
+overload screens
+
+DO:
+show emotional business pain
+show intelligent money flow
+show AI recommendations
+show banking integration
+show simplicity
+
+BEST TECH STACK FOR FAST VIDEO CREATION
+UI Animation
+Use:
+Figma
+Canva
+Framer
+After Effects
+CapCut
+
+Generate Quick SaaS Mockups
+You can use:
+Figma AI
+Galileo AI
+Lovable
+v0 by Vercel
+
+Voiceover
+Use:
+ElevenLabs
+CapCut AI Voice
+Canva AI Voice
+Use:
+calm confident voice
+NOT overly dramatic
+
+Music Style
+Use:
+modern fintech ambient
+subtle cinematic beats
+startup presentation vibe
+NOT:
+emotional piano
+heavy cinematic trailer
+
+MOST IMPORTANT THING
+Judges are NOT evaluating:
+“Can this app track expenses?”
+They are evaluating:
+“Does this team understand real SME financial behavior and banking infrastructure?”
+Your video should constantly reinforce:
+behavioral finance
+cash flow discipline
+banking integration
+explainable AI
+SME growth enablement
+That is what makes this hackathon-grade fintech product feel credible.
+
+
+SoleBook
+AI-Powered Financial Discipline Infrastructure for SMEs
+Tagline
+“From Cash Chaos to Financial Control.”
+
+1. PROJECT OVERVIEW
+The Problem
+Most SMEs and sole proprietors do not fail because of lack of revenue.
+They fail because:
+personal and business money are mixed
+payments are delayed
+supplier credits are unmanaged
+owners withdraw money emotionally
+there is no reserve planning
+obligations are forgotten
+financial decisions are reactive instead of planned
+Existing solutions focus on:
+bookkeeping
+accounting
+ERP
+transaction history
+But SMEs actually need:
+financial discipline.
+
+The Solution
+SoleBook is an AI-powered financial discipline platform built on top of existing banking infrastructure.
+It connects with:
+bank accounts
+ERP/POS systems
+manual records
+Then intelligently:
+allocates incoming money
+predicts future risks
+reserves obligations
+guides owner behavior
+automates healthy financial habits
+without forcing businesses to change how they already operate.
+
+Core Philosophy
+SoleBook does NOT replace:
+banks
+accounting software
+ERP systems
+SoleBook becomes:
+the intelligent financial behavior layer above them.
+
+2. PRODUCT POSITIONING
+NOT:
+❌ Expense tracker
+❌ Accounting app
+❌ ERP system
+❌ Digital wallet
+
+INSTEAD:
+“AI Financial Operating System for SMEs”
+
+3. TARGET USERS
+Primary Users
+Sole proprietors
+Small retail shops
+Restaurants
+Pharmacies
+Salons
+Small wholesalers
+Small service businesses
+Online sellers
+
+4. CORE PRODUCT ARCHITECTURE
+Dual Financial Structure
+This is the heart of SoleBook.
+
+A. Operating Account
+(Main Current Account)
+Used for:
+customer payments
+inventory purchases
+supplier payments
+day-to-day operations
+
+B. Reserve Structure
+(Virtual or Real Savings Layers)
+AI-managed allocation buckets:
+Profit Reserve
+Obligations Reserve
+Owner Salary
+Growth & Investment
+
+5. CORE FEATURE SET (FINALIZED)
+TIER 1 — CORE EXPERIENCE
+(Must-have for MVP)
+
+1. AI Cash Allocation Engine
+The Core Innovation
+When money enters the business:
+SoleBook intelligently recommends allocation based on:
+upcoming obligations
+business type
+spending behavior
+supplier dues
+cash flow trends
+reserve health
+
+Example
+Rs. 100,000 Received
+
+Recommended Allocation:
+• Operations → Rs. 55,000
+• Obligations Reserve → Rs. 25,000
+• Profit Reserve → Rs. 10,000
+• Owner Salary → Rs. 10,000
+
+User can:
+Accept
+Adjust
+Enable automation
+
+2. Dual-Account Financial Structure
+Separates:
+operational money
+from
+reserve/profit money
+Prevents:
+emotional spending
+business instability
+payment failures
+
+3. Priority Payment Engine
+(A VERY STRONG FINTECH FEATURE)
+AI prioritizes payments based on:
+urgency
+due date
+business risk
+supplier relationships
+
+Example
+HIGH PRIORITY
+• Salaries
+• Electricity
+• Loan installment
+
+MEDIUM
+• Supplier invoice
+
+LOW
+• Optional inventory order
+
+
+4. Smart AutoPay System
+Users can choose:
+Auto Pay
+Manual Approval
+Approval Above Threshold
+
+Example Rules
+Auto-pay utility bills under Rs. 20,000
+Require approval for supplier payments above Rs. 100,000
+
+Very realistic for banking judges.
+
+5. Duplicate Payment Detection
+(Excellent Fintech Feature)
+AI checks:
+past payment history
+invoice similarity
+amount similarity
+payee patterns
+Detects:
+duplicate supplier payments
+accidental repeated transfers
+
+Example Alert
+Possible Duplicate Payment Detected
+
+A similar payment was made to this supplier 3 days ago.
+
+Strong real-world value.
+
+6. Fraud & Risk Detection
+AI detects:
+new suspicious payees
+unusual transfer sizes
+abnormal behavior
+
+Example
+Large payment to new account detected.
+
+Manual approval recommended.
+
+This is VERY important for fintech judging.
+
+7. Expense Tracking & Receipt Intelligence
+Users can:
+upload receipts
+categorize expenses
+analyze spending trends
+Supports:
+manual entry
+OCR receipt scanning
+ERP imports
+
+8. Financial Discipline Score
+Gamified business health score based on:
+reserve consistency
+late payments
+owner withdrawals
+obligation fulfillment
+cash flow stability
+
+Example
+Discipline Score: 82/100
+↑ Improved by 11% this month
+
+Very strong for:
+future lending
+banking partnerships
+SME profiling
+
+9. Owner Salary System
+Encourages:
+structured owner withdrawals
+instead of
+random cash taking
+Tracks:
+owner compensation consistency
+excessive withdrawals
+
+10. Security Layer
+Must-have for trust.
+Includes:
+biometric authentication
+2FA
+device verification
+payment approval authentication
+
+TIER 2 — STICKINESS FEATURES
+
+11. Multilingual AI Financial Assistant
+Supports:
+English
+Sinhala
+Tamil
+Users can ask:
+Can I safely pay this supplier today?
+Why is my reserve decreasing?
+
+This becomes your demo wow-factor.
+
+12. Supplier Credit Tracker
+Tracks:
+supplier due dates
+outstanding balances
+credit periods
+AI warns:
+before overdue risk happens.
+
+13. Utility Bill Automation
+Automatically:
+tracks recurring bills
+reserves money early
+enables scheduled payments
+
+14. Smart Financial Reports
+Daily / Weekly / Monthly reports:
+reserve health
+spending trends
+profit consistency
+supplier risk
+payment discipline
+Delivered:
+in-app
+email
+WhatsApp (future)
+
+15. Lightweight Mobile Ledger
+Simple transaction recording for:
+very small businesses
+non-ERP users
+NOT full accounting.
+Just:
+quick money tracking
+
+TIER 3 — GROWTH FEATURES
+
+16. ERP / POS Integration
+Connects with:
+ERP systems
+POS systems
+accounting software
+Pulls:
+sales totals
+purchases
+supplier dues
+inventory spending
+payroll totals
+NOT full operational data.
+
+17. Smart Loan Readiness Report
+AI generates:
+business stability score
+cash flow health
+reserve behavior
+repayment consistency
+Useful for:
+SME lending
+bank partnerships
+Huge banking value.
+
+18. Investment Tracking
+Tracks:
+owner investments
+loan injections
+capital inflows
+Separates:
+revenue
+from
+financing activities
+Tracks:
+loan repayment progress
+interest expenses
+
+19. Top-Up / Emergency Buffer
+Users can:
+inject emergency funds
+transfer from savings
+stabilize cash shortages
+
+6. AI SYSTEMS
+AI Layer Overview
+
+AI Allocation Engine
+Dynamic money allocation recommendations.
+
+AI Risk Engine
+Detects:
+fraud
+duplicate payments
+risky spending
+
+AI Cash Flow Prediction
+Predicts:
+shortages
+obligation risks
+reserve instability
+
+AI Financial Coach
+Provides:
+recommendations
+behavioral nudges
+financial education
+
+7. HOW SOLEBOOK WORKS
+Workflow
+Customer Payments
+        ↓
+Bank Account Connected via API
+        ↓
+ERP / POS / Manual Inputs
+        ↓
+AI Financial Analysis
+        ↓
+Smart Allocation Recommendations
+        ↓
+Payment Prioritization
+        ↓
+Reserve Protection
+        ↓
+Risk Monitoring
+        ↓
+Financial Discipline Reports
+
+
+8. UX STRATEGY
+“Invisible Complexity”
+
+Onboarding Goal
+Fully usable within:
+3–5 clicks
+
+User Flow
+Step 1
+Connect Bank Account
+
+Step 2
+Select Business Type
+
+Step 3
+Set Monthly Owner Salary Goal
+
+Step 4
+Optional:
+Connect ERP/POS
+
+Step 5
+Dashboard Ready
+
+UX Principles
+DO NOT SHOW:
+accounting terminology
+balance sheets
+complicated finance settings
+
+SHOW:
+AI cards
+recommendations
+alerts
+simple language
+money flow visuals
+
+9. REALISTIC BANKING POSITIONING
+This is VERY important for judges.
+
+SoleBook is:
+“Bank-Enhancing Infrastructure”
+NOT:
+a competing bank
+replacement banking app
+
+Value for Banks
+Banks gain:
+financially healthier SMEs
+lower loan default risk
+behavioral financial insights
+future lending intelligence
+
+10. WHY THIS CAN WIN A FINTECH HACKATHON
+Because it combines:
+Real Banking Infrastructure
+(Seylan APIs)
+
+
+AI Intelligence
+(allocation, fraud, forecasting)
+
+
+Real SME Pain Points
+(cash flow chaos)
+
+
+Behavioral Finance
+(owner discipline)
+
+
+Strong UX Simplicity
+(3-click onboarding)
+
+11. FINAL HACKATHON MVP
+DO NOT overbuild.
+Focus demo on:
+
+MUST SHOW
+1. Bank API Connection
+2. Incoming Payment
+3. AI Allocation Recommendation
+4. Priority Payment Queue
+5. Duplicate/Fraud Detection
+6. Owner Salary Separation
+7. Financial Discipline Score
+8. AI Chat Assistant
+
+12. FINAL POSITIONING LINE
+SoleBook
+“Helping SMEs behave like financially mature businesses.”
+
+
+The second structure is the better and more realistic final decision for a fintech hackathon.
+Because:
+it matches real banking behavior
+easier to implement with bank APIs
+easier UX
+scalable
+less operational complexity
+easier for judges to trust
+more compatible with real SME workflows
+The first version (“4 separate smart buckets/accounts”) is conceptually attractive, but in real-world banking it creates problems:
+too many accounts/pockets
+confusing cash movement
+accounting complexity
+reconciliation issues
+onboarding friction
+difficult bank integrations
+difficult mental model for SME owners
+So the refined architecture is stronger.
+
+FINAL RECOMMENDED ARCHITECTURE
+Core Structure
+1. Operating Account
+(Real Bank Current Account)
+This is the business’s actual working account.
+Money flows:
+customer payments IN
+supplier payments OUT
+inventory purchases
+QR/card settlements
+operational spending
+This remains the primary transactional account.
+
+2. Reserve Structure
+(Physical savings account OR virtual reserve layers)
+This is NOT necessarily multiple bank accounts.
+This is:
+AI-managed reserve logic.
+Inside this reserve structure, SoleBook tracks:
+Profit Reserve
+Obligations Reserve
+Owner Salary Reserve
+Growth/Investment Reserve
+These can be:
+virtual allocations
+OR
+mapped to real savings pockets/accounts later
+
+Why This Is Better
+Instead of:
+4 real accounts
+
+You have:
+1 real operating account
++
+1 reserve structure
+with intelligent virtual allocation
+
+This is MUCH more realistic.
+
+Real-World Banking Alignment
+Banks prefer:
+fewer real accounts
+simpler flows
+explainable reserve logic
+Judges from banking/compliance will appreciate this.
+
+Final Money Flow
+Customer Payments
+        ↓
+Operating Account
+        ↓
+AI Allocation Engine
+        ↓
+Reserve Structure
+   ├── Profit Reserve
+   ├── Obligations Reserve
+   ├── Owner Salary Reserve
+   └── Growth Reserve
+
+
+Important Concept
+The reserve layers are:
+“intent-based money allocation”
+NOT:
+“hard banking separation”
+That distinction is important.
+
+How It Works in Practice
+Example:
+Current Account Balance:
+Rs. 500,000
+
+SoleBook internally shows:
+Allocation
+Amount
+Operations
+Rs. 250,000
+Obligations
+Rs. 120,000
+Profit Reserve
+Rs. 80,000
+Owner Salary
+Rs. 50,000
+
+But physically:
+maybe only:
+Current Account
+Savings Account
+exist.
+This is MUCH cleaner UX.
+
+Should There Be a Real Savings Account?
+YES — optional.
+You can support:
+existing savings account
+OR
+virtual reserve mode
+
+Best Approach
+Level 1 (Easy Adoption)
+Virtual reserve only.
+No extra banking setup needed.
+
+Level 2 (Advanced)
+User links:
+savings account
+reserve pocket
+fixed deposit
+bank wallet
+This becomes:
+“Protected Reserve Storage.”
+
+Why This Wins the Hackathon
+Because judges will see:
+You understand:
+banking realities
+SME psychology
+UX simplicity
+financial behavior
+implementation feasibility
+
+VERY IMPORTANT CHANGE
+Do NOT market:
+“multiple accounts”
+Instead market:
+“AI Reserve Allocation”
+That sounds:
+modern
+scalable
+fintech-native
+technically intelligent
+
+Final Official Terminology
+Use these exact terms consistently:
+
+Operating Account
+The live transactional bank account.
+
+Reserve Structure
+AI-managed reserve allocations.
+Contains:
+Obligations Reserve
+Profit Reserve
+Owner Salary Reserve
+Growth Reserve
+
+AI Allocation Engine
+Dynamically recommends reserve allocation.
+
+Why This Architecture Is Strong
+Old Idea
+Final Better Idea
+Multiple real accounts
+One operating account + virtual reserve intelligence
+Fixed percentage rules
+Dynamic AI recommendations
+Complex banking structure
+Lightweight behavioral layer
+Accounting-heavy
+Cash discipline focused
+Hard enforcement
+Guided financial behavior
+
+
+Final Recommendation for MVP
+For the hackathon:
+ONLY SHOW:
+one connected bank account
+reserve allocations visually
+DO NOT try to:
+create multiple real bank accounts
+implement full banking ledger logic
+simulate core banking systems
+
+Simplified Demo Flow
+Rs. 100,000 Received
+        ↓
+AI Recommendation:
+• Operations → 55%
+• Obligations → 25%
+• Profit Reserve → 10%
+• Owner Salary → 10%
+
+Then:
+[Accept Allocation]
+
+This is:
+understandable
+demo-friendly
+realistic
+technically achievable in 24h
+impressive to judges.
+
+Sharing raw business financial data directly with external LLMs can create serious risks, especially for a fintech product like SoleBook.
+For a hackathon MVP, using LLMs is fine.
+But for a real fintech product, you need a privacy-first AI architecture.
+
+Main Risks of Sending Financial Data to LLMs
+1. Privacy & Confidentiality Risk
+Financial records may contain:
+account numbers
+supplier details
+salaries
+transaction histories
+invoices
+business profits
+customer information
+This is highly sensitive business data.
+
+2. Regulatory & Compliance Risk
+In fintech/banking environments:
+data residency matters
+auditability matters
+consent matters
+Future compliance concerns may include:
+banking regulations
+PDPA/privacy laws
+financial data governance
+Judges from banking/compliance will definitely think about this.
+
+3. AI Hallucination Risk
+LLMs can:
+misunderstand transactions
+generate incorrect financial advice
+misclassify business events
+You should NEVER allow LLMs to:
+directly move money
+autonomously approve payments
+become the financial source of truth
+
+The Correct Real-World Architecture
+RULE:
+“LLM should never be the core financial engine.”
+The LLM should be:
+a conversational intelligence layer only.
+
+Best Architecture for SoleBook
+Layer 1 — Financial Rules Engine
+Deterministic system.
+Handles:
+allocation logic
+duplicate detection
+payment prioritization
+risk scoring
+calculations
+financial workflows
+This layer must be:
+explainable
+auditable
+deterministic
+NOT AI-generated.
+
+Layer 2 — AI/LLM Layer
+Used ONLY for:
+summaries
+insights
+chat assistant
+multilingual explanations
+behavioral coaching
+Example:
+Your utility spending increased 18% this month.
+
+NOT:
+Transfer Rs. 50,000 automatically.
+
+
+GOLDEN RULE FOR FINTECH AI
+AI suggests.
+Humans approve.
+This is extremely important.
+
+Recommended Safe AI Design
+Instead of Sending Raw Transactions
+DO THIS:
+Pre-process data internally first.
+Convert:
+Raw Bank Transactions
+
+into:
+Structured Financial Insights
+
+
+Example
+Instead of sending:
+Transaction:
+A/C 883728
+Paid Rs. 82,450 to ABC Suppliers
+
+Send:
+Supplier payment increased 12% compared to average.
+
+This is MUCH safer.
+
+Privacy-Preserving AI Pipeline
+BAD
+Bank Data → OpenAI/Gemini directly
+
+
+GOOD
+Bank Data
+    ↓
+Internal Processing Engine
+    ↓
+Anonymized / summarized insights
+    ↓
+LLM
+
+
+Techniques You Should Mention to Judges
+This will massively improve credibility.
+
+1. Data Minimization
+Only send necessary information to AI.
+
+2. Anonymization
+Remove:
+account numbers
+names
+identifiers
+before AI processing.
+
+3. Local Financial Rule Engine
+Critical financial decisions stay local/internal.
+
+4. Human Approval Layer
+No AI-only financial execution.
+
+5. Consent-Based AI
+User chooses:
+Enable AI Insights
+
+
+VERY IMPORTANT FOR YOUR PITCH
+Do NOT say:
+“Our AI controls finances.”
+Say:
+“Our AI assists financial decision-making while maintaining human control and banking-grade safety.”
+That sounds MUCH more mature.
+
+Best Practical Architecture for Hackathon
+Use AI ONLY for:
+✅ Chat assistant
+✅ Financial summaries
+✅ Risk explanations
+✅ Multilingual guidance
+✅ Behavioral insights
+✅ Spending analysis
+
+Use Traditional Logic for:
+✅ payment execution
+✅ allocation calculations
+✅ duplicate detection
+✅ fraud flags
+✅ balance calculations
+✅ reserve tracking
+
+Smart Hybrid Approach (BEST)
+Feature
+Use AI?
+Duplicate payment detection
+Mostly rules + ML
+Cash allocation
+Rules + predictive models
+Financial reports
+AI summaries
+Chat assistant
+LLM
+Payment approval
+Human
+Fraud alerts
+Rules + anomaly detection
+Business insights
+AI
+Loan readiness scoring
+Rules + analytics
+
+
+Strong Judge-Friendly Positioning
+Say this in demo/pitch:
+“SoleBook uses a hybrid AI architecture where sensitive financial operations remain inside deterministic financial engines, while LLMs are used only for explainability, multilingual guidance, and financial coaching.”
+That line sounds VERY strong to:
+banking judges
+compliance judges
+AI governance judges
+
+Best Long-Term Direction
+Eventually:
+host models privately
+use on-device AI for some features
+build bank-grade secure AI infrastructure
+introduce role-based permissions
+implement audit logs
+But for hackathon:
+you only need to:
+show awareness
+show safe architecture thinking
+avoid “AI controls money” messaging
+That alone already puts you above many hackathon teams.
+
+

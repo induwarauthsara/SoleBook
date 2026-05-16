@@ -1,0 +1,274 @@
+================================================================================
+ SOLEBOOK — AI FINANCIAL DISCIPLINE ENGINE FOR SMEs
+ Implementation Plan
+ Date: May 2026
+================================================================================
+
+TAGLINE
+  "From Cash Chaos to Financial Control."
+  AI-powered financial discipline infrastructure for sole proprietors and SMEs.
+
+--------------------------------------------------------------------------------
+PRODUCT PHILOSOPHY
+--------------------------------------------------------------------------------
+SoleBook is NOT:
+  - Accounting software
+  - ERP replacement
+  - Budgeting app
+  - Expense tracker
+
+SoleBook IS:
+  - AI-powered behavioral financial management platform for SMEs
+  - A Financial Discipline Layer on top of existing banking behavior
+  - Behavioral nudges + cash allocation intelligence + payment prioritization
+
+--------------------------------------------------------------------------------
+COLOR PALETTE
+--------------------------------------------------------------------------------
+  Burnt Peach     #F27344   — Primary CTA, accent, active states
+  Prussian Blue   #0F172A   — Primary background, navigation
+  Deep Space Blue #1E293B   — Card/surface background
+  Bright Snow     #F8FAFC   — Primary text on dark, input backgrounds
+  Ink Black       #111827   — Dark text on light surfaces
+
+--------------------------------------------------------------------------------
+TECH STACK
+--------------------------------------------------------------------------------
+  Frontend:     Next.js 16 (App Router, TypeScript)
+  Styling:      Tailwind CSS with custom design tokens
+  Animation:    GSAP + @gsap/react (ScrollTrigger, MotionPath, DrawSVG)
+                Framer Motion (page transitions, card micro-animations)
+  Charts:       Recharts (area charts, radar charts)
+  UI Library:   shadcn/ui + custom components
+  Database:     Supabase (PostgreSQL + Row Level Security)
+  Auth:         Supabase Auth
+  Icons:        Lucide React
+  Fonts:        Inter (headings) + DM Sans (body)
+
+--------------------------------------------------------------------------------
+PROJECT STRUCTURE
+--------------------------------------------------------------------------------
+  src/
+  ├── app/
+  │   ├── (auth)/
+  │   │   └── login/page.tsx
+  │   ├── (dashboard)/
+  │   │   ├── layout.tsx              ← Sidebar + header shell
+  │   │   ├── dashboard/page.tsx      ← Main dashboard
+  │   │   ├── allocation/page.tsx     ← AI cash allocation
+  │   │   ├── obligations/page.tsx    ← Payment obligations
+  │   │   ├── owner-salary/page.tsx   ← Owner salary tracking
+  │   │   └── insights/page.tsx       ← AI insights + score
+  │   ├── onboarding/page.tsx         ← 5-step wizard
+  │   ├── layout.tsx
+  │   └── page.tsx                    ← Landing/marketing page
+  ├── components/
+  │   ├── ui/                         ← Design system primitives
+  │   ├── dashboard/                  ← Dashboard-specific components
+  │   ├── layout/                     ← Sidebar, Header
+  │   └── ...
+  ├── lib/
+  │   ├── supabase/                   ← Client + schema
+  │   ├── finance/                    ← Allocation engine, scoring
+  │   └── mock-data/                  ← Demo data (Sri Lankan SME)
+  └── types/index.ts                  ← All TypeScript models
+
+--------------------------------------------------------------------------------
+SMART BUCKETS (Core Concept)
+--------------------------------------------------------------------------------
+  1. Operations       — Daily running costs, supplier payments, inventory
+  2. Obligations      — Rent, salaries, utilities, loan repayments
+  3. Profit Reserve   — Emergency buffer, growth capital, stability fund
+  4. Owner Salary     — Structured personal compensation from business
+  5. Growth           — Marketing, equipment, expansion investments
+
+  IMPORTANT: Buckets use dynamic AI allocation, NOT fixed ratios.
+  Allocation adapts based on:
+    - Business type (retail, restaurant, services, wholesale, online, freelancer)
+    - Upcoming obligations and their urgency
+    - Reserve coverage ratio
+    - Revenue trend (growing / stable / declining)
+    - Owner withdrawal behavior
+
+--------------------------------------------------------------------------------
+PAGES & KEY FEATURES
+--------------------------------------------------------------------------------
+
+  LANDING PAGE (/)
+    - GSAP split-text hero animation word-by-word
+    - Parallax floating dashboard card mockups
+    - Animated problem/solution flow section
+    - ScrollTrigger stats counters
+    - Feature grid with stagger reveal
+    - CTA → /onboarding
+
+  ONBOARDING (/onboarding)
+    - 5-step wizard with Framer Motion slide transitions
+    - GSAP smooth progress bar fill
+    - Step 1: Demo mode OR connect bank (Seylan API simulated)
+    - Step 2: Business type selection + name
+    - Step 3: Owner monthly salary goal
+    - Step 4: AI-generated bucket preview
+    - Step 5: Setup complete → go to dashboard
+
+  DASHBOARD (/dashboard)
+    - 6-metric strip: Balance, Revenue, Expenses, Reserve Health, Score, Runway
+    - Smart Buckets panel with animated fill bars
+    - AI Recommendation card (burnt-peach accent) with Accept/Adjust
+    - Cash Flow Forecast (Recharts area chart, 7/14/30-day toggle)
+    - Upcoming Obligations horizontal timeline
+    - Recent Transactions feed with category tags
+
+  CASH ALLOCATION (/allocation)
+    - Payment amount input with quick-select buttons
+    - AI allocation compute with dynamic reasoning
+    - GSAP counter animations on bucket amounts
+    - Risk level indicator (safe / caution / warning)
+    - Adjust mode with sliders
+    - Allocation history log
+
+  OBLIGATIONS (/obligations)
+    - Summary strip: total due, urgent, pending, paid
+    - Reserve coverage progress bar
+    - Filter: All / Pending / Paid
+    - Priority cards: HIGH (red) / MEDIUM (amber) / LOW (green)
+    - Mark as paid functionality
+    - Add new obligation
+
+  OWNER SALARY (/owner-salary)
+    - GSAP animated SVG gauge showing withdrawal health
+    - Zones: Safe (0–80%) / On Track (80–100%) / Over Limit (>100%)
+    - Monthly salary progress bar
+    - Personal leakage alert when over limit
+    - Record withdrawal with impact warning
+    - Withdrawal history log
+
+  AI INSIGHTS (/insights)
+    - Insight cards sorted by severity (critical → positive)
+    - 7/14/30-day cash flow forecast area chart
+    - Financial discipline score (GSAP DrawSVG ring)
+    - Score breakdown: Payments, Reserve, Salary, Leakage
+    - Loan readiness score + progress bar
+
+--------------------------------------------------------------------------------
+SMART BUCKET ALLOCATION LOGIC
+--------------------------------------------------------------------------------
+
+  BUSINESS TYPE PROFILES (base allocation %)
+  ┌─────────────┬────────────┬─────────────┬─────────┬────────────┬────────┐
+  │ Type        │ Operations │ Obligations │ Reserve │ Own Salary │ Growth │
+  ├─────────────┼────────────┼─────────────┼─────────┼────────────┼────────┤
+  │ Retail      │    50%     │    25%      │   12%   │    10%     │   3%   │
+  │ Restaurant  │    55%     │    22%      │   10%   │    10%     │   3%   │
+  │ Services    │    40%     │    28%      │   15%   │    12%     │   5%   │
+  │ Wholesale   │    60%     │    20%      │   10%   │     8%     │   2%   │
+  │ Online      │    45%     │    22%      │   15%   │    12%     │   6%   │
+  │ Freelancer  │    30%     │    30%      │   20%   │    15%     │   5%   │
+  └─────────────┴────────────┴─────────────┴─────────┴────────────┴────────┘
+
+  DYNAMIC ADJUSTMENTS:
+  - Low obligation coverage  → +10% obligations, -7% operations
+  - Declining revenue trend  → +5% reserve, -3% growth
+  - Growing revenue (safe)   → +2% growth, +1% owner salary
+
+  AI ALWAYS RECOMMENDS FIRST — never auto-forces allocation.
+  User sees: [Accept] [Adjust] on every recommendation.
+
+--------------------------------------------------------------------------------
+SUPABASE DATABASE SCHEMA
+--------------------------------------------------------------------------------
+  Tables:
+    businesses         — owner_id, name, type, salary_goal
+    buckets            — balance, target_pct, name, color
+    transactions       — amount, type, category, description, date, bucket
+    obligations        — name, amount, due_date, priority, status, recurring
+    allocations        — total_amount, splits (jsonb), accepted_at
+    insights           — message, detail, severity, category, action
+    scores             — overall, payment_timeliness, reserve_consistency,
+                          salary_stability, personal_leakage, loan_readiness
+    owner_withdrawals  — amount, date, note
+
+  All tables have Row Level Security (RLS) enabled.
+  Users can only access data tied to their own business.
+
+--------------------------------------------------------------------------------
+FINANCIAL DISCIPLINE SCORE (0–100)
+--------------------------------------------------------------------------------
+  Component breakdown:
+    Payment Timeliness    — 30 pts max (on-time obligations)
+    Reserve Consistency   — 25 pts max (steady reserve growth)
+    Salary Stability      — 20 pts max (owner salary within limit)
+    Penalty Deductions    — 20 pts max (late payments reduce this)
+    Base                  —  5 pts
+
+  Score Labels:
+    80–100 → Excellent (green)
+    60–79  → Good (burnt-peach)
+    40–59  → Fair (warning)
+    0–39   → At Risk (red)
+
+  Loan Readiness: Derived from overall score.
+  Score 80+ → unlocks preferential banking rates.
+
+--------------------------------------------------------------------------------
+GSAP ANIMATION INVENTORY
+--------------------------------------------------------------------------------
+  Landing hero        — Word-by-word split-text reveal (perspective-1000)
+  Landing cards       — gsap.to() float loop (translateY)
+  Landing stats       — ScrollTrigger stagger reveal
+  Landing features    — ScrollTrigger stagger fade+slide
+  Onboarding progress — gsap.to() smooth width fill
+  Dashboard metrics   — gsap.fromTo() opacity+y on mount
+  Dashboard buckets   — motion animate width on render
+  AI recommendation   — Framer Motion accordion reveal
+  Allocation buckets  — GSAP textContent counter animation
+  Owner salary gauge  — GSAP strokeDashoffset arc draw
+  Insights score ring — GSAP strokeDashoffset arc draw
+  Score breakdown     — motion animate width bars
+  Cash flow chart     — Recharts AreaChart with gradients
+
+--------------------------------------------------------------------------------
+MVP DELIVERABLES (Hackathon 24h)
+--------------------------------------------------------------------------------
+  [x] Landing page with GSAP hero + scroll animations
+  [x] 5-step onboarding wizard
+  [x] Dashboard with all 6 metrics
+  [x] Smart Buckets panel
+  [x] AI Recommendation card (Accept/Adjust)
+  [x] Cash Flow Forecast chart (7/14/30 day)
+  [x] Obligations Timeline
+  [x] Recent Transactions feed
+  [x] Cash Allocation page with GSAP counters
+  [x] Obligations page with priority tiers
+  [x] Owner Salary page with animated gauge
+  [x] AI Insights page with score rings
+  [x] Discipline score breakdown
+  [x] Loan readiness indicator
+  [x] Supabase schema (ready to connect)
+  [x] SoleBook_Implementation_Plan.txt
+
+--------------------------------------------------------------------------------
+PRODUCTION ROADMAP
+--------------------------------------------------------------------------------
+  Phase 1 (MVP)       — Current: Hackathon demo, mock data, all screens
+  Phase 2 (Backend)   — Supabase auth, real data, bank API integration
+  Phase 3 (AI)        — LLM-powered insights, anomaly detection, predictions
+  Phase 4 (Banking)   — Seylan Bank API, Open Banking, loan readiness reports
+
+--------------------------------------------------------------------------------
+STRONG POSITIONING FOR JUDGES
+--------------------------------------------------------------------------------
+  Your pitch should lead with:
+  "SoleBook — The AI Financial Discipline Engine for SMEs"
+
+  Key differentiators:
+  1. Behavioral finance, not accounting
+  2. AI recommends — never forces
+  3. Owner salary separation (globally proven discipline)
+  4. Obligation forecasting before emergencies
+  5. Banking-profile building (loan readiness score)
+  6. Works with existing banks — no switch required
+
+================================================================================
+ END OF PLAN
+================================================================================
