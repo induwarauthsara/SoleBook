@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   ArrowRight,
   Calendar,
@@ -9,8 +10,9 @@ import {
 
 export function OwnerSalary() {
   return (
-    <section className="bg-[#F8FAFC]">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <section className="relative isolate overflow-hidden bg-[#F8FAFC]">
+      <div aria-hidden className="hue-orange opacity-80" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Visual: before / after */}
           <div className="order-2 grid gap-4 sm:grid-cols-2 lg:order-1">
@@ -72,6 +74,14 @@ export function OwnerSalary() {
 
           {/* Copy */}
           <div className="order-1 lg:order-2">
+            <Image
+              src="/assets/clipart1.png"
+              alt=""
+              width={520}
+              height={380}
+              className="mb-4 h-auto w-56 sm:w-64"
+              aria-hidden
+            />
             <span className="inline-flex items-center gap-2 rounded-full bg-peach-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#B14A24]">
               <Coins className="size-3.5" aria-hidden />
               Pay yourself properly

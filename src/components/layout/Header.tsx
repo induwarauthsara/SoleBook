@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
@@ -9,30 +9,55 @@ import { useLocale } from "@/components/providers/LocaleProvider";
 
 export function Header() {
   const { t } = useLocale();
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastYRef = useRef(0);
+  const tickingRef = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    lastYRef.current = window.scrollY;
+
+    const SHOW_AT_TOP = 80;
+    const DELTA = 8;
+
+    const update = () => {
+      const currentY = window.scrollY;
+      const diff = currentY - lastYRef.current;
+
+      if (open) {
+        setHidden(false);
+      } else if (currentY <= SHOW_AT_TOP) {
+        setHidden(false);
+      } else if (Math.abs(diff) > DELTA) {
+        setHidden(diff > 0);
+      }
+
+      lastYRef.current = currentY;
+      tickingRef.current = false;
+    };
+
+    const onScroll = () => {
+      if (!tickingRef.current) {
+        tickingRef.current = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [open]);
 
   const nav = [
     { href: "#product", label: t.nav.product },
     { href: "#how-it-works", label: t.nav.howItWorks },
     { href: "#for-smes", label: t.nav.forSMEs },
-    { href: "#pricing", label: t.nav.pricing },
     { href: "#faq", label: t.nav.faq },
   ];
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-300 ${
-        scrolled
-          ? "bg-white/85 backdrop-blur-md border-b border-snow-300"
-          : "bg-transparent border-b border-transparent"
+      className={`sticky top-0 z-40 w-full border-b border-snow-300 bg-white/92 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-md backdrop-saturate-150 transition-transform duration-300 ease-out will-change-transform supports-backdrop-filter:bg-white/85 ${
+        hidden ? "-translate-y-full" : "translate-y-0"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">

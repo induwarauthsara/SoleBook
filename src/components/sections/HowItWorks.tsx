@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   Sparkles,
 } from "lucide-react";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 const steps = [
   {
@@ -39,8 +40,9 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <section id="how-it-works" className="relative isolate overflow-hidden bg-white">
+      <div aria-hidden className="hue-orange" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-peach-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#B14A24]">
             <Sparkles className="size-3.5" aria-hidden />
@@ -58,7 +60,10 @@ export function HowItWorks() {
         <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
             <li key={s.n} className="relative">
-              <div className="group h-full rounded-2xl border border-snow-300 bg-white p-6 transition hover:-translate-y-1 hover:border-[#F27344]/30 hover:shadow-md">
+              <SpotlightCard
+                className="h-full rounded-2xl border border-snow-300 bg-white p-6 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-prussian-500/30 hover:shadow-md"
+                spotlightColor="rgba(30, 54, 93, 0.22)"
+              >
                 <div className="flex items-center justify-between">
                   <span className="inline-flex size-10 items-center justify-center rounded-xl bg-[#0F172A] text-white">
                     <s.icon className="size-5" aria-hidden />
@@ -74,7 +79,7 @@ export function HowItWorks() {
                   className="mt-2 text-sm leading-relaxed text-ink-100"
                   dangerouslySetInnerHTML={{ __html: s.body }}
                 />
-              </div>
+              </SpotlightCard>
 
               {/* Connector arrow on lg screens between cards */}
               {i < steps.length - 1 && (

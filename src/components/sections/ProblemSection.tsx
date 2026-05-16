@@ -1,4 +1,5 @@
 import { AlertTriangle, ArrowDown, ShuffleIcon, Wallet, X } from "lucide-react";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 const pains = [
   {
@@ -21,26 +22,30 @@ const pains = [
 
 export function ProblemSection() {
   return (
-    <section className="bg-[#F8FAFC]">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <section className="relative isolate overflow-hidden bg-[#F8FAFC]">
+      <div aria-hidden className="hue-duotone" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-snow-200 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-ink-100">
             <AlertTriangle className="size-3.5 text-[#F27344]" aria-hidden />
             The real reason SMEs struggle
           </span>
-          <h2 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-ink-300 sm:text-4xl">
+          <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-ink-300 sm:text-4xl">
             Most SMEs don&apos;t fail from <span className="text-ink-50 line-through decoration-[#F27344]/40">lack of revenue</span>.
           </h2>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-ink-100 sm:text-lg">
+          <p className="mt-3 text-pretty text-base leading-relaxed text-ink-100 sm:text-lg">
             They fail because money moves faster than discipline. One account does
             everything — and nothing is reserved for what&apos;s coming next.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-5 lg:items-stretch">
+        <div className="mt-10 grid gap-6 lg:grid-cols-5 lg:items-stretch">
           {/* Visual flow card */}
           <div className="lg:col-span-2">
-            <div className="relative h-full overflow-hidden rounded-3xl border border-snow-300 bg-white p-6 shadow-sm">
+            <SpotlightCard
+              className="h-full rounded-3xl border border-snow-300 bg-white p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
+              spotlightColor="rgba(242, 115, 68, 0.20)"
+            >
               <div className="text-xs font-semibold uppercase tracking-wider text-ink-50">
                 Typical money flow
               </div>
@@ -105,15 +110,17 @@ export function ProblemSection() {
                   ))}
                 </ul>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
 
           {/* Pains */}
           <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-3">
             {pains.map((p) => (
-              <li
+              <SpotlightCard
+                as="li"
                 key={p.title}
-                className="rounded-2xl border border-snow-300 bg-white p-5 transition hover:border-[#F27344]/30 hover:shadow-sm"
+                className="rounded-2xl border border-snow-300 bg-white p-5 transition-[border-color,box-shadow] duration-300 hover:border-[#F27344]/40 hover:shadow-md"
+                spotlightColor="rgba(242, 115, 68, 0.22)"
               >
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-peach-50 text-[#F27344]">
@@ -128,7 +135,7 @@ export function ProblemSection() {
                     </p>
                   </div>
                 </div>
-              </li>
+              </SpotlightCard>
             ))}
           </ul>
         </div>

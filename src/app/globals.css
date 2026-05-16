@@ -91,6 +91,120 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
               0 12px 32px -12px rgba(15,23,42,0.35);
 }
 
+/* ============================================================
+   Duotone ambient hues (blue dominant, orange accent)
+   Use sparingly — these live behind content, never compete.
+   ============================================================ */
+.hue-orange,
+.hue-blue,
+.hue-duotone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.hue-orange::before,
+.hue-orange::after,
+.hue-blue::before,
+.hue-blue::after,
+.hue-duotone::before,
+.hue-duotone::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(100px);
+  opacity: 1;
+}
+
+/* Single orange wash — for focus / action sections (two blooms for coverage) */
+.hue-orange::before {
+  background: radial-gradient(closest-side, rgba(242,115,68,0.58), rgba(242,115,68,0));
+  width: 820px; height: 820px;
+  top: -220px; right: -160px;
+}
+.hue-orange::after {
+  background: radial-gradient(closest-side, rgba(251,163,120,0.42), rgba(251,163,120,0));
+  width: 640px; height: 640px;
+  bottom: -200px; left: -120px;
+}
+
+/* Single blue wash — for calm / explanatory sections (two blooms) */
+.hue-blue::before {
+  background: radial-gradient(closest-side, rgba(30,54,93,0.48), rgba(30,54,93,0));
+  width: 780px; height: 780px;
+  top: -220px; left: -160px;
+}
+.hue-blue::after {
+  background: radial-gradient(closest-side, rgba(92,115,150,0.36), rgba(92,115,150,0));
+  width: 620px; height: 620px;
+  bottom: -180px; right: -140px;
+}
+
+/* Duotone — blue calm + orange accent, on the same canvas */
+.hue-duotone::before {
+  background: radial-gradient(closest-side, rgba(30,54,93,0.46), rgba(30,54,93,0));
+  width: 800px; height: 800px;
+  top: -260px; left: -180px;
+}
+.hue-duotone::after {
+  background: radial-gradient(closest-side, rgba(242,115,68,0.52), rgba(242,115,68,0));
+  width: 740px; height: 740px;
+  bottom: -240px; right: -160px;
+}
+
+/* Dark-section variants — push hues a little brighter */
+.hue-duotone-dark::before,
+.hue-duotone-dark::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+}
+.hue-duotone-dark::before {
+  background: radial-gradient(closest-side, rgba(93,118,150,0.35), transparent);
+  width: 600px; height: 600px;
+  top: -240px; left: -120px;
+}
+.hue-duotone-dark::after {
+  background: radial-gradient(closest-side, rgba(242,115,68,0.22), transparent);
+  width: 560px; height: 560px;
+  bottom: -220px; right: -120px;
+}
+
+/* Glassmorphism surfaces (frosted, palette-tinted) */
+.glass-orange {
+  background: linear-gradient(135deg,
+    rgba(242,115,68,0.22) 0%,
+    rgba(242,115,68,0.08) 100%);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(242,115,68,0.30);
+  box-shadow: 0 8px 32px -12px rgba(242,115,68,0.25);
+}
+.glass-blue {
+  background: linear-gradient(135deg,
+    rgba(30,54,93,0.18) 0%,
+    rgba(30,54,93,0.06) 100%);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(30,54,93,0.22);
+  box-shadow: 0 8px 32px -12px rgba(30,54,93,0.22);
+}
+.glass-light {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(16px) saturate(170%);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  border: 1px solid rgba(221,228,237,0.7);
+  box-shadow: 0 4px 20px -8px rgba(15,23,42,0.10);
+}
+.glass-dark {
+  background: rgba(15,23,42,0.55);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
 /* Reveal animations on scroll */
 @keyframes solebook-rise {
   from { opacity: 0; transform: translateY(14px); }
@@ -115,6 +229,33 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
   100% { transform: scale(1.6); opacity: 0; }
 }
 .animate-pulse-ring { animation: solebook-pulse-ring 2.2s ease-out infinite; }
+
+/* ============================================================
+   Splash screen animations
+   ============================================================ */
+@keyframes solebook-splash-logo-in {
+  from { opacity: 0; transform: scale(0.86) translateY(6px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+@keyframes solebook-splash-tagline-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-splash-logo {
+  animation: solebook-splash-logo-in 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-splash-tagline {
+  animation: solebook-splash-tagline-in 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-splash-logo,
+  .animate-splash-tagline {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
 
 /* Focus ring (accessibility, on-palette) */
 :where(button, a, input, textarea):focus-visible {

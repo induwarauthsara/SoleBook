@@ -8,7 +8,6 @@ const groups = [
       { label: "How it works", href: "#how-it-works" },
       { label: "Features", href: "#features" },
       { label: "Smart buckets", href: "#for-smes" },
-      { label: "Pricing", href: "#pricing" },
       { label: "FAQ", href: "#faq" },
     ],
   },
