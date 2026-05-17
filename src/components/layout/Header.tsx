@@ -56,7 +56,7 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full border-b border-snow-300 bg-white/92 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-md backdrop-saturate-150 transition-transform duration-300 ease-out will-change-transform supports-backdrop-filter:bg-white/85 ${
+      className={`sticky top-0 z-40 w-full border-b border-snow-300 bg-white/92 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-md backdrop-saturate-150 transition-transform duration-300 ease-out ${
         hidden ? "-translate-y-full" : "translate-y-0"
       }`}
     >
@@ -82,10 +82,10 @@ export function Header() {
             <LanguageSwitcher tone="light" />
           </div>
           <a
-            href="#"
+            href="#features"
             className="hidden text-sm font-medium text-ink-100 transition-colors hover:text-ink-300 md:inline-flex"
           >
-            {t.nav.signIn}
+            Check Features
           </a>
           <a
             href="/dashboard"
