@@ -82,10 +82,10 @@ export function Header() {
             <LanguageSwitcher tone="light" />
           </div>
           <a
-            href="#"
+            href="#features"
             className="hidden text-sm font-medium text-ink-100 transition-colors hover:text-ink-300 md:inline-flex"
           >
-            {t.nav.signIn}
+            Check Features
           </a>
           <a
             href="#waitlist"
