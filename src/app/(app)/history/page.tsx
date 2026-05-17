@@ -17,18 +17,21 @@ import { TxnRow } from "@/components/app/RecentTransactions";
 import { AddExpenseDialog } from "@/components/app/AddExpenseDialog";
 import { useAppData } from "@/components/providers/AppDataProvider";
 import { useLocale } from "@/components/providers/LocaleProvider";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { formatShortCurrency } from "@/lib/utils";
 import { toast } from "sonner";
 
 type TypeFilter = "all" | "income" | "expense" | "transfer";
 
 export default function HistoryPage() {
-  const { transactions } = useAppData();
+  const { transactions, refresh } = useAppData();
   const { t } = useLocale();
+  const { session } = useAuth();
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [erpImporting, setErpImporting] = useState(false);
 
   const summaries = useMemo(() => {
     const today = transactions
@@ -91,10 +94,43 @@ export default function HistoryPage() {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => toast.info("ERP import — coming soon")}
+                disabled={erpImporting || !session?.access_token}
+                onClick={async () => {
+                  const token = session?.access_token;
+                  if (!token) {
+                    toast.error("Sign in to import from ERP.");
+                    return;
+                  }
+                  setErpImporting(true);
+                  try {
+                    const res = await fetch("/api/erp/sync", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                      },
+                      body: JSON.stringify({}),
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok) {
+                      toast.error(
+                        typeof data.details === "string"
+                          ? data.details
+                          : "ERP import failed.",
+                      );
+                      return;
+                    }
+                    toast.success(
+                      `Imported ${Number(data.records_pulled ?? 0)} new transaction(s).`,
+                    );
+                    await refresh();
+                  } finally {
+                    setErpImporting(false);
+                  }
+                }}
               >
                 <Download className="size-4" />
-                {t.history.fromErp}
+                {erpImporting ? t.common.loading : t.history.fromErp}
               </Button>
             </div>
           </div>

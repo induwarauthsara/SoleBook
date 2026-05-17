@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { transferFunds } from "@/lib/seylan/client";
+import { wantsMockPaymentGateway } from "@/lib/dev/mock-payment-gateway";
 
 export const runtime = "nodejs";
 
@@ -27,6 +28,17 @@ export async function POST(req: Request) {
   }
 
   try {
+    if (method === "bank_transfer" && wantsMockPaymentGateway(req)) {
+      const ref = `MOCK-SUB-${planId}-${Date.now()}`;
+      return NextResponse.json({
+        ok: true,
+        transactionReference: ref,
+        timestamp: new Date().toISOString(),
+        status: "success",
+        mock: true,
+      });
+    }
+
     if (method === "bank_transfer") {
       const sourceAccount = process.env.SEYLAN_SOURCE_ACCOUNT ?? "064000012548001";
       const destAccount = process.env.SEYLAN_INTERNAL_DEST_ACCOUNT ?? "001213437904100";

@@ -13,20 +13,41 @@ import { useLocale } from "@/components/providers/LocaleProvider";
 export default function LoginPage() {
   const router = useRouter();
   const { t } = useLocale();
-  const { signIn } = useAuth();
+  const { signIn, isLoading } = useAuth();
   const [email, setEmail] = useState("nimal@nilamart.lk");
   const [password, setPassword] = useState("demo-password");
-  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-    signIn({ email });
-    // Brief delay so the button visibly settles; auth context is sync.
-    setTimeout(() => {
-      const hasOnboarded = window.localStorage.getItem("solebook.onboarded");
-      router.push(hasOnboarded === "true" ? "/dashboard" : "/onboarding");
-    }, 200);
+    setError(null);
+    try {
+      const result = await signIn(email, password);
+      if (result.requires_2fa) {
+        if (result.session_token && result.refresh_token) {
+          try {
+            window.sessionStorage.setItem(
+              "solebook.pending2fa",
+              JSON.stringify({
+                access_token: result.session_token,
+                refresh_token: result.refresh_token,
+                expires_at: result.expires_at,
+              }),
+            );
+          } catch {
+            /* ignore */
+          }
+          router.push("/auth/2fa");
+        } else {
+          setError("Two-factor sign-in is missing session data. Try again or contact support.");
+        }
+      } else {
+        const hasOnboarded = window.localStorage.getItem("solebook.onboarded");
+        router.push(hasOnboarded === "true" ? "/dashboard" : "/onboarding");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Sign-in failed.");
+    }
   };
 
   return (
@@ -40,6 +61,14 @@ export default function LoginPage() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-3">
+          {error && (
+            <div
+              role="alert"
+              className="rounded-xl border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-sm text-[#991B1B]"
+            >
+              {error}
+            </div>
+          )}
           <label className="block">
             <span className="text-xs font-medium text-ink-100">
               {t.auth.email}
@@ -49,7 +78,10 @@ export default function LoginPage() {
               <Input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setError(null);
+                  setEmail(e.target.value);
+                }}
                 className="pl-9"
                 placeholder="you@business.lk"
                 required
@@ -65,7 +97,10 @@ export default function LoginPage() {
               <Input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setError(null);
+                  setPassword(e.target.value);
+                }}
                 className="pl-9"
                 required
               />
@@ -89,7 +124,7 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          <Button type="submit" size="lg" className="w-full" disabled={submitting}>
+          <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
             {t.auth.submit}
             <ArrowRight className="size-4" />
           </Button>

@@ -26,6 +26,10 @@ import { Logo } from "@/components/brand/Logo";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { localeMeta, type Locale } from "@/lib/i18n";
+import { messageFromApiBody, readJsonSafe } from "@/lib/api-error";
+import { mockPaymentGatewayHeaders } from "@/lib/dev/mock-payment-gateway";
+import { SEYLAN_BANK_OPTIONS } from "@/lib/seylan/bank-codes";
+import { registrationReferenceFromJustPayRegister } from "@/lib/seylan/justpay-registration";
 import { cn, formatShortCurrency } from "@/lib/utils";
 import type { BusinessType, OnboardingState } from "@/types/app";
 
@@ -49,6 +53,9 @@ const STEP_ORDER: Step[] = [
 ];
 
 const STORAGE_KEY = "solebook.onboarding";
+const BANK_LINK_KEY = "solebook.bank.justpay";
+
+type ConnectPhase = "form" | "otp";
 
 const BUSINESS_TYPES: { id: BusinessType; icon: LucideIcon }[] = [
   { id: "retail", icon: ShoppingBag },
@@ -63,8 +70,21 @@ const BUSINESS_TYPES: { id: BusinessType; icon: LucideIcon }[] = [
 export default function OnboardingPage() {
   const router = useRouter();
   const { t, locale, setLocale } = useLocale();
-  const { user, signIn, updateUser, isHydrated, isAuthenticated } = useAuth();
+  const { user, session, updateUser, isHydrated, isAuthenticated } = useAuth();
   const [step, setStep] = useState<Step>("language");
+  const [connectPhase, setConnectPhase] = useState<ConnectPhase>("form");
+  const [registerRefId, setRegisterRefId] = useState<string | null>(null);
+  const [connectError, setConnectError] = useState<string | null>(null);
+  const [connectBusy, setConnectBusy] = useState(false);
+  const [linkedBankMask, setLinkedBankMask] = useState<string | null>(null);
+
+  const [bankCode, setBankCode] = useState(SEYLAN_BANK_OPTIONS[0]?.code ?? "7278");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [accountName, setAccountName] = useState("");
+  const [nic, setNic] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
   const [state, setState] = useState<OnboardingState>(() => {
     const fallback: OnboardingState = {
       step: 0,
@@ -92,6 +112,54 @@ export default function OnboardingPage() {
   }, [isHydrated, isAuthenticated, router]);
 
   useEffect(() => {
+    if (!isHydrated || !session?.access_token) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/payments/justpay/link", {
+          headers: { Authorization: `Bearer ${session.access_token}`, ...mockPaymentGatewayHeaders() },
+        });
+        if (!cancelled && res.ok) {
+          const data = (await res.json()) as {
+            linked?: boolean;
+            accountMask?: string | null;
+          };
+          if (data.linked && data.accountMask) {
+            setLinkedBankMask(data.accountMask);
+            setState((s) => ({ ...s, accountConnected: true }));
+            return;
+          }
+        }
+      } catch {
+        /* fall through to local cache */
+      }
+      if (cancelled || typeof window === "undefined") return;
+      try {
+        const raw = window.localStorage.getItem(BANK_LINK_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw) as {
+          accountMask?: string;
+          accountToken?: string;
+        };
+        if (parsed.accountMask || parsed.accountToken) {
+          setLinkedBankMask(parsed.accountMask ?? "········");
+          setState((s) => ({ ...s, accountConnected: true }));
+        }
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isHydrated, session?.access_token]);
+
+  useEffect(() => {
+    if (step !== "connect") return;
+    setAccountName((prev) => (prev.trim() ? prev : state.ownerName || ""));
+  }, [step, state.ownerName]);
+
+  useEffect(() => {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
@@ -111,6 +179,158 @@ export default function OnboardingPage() {
   const goBack = () => {
     const prevIdx = Math.max(idx - 1, 0);
     setStep(STEP_ORDER[prevIdx]);
+  };
+
+  const resetBankLinkFlow = async () => {
+    const token = session?.access_token;
+    if (token) {
+      await fetch("/api/payments/justpay/link", {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}`, ...mockPaymentGatewayHeaders() },
+      }).catch(() => {});
+    }
+    try {
+      window.localStorage.removeItem(BANK_LINK_KEY);
+    } catch {
+      /* ignore */
+    }
+    setLinkedBankMask(null);
+    setRegisterRefId(null);
+    setOtp("");
+    setConnectPhase("form");
+    setConnectError(null);
+    setState((s) => ({ ...s, accountConnected: false }));
+  };
+
+  const submitRegister = async () => {
+    setConnectError(null);
+    const token = session?.access_token;
+    if (!token) {
+      setConnectError(t.onboarding.connect.errorAuth);
+      return;
+    }
+    if (!accountNumber.trim() || !accountName.trim() || !nic.trim() || !mobile.trim()) {
+      setConnectError(t.onboarding.connect.errorRegister);
+      return;
+    }
+    setConnectBusy(true);
+    try {
+      const res = await fetch("/api/payments/justpay/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          ...mockPaymentGatewayHeaders(),
+        },
+        body: JSON.stringify({
+          accountNumber: accountNumber.trim(),
+          bankCode,
+          accountName: accountName.trim(),
+          nic: nic.trim(),
+          mobile: mobile.trim(),
+          email: email.trim(),
+          userId: user?.id ?? "",
+          platform: "WEB",
+          deviceId: "WEB",
+        }),
+      });
+      const data = await readJsonSafe(res);
+      if (!res.ok) {
+        setConnectError(messageFromApiBody(data, t.onboarding.connect.errorRegister));
+        return;
+      }
+      const refId = registrationReferenceFromJustPayRegister(data);
+      if (!refId) {
+        setConnectError(t.onboarding.connect.errorUnexpectedRef);
+        return;
+      }
+      setRegisterRefId(refId);
+      setConnectPhase("otp");
+      setOtp("");
+    } finally {
+      setConnectBusy(false);
+    }
+  };
+
+  const submitVerify = async () => {
+    setConnectError(null);
+    const token = session?.access_token;
+    if (!token || !registerRefId) {
+      setConnectError(t.onboarding.connect.errorAuth);
+      return;
+    }
+    if (!otp.trim()) {
+      setConnectError(t.onboarding.connect.errorVerify);
+      return;
+    }
+    setConnectBusy(true);
+    try {
+      const res = await fetch("/api/payments/justpay/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          ...mockPaymentGatewayHeaders(),
+        },
+        body: JSON.stringify({ referenceId: registerRefId, otp: otp.trim() }),
+      });
+      const data = await readJsonSafe(res);
+      if (!res.ok) {
+        setConnectError(messageFromApiBody(data, t.onboarding.connect.errorVerify));
+        return;
+      }
+      const body = data as {
+        JustPayAccountValidation_Response?: {
+          Account_token?: string;
+          Account_mask?: string;
+        };
+      };
+      const tokenOut = body.JustPayAccountValidation_Response?.Account_token;
+      const maskOut = body.JustPayAccountValidation_Response?.Account_mask;
+      if (!tokenOut && !maskOut) {
+        setConnectError(t.onboarding.connect.errorVerify);
+        return;
+      }
+      try {
+        window.localStorage.setItem(
+          BANK_LINK_KEY,
+          JSON.stringify({
+            accountToken: tokenOut ?? "",
+            accountMask: maskOut ?? "",
+            referenceId: registerRefId,
+            bankCode,
+            linkedAt: new Date().toISOString(),
+          }),
+        );
+      } catch {
+        /* ignore */
+      }
+
+      await fetch("/api/payments/justpay/link", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          ...mockPaymentGatewayHeaders(),
+        },
+        body: JSON.stringify({
+          accountToken: tokenOut ?? "",
+          accountMask: maskOut ?? "",
+          bankCode,
+          referenceId: registerRefId,
+          bankLabel:
+            SEYLAN_BANK_OPTIONS.find((b) => b.code === bankCode)?.label ?? "",
+        }),
+      }).catch(() => {});
+
+      setLinkedBankMask(maskOut ?? "········");
+      setState((s) => ({ ...s, accountConnected: true }));
+      setConnectPhase("form");
+      setRegisterRefId(null);
+      setOtp("");
+    } finally {
+      setConnectBusy(false);
+    }
   };
 
   const finish = () => {
@@ -207,24 +427,14 @@ export default function OnboardingPage() {
                   </div>
                 ))}
               </div>
-              <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+              <div className="mt-5">
                 <Button
                   size="lg"
-                  className="flex-1"
+                  className="w-full"
                   onClick={() => goNext()}
                 >
-                  {t.onboarding.welcome.createAccount}
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => {
-                    signIn();
-                    finish();
-                  }}
-                >
-                  {t.onboarding.welcome.tryDemo}
+                  {t.common.continue}
+                  <ArrowRight className="size-4" />
                 </Button>
               </div>
             </Card>
@@ -348,41 +558,176 @@ export default function OnboardingPage() {
               <p className="mt-1 text-sm text-ink-100">
                 {t.onboarding.connect.sub}
               </p>
-              <div className="mt-5 grid grid-cols-1 gap-3">
-                {["Commercial Bank", "Sampath Bank", "HNB", "BoC"].map(
-                  (bank) => (
-                    <button
-                      key={bank}
-                      type="button"
-                      onClick={() =>
-                        setState((s) => ({ ...s, accountConnected: true }))
-                      }
+
+              {linkedBankMask && state.accountConnected && connectPhase === "form" && (
+                <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-peach-200 bg-peach-50 px-4 py-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-peach-900">
+                    <Check className="size-4 shrink-0 text-peach-700" />
+                    <span>
+                      {t.onboarding.connect.linkedAs.replace(
+                        "{{mask}}",
+                        linkedBankMask,
+                      )}
+                    </span>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="self-start border-peach-300"
+                    onClick={resetBankLinkFlow}
+                  >
+                    {t.onboarding.connect.replaceLink}
+                  </Button>
+                </div>
+              )}
+
+              {connectPhase === "form" && !(linkedBankMask && state.accountConnected) && (
+                <div className="mt-5 space-y-3">
+                  <label className="block">
+                    <span className="text-xs font-medium text-ink-100">
+                      {t.onboarding.connect.bankLabel}
+                    </span>
+                    <select
+                      value={bankCode}
+                      onChange={(e) => setBankCode(e.target.value)}
                       className={cn(
-                        "flex items-center justify-between rounded-2xl border px-4 py-3 text-sm transition-colors",
-                        state.accountConnected
-                          ? "border-peach-300 bg-peach-50"
-                          : "border-snow-300 bg-white hover:bg-snow-100",
+                        "mt-1 flex h-10 w-full rounded-lg border border-snow-300 bg-white px-3 py-2 text-sm text-ink-300",
+                        "transition-all duration-200",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-peach-500/50 focus-visible:border-peach-500",
                       )}
                     >
-                      <span className="flex items-center gap-3">
-                        <Landmark className="size-4 text-peach-700" />
-                        <span className="font-medium text-ink-300">{bank}</span>
+                      {SEYLAN_BANK_OPTIONS.map((b) => (
+                        <option key={b.code} value={b.code}>
+                          {b.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block">
+                    <span className="text-xs font-medium text-ink-100">
+                      {t.onboarding.connect.accountNumberLabel}
+                    </span>
+                    <Input
+                      value={accountNumber}
+                      onChange={(e) => setAccountNumber(e.target.value)}
+                      inputMode="numeric"
+                      autoComplete="off"
+                      className="mt-1"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="text-xs font-medium text-ink-100">
+                      {t.onboarding.connect.accountNameLabel}
+                    </span>
+                    <Input
+                      value={accountName}
+                      onChange={(e) => setAccountName(e.target.value)}
+                      autoComplete="name"
+                      className="mt-1"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="text-xs font-medium text-ink-100">
+                      {t.onboarding.connect.nicLabel}
+                    </span>
+                    <Input
+                      value={nic}
+                      onChange={(e) => setNic(e.target.value)}
+                      autoComplete="off"
+                      className="mt-1"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="text-xs font-medium text-ink-100">
+                      {t.onboarding.connect.mobileLabel}
+                    </span>
+                    <Input
+                      value={mobile}
+                      onChange={(e) => setMobile(e.target.value)}
+                      inputMode="tel"
+                      autoComplete="tel"
+                      className="mt-1"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="text-xs font-medium text-ink-100">
+                      {t.onboarding.connect.emailLabel}{" "}
+                      <span className="font-normal text-ink-50">
+                        ({t.onboarding.connect.emailOptional})
                       </span>
-                      {state.accountConnected && (
-                        <Check className="size-4 text-peach-700" />
-                      )}
-                    </button>
-                  ),
-                )}
-              </div>
+                    </span>
+                    <Input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      autoComplete="email"
+                      className="mt-1"
+                    />
+                  </label>
+                  <Button
+                    type="button"
+                    className="w-full"
+                    disabled={connectBusy}
+                    onClick={submitRegister}
+                  >
+                    {connectBusy ? t.onboarding.connect.pending : t.onboarding.connect.sendCode}
+                  </Button>
+                </div>
+              )}
+
+              {connectPhase === "otp" && (
+                <div className="mt-5 space-y-3">
+                  <p className="text-xs text-ink-100">{t.onboarding.connect.otpHint}</p>
+                  <label className="block">
+                    <span className="text-xs font-medium text-ink-100">
+                      {t.onboarding.connect.otpLabel}
+                    </span>
+                    <Input
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      className="mt-1 tracking-widest"
+                    />
+                  </label>
+                  <Button
+                    type="button"
+                    className="w-full"
+                    disabled={connectBusy}
+                    onClick={submitVerify}
+                  >
+                    {connectBusy ? t.onboarding.connect.verifying : t.onboarding.connect.verifyLink}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-full text-ink-100"
+                    disabled={connectBusy}
+                    onClick={() => {
+                      setConnectPhase("form");
+                      setRegisterRefId(null);
+                      setOtp("");
+                      setConnectError(null);
+                    }}
+                  >
+                    {t.onboarding.connect.editDetails}
+                  </Button>
+                </div>
+              )}
+
+              {connectError && (
+                <p className="mt-3 text-sm text-[#b45309]" role="alert">
+                  {connectError}
+                </p>
+              )}
+
               <Button
-                variant="ghost"
-                className="mt-4 w-full"
-                onClick={() => {
-                  setState((s) => ({ ...s, accountConnected: false }));
-                  goNext();
-                }}
+                variant="outline"
+                className="mt-5 w-full border-peach-400 bg-peach-50 font-semibold text-peach-900 shadow-sm ring-1 ring-inset ring-peach-200/90 hover:bg-peach-100 hover:ring-peach-300"
+                onClick={() => goNext()}
               >
+                <Landmark className="size-4 text-peach-700" />
                 {t.onboarding.connect.skip}
               </Button>
             </Card>

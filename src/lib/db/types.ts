@@ -154,6 +154,7 @@ export interface Integration extends Timestamps {
   consent_scopes: string[];
   webhook_secret_ref: string | null;
   oauth_secret_ref: string | null;
+  metadata: Json;
   last_synced_at: string | null;
   last_error: string | null;
   created_by: string | null;

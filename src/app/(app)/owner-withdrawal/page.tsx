@@ -8,15 +8,19 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Progress } from "@/components/ui/Progress";
 import { useAppData } from "@/components/providers/AppDataProvider";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { useLocale } from "@/components/providers/LocaleProvider";
+import { messageFromApiBody, readJsonSafe } from "@/lib/api-error";
 import { cn, formatShortCurrency } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function OwnerWithdrawalPage() {
   const { t } = useLocale();
-  const { business, withdrawals, addWithdrawal } = useAppData();
+  const { session } = useAuth();
+  const { business, withdrawals, refresh } = useAppData();
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const taken = useMemo(
     () => withdrawals.reduce((s, w) => s + w.amount, 0),
@@ -27,23 +31,45 @@ export default function OwnerWithdrawalPage() {
   const exceeded = taken > business.salaryGoal;
   const excessAmount = taken - business.salaryGoal;
 
-  const handleWithdraw = (e: React.FormEvent) => {
+  const handleWithdraw = async (e: React.FormEvent) => {
     e.preventDefault();
     const value = Number(amount);
     if (!Number.isFinite(value) || value <= 0) {
       toast.error("Enter a valid amount");
       return;
     }
-    addWithdrawal({
-      id: `ow-${Date.now()}`,
-      businessId: business.id,
-      amount: value,
-      date: new Date().toISOString(),
-      note: note || undefined,
-    });
-    toast.success(`Withdrew ${formatShortCurrency(value)}`);
-    setAmount("");
-    setNote("");
+    if (!session?.access_token) {
+      toast.error("Sign in to record a withdrawal");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/owner/withdraw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          amount_lkr: value,
+          notes: note.trim() || undefined,
+        }),
+      });
+      const data = await readJsonSafe(res);
+      if (!res.ok) {
+        throw new Error(
+          messageFromApiBody(data, `Could not save withdrawal (${res.status})`),
+        );
+      }
+      toast.success(`Withdrew ${formatShortCurrency(value)}`);
+      setAmount("");
+      setNote("");
+      await refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to save withdrawal");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -107,7 +133,7 @@ export default function OwnerWithdrawalPage() {
                 className="mt-1"
               />
             </label>
-            <Button type="submit" className="shrink-0">
+            <Button type="submit" className="shrink-0" disabled={submitting}>
               <Wallet className="size-4" />
               {t.owner.withdraw}
             </Button>

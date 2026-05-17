@@ -1,0 +1,24 @@
+Here's everything you need to call the Seylan Bank API during the hackathon.
+
+Your team API key: 5e248685-bcd2-4196-8e4a-4e5f03e26324
+
+Sandbox URL: http://34.21.206.87:3000
+
+All API calls go through our sandbox — you cannot call Seylan directly. The sandbox handles Seylan's authentication for you. All you need to do is add your team key as a header on every request:
+
+x-api-key: 5e248685-bcd2-4196-8e4a-4e5f03e26324
+Use the same endpoints and request payloads from the Seylan Web API Manual (attached), but replace the Seylan base URL with http://34.21.206.87:3000.
+
+Test accounts to use:
+
+Source account: 064000012548001
+Internal transfer destination: 001213437904100
+
+
+Payment Gateway Details
+Login Link: https://test-seylan.mtf.gateway.mastercard.com/ma/login.s
+
+
+MPGS Test Integration Guide: https://test-seylan.mtf.gateway.mastercard.com/api/documentation/integrationGuidelines/index.html?locale=en_US
+ 
+You must download the Google Authenticator app to scan the QR code for two-factor authentication.

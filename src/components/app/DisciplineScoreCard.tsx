@@ -11,11 +11,12 @@ export function DisciplineScoreCard() {
   const { t } = useLocale();
   const color = getScoreColor(score.overall);
 
-  const rows: { label: string; value: number }[] = [
+  /** `penalty`: negative score component; map to 0–100 bar by magnitude (max −15). */
+  const rows: { label: string; value: number; kind?: "penalty" }[] = [
     { label: t.score.timeliness, value: score.paymentTimeliness },
     { label: t.score.reserve, value: score.reserveConsistency },
     { label: t.score.salary, value: score.salaryStability },
-    { label: t.score.leakage, value: score.personalLeakage },
+    { label: t.score.leakage, value: score.personalLeakage, kind: "penalty" },
     { label: t.score.loan, value: score.loanReadiness },
   ];
 
@@ -66,21 +67,36 @@ export function DisciplineScoreCard() {
           </div>
 
           <div className="flex-1 w-full space-y-3">
-            {rows.map((row) => (
-              <div key={row.label}>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-ink-100">{row.label}</span>
-                  <span className="font-semibold text-ink-300">
-                    {row.value}
-                  </span>
+            {rows.map((row) => {
+              const barValue =
+                row.kind === "penalty"
+                  ? Math.min(
+                      100,
+                      (Math.abs(Math.min(0, row.value)) / 15) * 100,
+                    )
+                  : Math.max(0, Math.min(100, row.value));
+              const barColor =
+                row.kind === "penalty"
+                  ? barValue > 50
+                    ? "#EF4444"
+                    : "#F59E0B"
+                  : getScoreColor(row.value);
+              return (
+                <div key={row.label}>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-ink-100">{row.label}</span>
+                    <span className="font-semibold text-ink-300">
+                      {row.value}
+                    </span>
+                  </div>
+                  <Progress
+                    value={barValue}
+                    className="mt-1.5 h-1.5"
+                    indicatorStyle={{ background: barColor }}
+                  />
                 </div>
-                <Progress
-                  value={row.value}
-                  className="mt-1.5 h-1.5"
-                  indicatorStyle={{ background: getScoreColor(row.value) }}
-                />
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </CardContent>

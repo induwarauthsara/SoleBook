@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { generateMerchantQR } from "@/lib/seylan/client";
 import { generateQRChecksum } from "@/lib/seylan/checksum";
+import {
+  mockQrRefNo,
+  mockSvgQrDataUrl,
+  wantsMockPaymentGateway,
+} from "@/lib/dev/mock-payment-gateway";
 
 export const runtime = "nodejs";
 
@@ -30,6 +35,20 @@ export async function POST(req: Request) {
   const { amount, billNo, mobileNo, purposeOfTransaction } = body;
   if (!amount) {
     return NextResponse.json({ ok: false, error: "amount is required." }, { status: 422 });
+  }
+
+  if (wantsMockPaymentGateway(req)) {
+    const requestRefNo = mockQrRefNo();
+    const label = (purposeOfTransaction ?? "SoleBook").slice(0, 40);
+    return NextResponse.json({
+      ok: true,
+      qrCode: mockSvgQrDataUrl(label),
+      requestRefNo,
+      interchangeList: [],
+      bankName: "Mock",
+      transactionReference: requestRefNo,
+      mock: true,
+    });
   }
 
   const checksumKey = process.env.SEYLAN_CHECKSUM_KEY ?? "";

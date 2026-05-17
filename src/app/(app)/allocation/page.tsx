@@ -1,37 +1,170 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Sparkles, RotateCcw, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
 import { useAppData } from "@/components/providers/AppDataProvider";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { formatShortCurrency } from "@/lib/utils";
+import { readJsonSafe } from "@/lib/api-error";
 import { toast } from "sonner";
+import type { Bucket } from "@/types/app";
 
-const DEFAULT_SPLIT = {
-  operations: 50,
-  obligations: 28,
-  reserve: 12,
-  owner_salary: 8,
-  growth: 2,
+type SplitState = {
+  operations: number;
+  obligations: number;
+  reserve: number;
+  owner_salary: number;
+  growth: number;
 };
 
-type SplitKey = keyof typeof DEFAULT_SPLIT;
+const SPLIT_KEYS: (keyof SplitState)[] = [
+  "operations",
+  "obligations",
+  "reserve",
+  "owner_salary",
+  "growth",
+];
+
+/** Matches default buckets created at registration when API data is unavailable. */
+const FALLBACK_SPLIT: SplitState = {
+  operations: 45,
+  obligations: 25,
+  reserve: 10,
+  owner_salary: 15,
+  growth: 5,
+};
+
+function splitFromBucketTargets(buckets: Bucket[]): SplitState {
+  const get = (type: string) =>
+    Math.round(buckets.find((b) => b.name === type)?.targetPct ?? 0);
+  return {
+    operations: get("operations"),
+    obligations: get("obligations"),
+    reserve: get("profit_reserve"),
+    owner_salary: get("owner_salary"),
+    growth: get("growth"),
+  };
+}
+
+function fixPercentSum(split: SplitState): SplitState {
+  const sum = SPLIT_KEYS.reduce((s, k) => s + split[k], 0);
+  const diff = 100 - sum;
+  return {
+    ...split,
+    operations: Math.max(0, Math.min(100, split.operations + diff)),
+  };
+}
+
+function bucketTypeForSplitKey(key: keyof SplitState): string {
+  return key === "reserve" ? "profit_reserve" : key;
+}
+
+type ComputeLineAmounts = {
+  operations: number;
+  obligations: number;
+  profit_reserve: number;
+  owner_salary: number;
+  growth: number;
+};
+
+function splitPercentsFromEngine(amount: number, data: ComputeLineAmounts): SplitState {
+  if (amount <= 0) return { ...FALLBACK_SPLIT };
+  const split: SplitState = {
+    operations: Math.round((data.operations / amount) * 100),
+    obligations: Math.round((data.obligations / amount) * 100),
+    reserve: Math.round((data.profit_reserve / amount) * 100),
+    owner_salary: Math.round((data.owner_salary / amount) * 100),
+    growth: Math.round((data.growth / amount) * 100),
+  };
+  return fixPercentSum(split);
+}
 
 export default function AllocationPage() {
   const { t } = useLocale();
-  const { buckets } = useAppData();
+  const { session } = useAuth();
+  const { buckets, isLoading: appLoading } = useAppData();
+  const bucketsRef = useRef(buckets);
+  bucketsRef.current = buckets;
+
   const [incoming, setIncoming] = useState("185000");
-  const [split, setSplit] = useState({ ...DEFAULT_SPLIT });
+  const [debouncedIncoming, setDebouncedIncoming] = useState("185000");
+  const [split, setSplit] = useState<SplitState>({ ...FALLBACK_SPLIT });
+  const [explanation, setExplanation] = useState("");
+  const [recoLoading, setRecoLoading] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedIncoming(incoming), 400);
+    return () => clearTimeout(timer);
+  }, [incoming]);
+
+  const loadRecommendation = useCallback(
+    async (amountValue: number, opts?: { silent?: boolean }) => {
+      const b = bucketsRef.current;
+      const applyBucketFallback = () => {
+        setSplit(
+          fixPercentSum(b.length ? splitFromBucketTargets(b) : { ...FALLBACK_SPLIT }),
+        );
+        setExplanation("");
+      };
+
+      if (!session?.access_token || amountValue <= 0) {
+        applyBucketFallback();
+        return;
+      }
+
+      setRecoLoading(true);
+      try {
+        const res = await fetch("/api/allocations/compute", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ amount: amountValue, persist: false }),
+        });
+        const data = await readJsonSafe(res);
+
+        if (!res.ok) {
+          applyBucketFallback();
+          if (!opts?.silent) {
+            toast.info(t.allocation.recommendationError);
+          }
+          return;
+        }
+
+        const d = data as Record<string, unknown>;
+        const amounts: ComputeLineAmounts = {
+          operations: Number(d.operations),
+          obligations: Number(d.obligations),
+          profit_reserve: Number(d.profit_reserve),
+          owner_salary: Number(d.owner_salary),
+          growth: Number(d.growth),
+        };
+        setSplit(splitPercentsFromEngine(amountValue, amounts));
+        setExplanation(typeof d.explanation === "string" ? d.explanation : "");
+      } finally {
+        setRecoLoading(false);
+      }
+    },
+    [session?.access_token, t.allocation.recommendationError],
+  );
+
+  useEffect(() => {
+    if (appLoading) return;
+    const amountValue = Number(debouncedIncoming) || 0;
+    void loadRecommendation(amountValue, { silent: true });
+  }, [debouncedIncoming, appLoading, loadRecommendation]);
 
   const amount = Number(incoming) || 0;
 
   const rows = useMemo(() => {
-    return (Object.keys(split) as SplitKey[]).map((key) => {
-      const bucket = buckets.find((b) => b.name === key);
+    return SPLIT_KEYS.map((key) => {
+      const bucket = buckets.find((b) => b.name === bucketTypeForSplitKey(key));
       return {
         key,
         pct: split[key],
@@ -44,10 +177,14 @@ export default function AllocationPage() {
 
   const total = rows.reduce((s, r) => s + r.pct, 0);
 
-  const updateSplit = (key: SplitKey, raw: number) => {
+  const updateSplit = (key: keyof SplitState, raw: number) => {
     const next = Math.max(0, Math.min(100, raw));
     setSplit((prev) => ({ ...prev, [key]: next }));
   };
+
+  const insightText =
+    explanation.trim() ||
+    "“Obligations are tight this week. Increasing their share temporarily protects rent and salaries before growth spending.”";
 
   return (
     <div className="space-y-6">
@@ -78,7 +215,8 @@ export default function AllocationPage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setSplit({ ...DEFAULT_SPLIT })}
+                disabled={recoLoading || amount <= 0}
+                onClick={() => void loadRecommendation(amount)}
               >
                 <RotateCcw className="size-4" />
                 {t.allocation.reset}
@@ -101,10 +239,10 @@ export default function AllocationPage() {
             <div className="flex items-center justify-between text-xs text-ink-100">
               <span className="inline-flex items-center gap-1.5 text-peach-700 font-semibold">
                 <Sparkles className="size-3.5" />
-                AI recommended split
+                {t.allocation.recommendedSplit}
               </span>
               <span className={total === 100 ? "text-[#15803D]" : "text-[#B91C1C]"}>
-                Total: {total}%
+                {recoLoading ? t.common.loading : `Total: ${total}%`}
               </span>
             </div>
             <div className="mt-2 flex h-3 w-full overflow-hidden rounded-full">
@@ -157,8 +295,8 @@ export default function AllocationPage() {
           </ul>
 
           <p className="rounded-2xl border-l-2 border-peach-500 bg-peach-50 px-4 py-2.5 text-xs text-ink-100">
-            “Obligations are tight this week. Increasing their share temporarily
-            protects rent and salaries before growth spending.” —{" "}
+            {insightText}
+            {" — "}
             <span className="font-semibold text-peach-700">SoleBook AI</span>
           </p>
         </CardContent>

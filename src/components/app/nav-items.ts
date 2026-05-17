@@ -9,6 +9,7 @@ import {
   Wallet,
   GaugeCircle,
   Settings,
+  Code2,
   type LucideIcon,
 } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n";
@@ -40,5 +41,6 @@ export const primaryNav: AppNavItem[] = [
 ];
 
 export const secondaryNav: AppNavItem[] = [
+  { href: "/developer", icon: Code2, labelKey: "developer" },
   { href: "/settings", icon: Settings, labelKey: "settings" },
 ];

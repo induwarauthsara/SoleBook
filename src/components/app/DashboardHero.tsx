@@ -87,7 +87,14 @@ export function DashboardHero() {
           <Stat
             icon={<Clock className="size-3.5" />}
             label={t.dashboard.runway}
-            value={`${metrics.cashRunway}d`}
+            value={
+              metrics.cashRunway === null
+                ? t.dashboard.runwayStable
+                : `${metrics.cashRunway}d`
+            }
+            valueSub={
+              metrics.cashRunway === null ? t.dashboard.runwayStableHint : undefined
+            }
             tone="neutral"
           />
           <Stat
