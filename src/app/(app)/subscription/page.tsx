@@ -85,7 +85,7 @@ export default function SubscriptionPage() {
       return;
     }
 
-    // Bank transfer flow
+    // Bank transfer + JustPay
     setFlowStep("processing");
     try {
       const res = await fetch("/api/payments/initiate", {
