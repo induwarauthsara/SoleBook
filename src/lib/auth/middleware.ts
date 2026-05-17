@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { fetchPrimaryOrgMembership } from '@/lib/auth/org-membership';
 import { getSupabaseAdmin } from '@/lib/supabase';
 
 export interface AuthContext {
@@ -23,15 +24,10 @@ export async function requireAuth(req: NextRequest): Promise<AuthContext> {
     throw new AuthError('Invalid or expired token', 401);
   }
 
-  const { data: membership } = await supabase
-    .from('organization_members')
-    .select('org_id, role, organizations(id, name)')
-    .eq('user_id', user.id)
-    .limit(1)
-    .single();
+  const membership = await fetchPrimaryOrgMembership(supabase, user.id);
 
   const org = membership
-    ? { id: membership.org_id, name: (membership.organizations as any)?.name || '', role: membership.role }
+    ? { id: membership.org_id, name: membership.organizations?.name || '', role: membership.role }
     : null;
 
   return {
@@ -64,5 +60,9 @@ export function handleAuthError(error: unknown) {
   if (error instanceof AuthError) {
     return Response.json({ error: error.message }, { status: error.status });
   }
-  return Response.json({ error: 'Internal server error' }, { status: 500 });
+  console.error('[handleAuthError]', error);
+  const exposeDetails =
+    process.env.NODE_ENV === 'development' && error instanceof Error;
+  const message = exposeDetails ? error.message : 'Internal server error';
+  return Response.json({ error: message }, { status: 500 });
 }

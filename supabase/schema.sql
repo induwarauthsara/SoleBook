@@ -365,12 +365,15 @@ create table if not exists public.integrations (
   consent_scopes   text[] not null default array[]::text[],
   webhook_secret_ref text,
   oauth_secret_ref   text,
+  metadata         jsonb not null default '{}'::jsonb,
   last_synced_at   timestamptz,
   last_error       text,
   created_by       uuid references auth.users(id),
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
 );
+
+alter table public.integrations add column if not exists metadata jsonb not null default '{}'::jsonb;
 
 create index if not exists idx_integrations_org on public.integrations(org_id);
 create index if not exists idx_integrations_type_status on public.integrations(type, status);
@@ -1522,3 +1525,19 @@ $$;
 
 revoke all on function solebook.seed_demo_data(uuid) from public;
 grant execute on function solebook.seed_demo_data(uuid) to service_role;
+
+-- Public wrapper — PostgREST only reliably exposes RPCs under `public` by default,
+-- so `/api/demo/reset-sandbox` calls this helper with the admin client + service_role.
+create or replace function public.reset_demo_sandbox(p_org uuid)
+returns void
+language plpgsql
+security definer
+set search_path = public, solebook
+as $$
+begin
+  perform solebook.seed_demo_data(p_org);
+end;
+$$;
+
+revoke all on function public.reset_demo_sandbox(uuid) from public;
+grant execute on function public.reset_demo_sandbox(uuid) to service_role;

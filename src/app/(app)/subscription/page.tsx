@@ -28,6 +28,8 @@ import { useLocale } from "@/components/providers/LocaleProvider";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import type { SubscriptionPlan } from "@/types/app";
+import { messageFromApiBody, readJsonSafe } from "@/lib/api-error";
+import { mockPaymentGatewayHeaders } from "@/lib/dev/mock-payment-gateway";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -88,7 +90,10 @@ export default function SubscriptionPage() {
     try {
       const res = await fetch("/api/payments/initiate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...mockPaymentGatewayHeaders(),
+        },
         body: JSON.stringify({
           planId: selectedPlan.id,
           billingCycle: cycle,
@@ -96,13 +101,22 @@ export default function SubscriptionPage() {
           method: paymentMethod,
         }),
       });
-      const data = await res.json();
+      const raw = await readJsonSafe(res);
+      const data =
+        raw && typeof raw === "object"
+          ? (raw as { ok?: boolean; transactionReference?: string; error?: string })
+          : null;
 
-      if (data.ok) {
+      if (res.ok && data?.ok) {
         setTxnRef(data.transactionReference ?? "");
         setFlowStep("success");
       } else {
-        setErrorMsg(data.error ?? "Payment failed");
+        setErrorMsg(
+          messageFromApiBody(
+            raw,
+            !res.ok ? `Request failed (${res.status}).` : "Payment failed",
+          ),
+        );
         setFlowStep("failed");
       }
     } catch {

@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { mpgsClient } from '@/lib/mpgs/client';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { requireAuth, handleAuthError } from '@/lib/auth/middleware';
+import { wantsMockPaymentGateway } from '@/lib/dev/mock-payment-gateway';
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,6 +15,15 @@ export async function POST(req: NextRequest) {
 
     const orderId = `sb-${ctx.org?.id?.slice(0, 8) || 'anon'}-${Date.now()}`;
     const origin = process.env.WEBAUTHN_RP_ORIGIN || 'http://localhost:3000';
+
+    if (wantsMockPaymentGateway(req)) {
+      return Response.json({
+        sessionId: `MOCK-MPGS-SESSION-${Date.now()}`,
+        redirectUrl: `${origin}/subscription?mockMpgs=1&orderId=${encodeURIComponent(orderId)}`,
+        orderId,
+        mock: true,
+      });
+    }
 
     const result = await mpgsClient.createCheckoutSession({
       amount,

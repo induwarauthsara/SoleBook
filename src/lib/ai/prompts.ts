@@ -18,9 +18,15 @@ You MUST NOT:
 
 Respond conversationally and supportively. The owner is often juggling personal and business finances with limited formal training.`;
 
+function runwayContextLine(days: number | null): string {
+  return days === null
+    ? 'Not estimated — no trailing 30-day expense outflows, so daily burn is unknown'
+    : `${days} days`;
+}
+
 export function buildChatContext(data: {
   disciplineScore: number;
-  cashRunway: number;
+  cashRunway: number | null;
   bucketBalances: Record<string, number>;
   upcomingObligations: { category: string; amount: number; dueDate: string }[];
   recentInsights: string[];
@@ -32,7 +38,7 @@ export function buildChatContext(data: {
 
   return `Current Business Context:
 - Financial Discipline Score: ${data.disciplineScore}/100
-- Cash Runway: ${data.cashRunway} days
+- Cash Runway: ${runwayContextLine(data.cashRunway)}
 - Monthly Revenue: LKR ${data.monthlyRevenue.toLocaleString()}
 - Monthly Expenses: LKR ${data.monthlyExpenses.toLocaleString()}
 - Bucket Balances: Operations=${data.bucketBalances.operations?.toLocaleString() || 0}, Obligations=${data.bucketBalances.obligations?.toLocaleString() || 0}, Reserve=${data.bucketBalances.profit_reserve?.toLocaleString() || 0}, Owner Salary=${data.bucketBalances.owner_salary?.toLocaleString() || 0}, Growth=${data.bucketBalances.growth?.toLocaleString() || 0}

@@ -12,9 +12,14 @@ import {
 } from "recharts";
 import { format, parseISO } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { generateForecast } from "@/lib/mock-data";
+import { useAppData } from "@/components/providers/AppDataProvider";
 import { formatShortCurrency } from "@/lib/utils";
 import { useLocale } from "@/components/providers/LocaleProvider";
+
+function finiteNum(v: unknown): number {
+  const n = typeof v === "number" ? v : Number(v);
+  return Number.isFinite(n) ? n : 0;
+}
 
 const PERIODS = [
   { label: "7D", days: 7 },
@@ -50,12 +55,22 @@ function CustomTooltip({ active, payload, label }: TooltipProps) {
 export function CashFlowChart() {
   const { t } = useLocale();
   const [period, setPeriod] = useState(14);
-  const forecast = useMemo(() => generateForecast(), []);
-  const data = forecast.slice(0, period).map((p) => ({
-    date: format(parseISO(p.date), "MMM d"),
-    balance: Math.round(p.projectedBalance / 1000),
-    obligations: Math.round(p.obligations / 1000),
-  }));
+  const { cashFlowForecast } = useAppData();
+  const data = useMemo(() => {
+    return cashFlowForecast.slice(0, period).map((p) => {
+      let label = p.date;
+      try {
+        label = format(parseISO(p.date), "MMM d");
+      } catch {
+        /* invalid date from API */
+      }
+      return {
+        date: label,
+        balance: Math.round(finiteNum(p.projectedBalance) / 1000),
+        obligations: 0,
+      };
+    });
+  }, [cashFlowForecast, period]);
 
   return (
     <Card>

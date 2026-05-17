@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { justPayInitiateTransaction } from '@/lib/seylan/client';
 import { requireAuth, handleAuthError } from '@/lib/auth/middleware';
+import { wantsMockPaymentGateway } from '@/lib/dev/mock-payment-gateway';
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,6 +15,19 @@ export async function POST(req: NextRequest) {
 
     if (!justpayCode || !amount || !originatingAccount || !destinationAccount) {
       return Response.json({ error: 'justpayCode, amount, originatingAccount, and destinationAccount are required' }, { status: 400 });
+    }
+
+    if (wantsMockPaymentGateway(req)) {
+      return Response.json({
+        JustPayFundTransfer_Response: {
+          Status: {
+            Code: '0000',
+            Transaction_Reference: `MOCK-JP-PAY-${Date.now()}`,
+            Message: 'Mock JustPay payment',
+          },
+        },
+        mock: true,
+      });
     }
 
     const result = await justPayInitiateTransaction({

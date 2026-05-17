@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, XCircle, Loader2, QrCode } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useLocale } from "@/components/providers/LocaleProvider";
+import { messageFromApiBody, readJsonSafe } from "@/lib/api-error";
+import { mockPaymentGatewayHeaders } from "@/lib/dev/mock-payment-gateway";
 
 interface QRPaymentViewProps {
   amount: number;
@@ -38,14 +40,33 @@ export function QRPaymentView({
       try {
         const res = await fetch("/api/payments/qr/generate", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...mockPaymentGatewayHeaders(),
+          },
           body: JSON.stringify({
             amount: amount.toFixed(2),
             purposeOfTransaction: `SoleBook ${planName} Subscription`,
           }),
         });
-        const data = await res.json();
+        const raw = await readJsonSafe(res);
+        const data =
+          raw && typeof raw === "object"
+            ? (raw as {
+                ok?: boolean;
+                qrCode?: string;
+                requestRefNo?: string;
+                transactionReference?: string;
+                error?: string;
+              })
+            : null;
         if (cancelled) return;
+
+        if (!res.ok || !data) {
+          setError(messageFromApiBody(raw, `Could not generate QR code (${res.status})`));
+          setState("failed");
+          return;
+        }
 
         if (data.ok && data.qrCode) {
           setQrCode(data.qrCode);
@@ -53,7 +74,7 @@ export function QRPaymentView({
           setState("ready");
           startTimer();
         } else {
-          setError(data.error ?? "Failed to generate QR code");
+          setError(messageFromApiBody(raw, data.error ?? "Failed to generate QR code"));
           setState("failed");
         }
       } catch {
@@ -94,9 +115,16 @@ export function QRPaymentView({
     setState("polling");
     pollRef.current = setInterval(async () => {
       try {
-        const res = await fetch(`/api/payments/status?ref=${encodeURIComponent(refNo)}`);
-        const data = await res.json();
-        if (data.ok && data.status === "success") {
+        const res = await fetch(`/api/payments/status?ref=${encodeURIComponent(refNo)}`, {
+          headers: mockPaymentGatewayHeaders(),
+        });
+        const raw = await readJsonSafe(res);
+        const data =
+          raw && typeof raw === "object"
+            ? (raw as { ok?: boolean; status?: string; error?: string })
+            : {};
+
+        if (data.ok && (data.status === "success" || data.status === "completed")) {
           if (pollRef.current) clearInterval(pollRef.current);
           if (timerRef.current) clearInterval(timerRef.current);
           setState("success");

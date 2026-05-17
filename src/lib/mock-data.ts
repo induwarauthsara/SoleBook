@@ -4,7 +4,6 @@ import type {
   Bucket,
   Business,
   CashForecastPoint,
-  ChatMessage,
   DisciplineScore,
   Obligation,
   OwnerWithdrawal,
@@ -13,13 +12,9 @@ import type {
 } from "@/types/app";
 
 /**
- * Demo data. Combines the three reference projects into one coherent
- * narrative: a small Sri Lankan retail shop ("Nila Mini Mart") whose
- * owner is using SoleBook to bring discipline to cash flow.
- *
- * Replace the exports here with a backend-backed store later; the rest
- * of the app consumes these shapes by import and is unaware of where
- * the data comes from.
+ * Demo / placeholder data for story-style fixtures and empty-state shapes.
+ * Live chat and insights are loaded from the API; see `/api/ai/chat` and
+ * `/api/dashboard`.
  */
 
 export const mockUser: UserProfile = {
@@ -467,15 +462,40 @@ export const mockMetrics = {
   ownerSalaryGoal: 80000,
   ownerTotalWithdrawn: 97600,
   avgDailySales: 29733,
-  cashRunway: 19,
+  cashRunway: 19 as number | null,
 };
 
-export const mockChatHistory: ChatMessage[] = [
-  {
-    id: "m-1",
-    role: "assistant",
-    content:
-      "Hi Nimal, I’ve protected your rent and salaries this week. Want me to walk through where your cash will be tight next month?",
-    createdAt: new Date(Date.now() - 3 * 3600000).toISOString(),
-  },
-];
+/** Zeroed metrics — use as the default before `/api/dashboard` loads (never substitute mock “demo” numbers for real users). */
+export const emptyDashboardMetrics: typeof mockMetrics = {
+  currentBalance: 0,
+  monthlyRevenue: 0,
+  monthlyExpenses: 0,
+  reserveHealth: 0,
+  disciplineScore: 0,
+  pendingObligations: 0,
+  ownerSalaryGoal: 0,
+  ownerTotalWithdrawn: 0,
+  avgDailySales: 0,
+  cashRunway: 0 as number | null,
+};
+
+export const emptyBusiness: Business = {
+  id: "",
+  ownerId: "",
+  name: "",
+  type: "other",
+  salaryGoal: 0,
+  createdAt: "",
+};
+
+export const emptyDisciplineScore: DisciplineScore = {
+  id: "",
+  businessId: "",
+  overall: 0,
+  paymentTimeliness: 0,
+  reserveConsistency: 0,
+  salaryStability: 0,
+  personalLeakage: 0,
+  loanReadiness: 0,
+  computedAt: "",
+};

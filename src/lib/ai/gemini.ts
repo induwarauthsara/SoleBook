@@ -44,7 +44,7 @@ export async function streamChat(
   const startTime = Date.now();
 
   const client = getClient();
-  const model = client.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = client.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
 
   const chat = model.startChat({
     history: [
@@ -58,7 +58,7 @@ export async function streamChat(
 
   let fullOutput = '';
   const audit: AIAuditEntry = {
-    model_id: 'gemini-2.0-flash',
+    model_id: 'gemini-2.5-flash-lite',
     prompt_template_version: PROMPT_VERSION,
     context_schema_version: 'v1',
     context_hash: contextHash,
@@ -89,7 +89,7 @@ export async function generateInsights(
   const contextHash = simpleHash(prompt);
 
   const client = getClient();
-  const model = client.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = client.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
 
   const result = await model.generateContent([
     { text: SYSTEM_PROMPT },
@@ -102,7 +102,7 @@ export async function generateInsights(
   return {
     content: safety.passed ? output : '[]',
     audit: {
-      model_id: 'gemini-2.0-flash',
+      model_id: 'gemini-2.5-flash-lite',
       prompt_template_version: PROMPT_VERSION,
       context_schema_version: 'v1',
       context_hash: contextHash,

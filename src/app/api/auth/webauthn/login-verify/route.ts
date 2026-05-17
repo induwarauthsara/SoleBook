@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { fetchPrimaryOrgMembership } from '@/lib/auth/org-membership';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { verifyAuthentication, StoredCredential } from '@/lib/auth/webauthn';
 
@@ -69,18 +70,13 @@ export async function POST(req: NextRequest) {
       user_agent: req.headers.get('user-agent'),
     });
 
-    const { data: membership } = await supabase
-      .from('organization_members')
-      .select('org_id, role, organizations(id, name)')
-      .eq('user_id', user_id)
-      .limit(1)
-      .single();
+    const membership = await fetchPrimaryOrgMembership(supabase, user_id);
 
     return Response.json({
       success: true,
       user: { id: user_id, email: user.email, full_name: user.user_metadata?.full_name },
       organization: membership
-        ? { id: membership.org_id, name: (membership.organizations as any)?.name, role: membership.role }
+        ? { id: membership.org_id, name: membership.organizations?.name, role: membership.role }
         : null,
     });
   } catch (error) {

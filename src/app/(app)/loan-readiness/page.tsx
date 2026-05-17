@@ -1,12 +1,17 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { ShieldCheck, TrendingUp, Calendar, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Progress } from "@/components/ui/Progress";
 import { Button } from "@/components/ui/Button";
 import { useAppData } from "@/components/providers/AppDataProvider";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { formatShortCurrency, getScoreColor } from "@/lib/utils";
+import type { LoanReadinessResult } from "@/lib/engine/loan-readiness";
+import { messageFromApiBody, readJsonSafe } from "@/lib/api-error";
 
 const RECOMMENDATIONS = [
   "Make the next three salary runs on or before payday to lift payment timeliness.",
@@ -15,11 +20,100 @@ const RECOMMENDATIONS = [
   "Keep utility bills on auto-pay; missed utilities are a common red flag in loan reviews.",
 ];
 
+function safeFileSegment(name: string): string {
+  const s = name
+    .replace(/[^a-zA-Z0-9-_]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+  return s || "business";
+}
+
+function formatLoanReadinessReportPlainText(
+  businessName: string,
+  result: LoanReadinessResult,
+): string {
+  const lines: string[] = [
+    "SoleBook — Loan readiness report",
+    "",
+    `Business: ${businessName.trim() || "(not set)"}`,
+    `Generated: ${new Date().toISOString()}`,
+    "",
+    `Overall score: ${result.score}/100`,
+    `Band: ${result.band}`,
+    "",
+    "Components:",
+  ];
+  for (const [key, val] of Object.entries(result.components)) {
+    lines.push(`  • ${key.replace(/_/g, " ")}: ${val}`);
+  }
+  lines.push("", "Recommendations:");
+  const recs = result.recommendations.length
+    ? result.recommendations
+    : ["(none — keep current discipline)"];
+  for (const r of recs) {
+    lines.push(`  • ${r}`);
+  }
+  return lines.join("\n");
+}
+
+function triggerTextDownload(filename: string, body: string) {
+  const blob = new Blob([body], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 export default function LoanReadinessPage() {
-  const { score } = useAppData();
+  const { score, business } = useAppData();
+  const { session } = useAuth();
   const { t } = useLocale();
   const color = getScoreColor(score.loanReadiness);
   const eligible = Math.round(score.loanReadiness * 28_000);
+  const [reportBusy, setReportBusy] = useState(false);
+
+  const handleGenerateReport = useCallback(async () => {
+    if (!session?.access_token) {
+      toast.error(t.loan.reportGenerateError);
+      return;
+    }
+    setReportBusy(true);
+    try {
+      const res = await fetch("/api/loan-readiness", {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const data = await readJsonSafe(res);
+      if (!res.ok) {
+        throw new Error(messageFromApiBody(data, t.loan.reportGenerateError));
+      }
+
+      const result = data as LoanReadinessResult;
+      if (
+        typeof result.score !== "number" ||
+        !result.components ||
+        typeof result.band !== "string"
+      ) {
+        throw new Error(t.loan.reportGenerateError);
+      }
+
+      const text = formatLoanReadinessReportPlainText(business.name, result);
+      const stamp = new Date().toISOString().slice(0, 10);
+      triggerTextDownload(
+        `loan-readiness-${safeFileSegment(business.name)}-${stamp}.txt`,
+        text,
+      );
+      toast.success(t.loan.reportDownloaded);
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : t.loan.reportGenerateError);
+    } finally {
+      setReportBusy(false);
+    }
+  }, [business.name, session, t.loan.reportDownloaded, t.loan.reportGenerateError]);
 
   return (
     <div className="space-y-6">
@@ -95,9 +189,15 @@ export default function LoanReadinessPage() {
               <p className="text-sm text-ink-200 leading-relaxed">{tip}</p>
             </div>
           ))}
-          <Button variant="outline" className="w-full sm:w-auto">
-            Generate readiness report
-            <ArrowRight className="size-4" />
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full sm:w-auto"
+            disabled={reportBusy}
+            onClick={handleGenerateReport}
+          >
+            {reportBusy ? t.loan.generatingReport : t.loan.generateReport}
+            {!reportBusy ? <ArrowRight className="size-4" /> : null}
           </Button>
         </CardContent>
       </Card>

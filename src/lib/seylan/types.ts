@@ -149,6 +149,8 @@ export interface JustPayRegisterRequest {
 export interface JustPayRegisterResponse {
   JustPayRegisterAccount_Response: {
     Status: SeylanStatus;
+    /** Some responses expose the OTP reference here instead of Status.Transaction_Reference */
+    Request_Id?: string;
   };
 }
 

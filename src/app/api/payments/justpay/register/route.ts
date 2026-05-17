@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { justPayRegister } from '@/lib/seylan/client';
 import { requireAuth, handleAuthError } from '@/lib/auth/middleware';
+import { wantsMockPaymentGateway } from '@/lib/dev/mock-payment-gateway';
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,6 +10,16 @@ export async function POST(req: NextRequest) {
 
     if (!accountNumber || !bankCode || !accountName || !nic || !mobile) {
       return Response.json({ error: 'All fields required: accountNumber, bankCode, accountName, nic, mobile' }, { status: 400 });
+    }
+
+    if (wantsMockPaymentGateway(req)) {
+      return Response.json({
+        JustPayRegisterAccount_Response: {
+          Request_Id: `MOCK-JP-REG-${Date.now()}`,
+          Status: { Code: '0000', Message: 'Mock registration' },
+        },
+        mock: true,
+      });
     }
 
     const result = await justPayRegister({

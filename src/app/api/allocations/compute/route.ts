@@ -8,7 +8,8 @@ export async function POST(req: NextRequest) {
     const ctx = await requireRole(req, ['owner', 'finance']);
     if (!ctx.org) return Response.json({ error: 'No organization' }, { status: 403 });
 
-    const { amount, transaction_id } = await req.json();
+    const { amount, transaction_id, persist } = await req.json();
+    const shouldPersist = persist !== false;
     if (!amount || amount <= 0) {
       return Response.json({ error: 'Valid amount required' }, { status: 400 });
     }
@@ -16,9 +17,18 @@ export async function POST(req: NextRequest) {
     const supabase = getSupabaseAdmin();
     if (!supabase) return Response.json({ error: 'Server error' }, { status: 500 });
 
+    const end30 = new Date();
+    end30.setUTCDate(end30.getUTCDate() + 30);
+    const obligationsDueBefore = end30.toISOString().slice(0, 10);
+
     const [{ data: buckets }, { data: obligations }, { data: profile }, { data: withdrawals }] = await Promise.all([
       supabase.from('buckets').select('*').eq('org_id', ctx.org.id),
-      supabase.from('obligations').select('amount_lkr').eq('org_id', ctx.org.id).in('status', ['upcoming', 'due_soon']),
+      supabase
+        .from('obligations')
+        .select('amount_lkr')
+        .eq('org_id', ctx.org.id)
+        .in('status', ['upcoming', 'due_soon', 'overdue'])
+        .lte('due_date', obligationsDueBefore),
       supabase.from('business_profiles').select('*').eq('org_id', ctx.org.id).single(),
       supabase.from('owner_withdrawals').select('amount_lkr').eq('org_id', ctx.org.id).gte('withdrawn_at', new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()),
     ]);
@@ -46,29 +56,35 @@ export async function POST(req: NextRequest) {
       ownerWithdrawnThisMonth: (withdrawals || []).reduce((s, w) => s + Number(w.amount_lkr), 0),
     });
 
-    const { data: allocation } = await supabase.from('allocations').insert({
-      org_id: ctx.org.id,
-      trigger: transaction_id ? 'income_detected' : 'manual',
-      source_transaction_id: transaction_id || null,
-      total_amount_lkr: amount,
-      status: 'proposed',
-      engine_version: result.engineVersion,
-      explanation: result.explanation,
-    }).select('id').single();
+    let allocationId: string | null = null;
 
-    if (allocation) {
-      const lines = Object.entries(result)
-        .filter(([key]) => ['operations', 'obligations', 'profit_reserve', 'owner_salary', 'growth'].includes(key))
-        .map(([type, proposed_amount]) => {
-          const bucket = (buckets || []).find(b => b.type === type);
-          return { allocation_id: allocation.id, bucket_id: bucket?.id, proposed_amount_lkr: proposed_amount };
-        })
-        .filter(l => l.bucket_id);
+    if (shouldPersist) {
+      const { data: allocation } = await supabase.from('allocations').insert({
+        org_id: ctx.org.id,
+        trigger: transaction_id ? 'income_detected' : 'manual',
+        source_transaction_id: transaction_id || null,
+        total_amount_lkr: amount,
+        status: 'proposed',
+        engine_version: result.engineVersion,
+        explanation: result.explanation,
+      }).select('id').single();
 
-      await supabase.from('allocation_lines').insert(lines);
+      allocationId = allocation?.id ?? null;
+
+      if (allocation) {
+        const lines = Object.entries(result)
+          .filter(([key]) => ['operations', 'obligations', 'profit_reserve', 'owner_salary', 'growth'].includes(key))
+          .map(([type, proposed_amount]) => {
+            const bucket = (buckets || []).find(b => b.type === type);
+            return { allocation_id: allocation.id, bucket_id: bucket?.id, proposed_amount_lkr: proposed_amount };
+          })
+          .filter(l => l.bucket_id);
+
+        await supabase.from('allocation_lines').insert(lines);
+      }
     }
 
-    return Response.json({ allocation_id: allocation?.id, ...result });
+    return Response.json({ allocation_id: allocationId, ...result });
   } catch (error) {
     return handleAuthError(error);
   }

@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { requireAuth, requireRole, handleAuthError } from '@/lib/auth/middleware';
+import { normalizeObligationRecurrence } from '@/lib/obligations-recurrence';
 
 export async function GET(req: NextRequest) {
   try {
@@ -48,6 +49,11 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: 'category, amount_lkr, and due_date are required' }, { status: 400 });
     }
 
+    const recurrenceNorm = normalizeObligationRecurrence(recurrence);
+    if (!recurrenceNorm.ok) {
+      return Response.json({ error: recurrenceNorm.error }, { status: 400 });
+    }
+
     const supabase = getSupabaseAdmin();
     if (!supabase) return Response.json({ error: 'Server error' }, { status: 500 });
 
@@ -61,7 +67,7 @@ export async function POST(req: NextRequest) {
         due_date,
         priority: priority || 'medium',
         notes: notes || null,
-        recurrence: recurrence || null,
+        recurrence: recurrenceNorm.recurrence,
       })
       .select()
       .single();

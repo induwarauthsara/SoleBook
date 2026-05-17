@@ -1,10 +1,11 @@
 import { NextRequest } from 'next/server';
+import { fetchPrimaryOrgMembership } from '@/lib/auth/org-membership';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { verifyTOTPCode, decryptSecret, hashBackupCode } from '@/lib/auth/totp';
 
 export async function POST(req: NextRequest) {
   try {
-    const { session_token, code } = await req.json();
+    const { session_token, code, refresh_token } = await req.json();
 
     if (!session_token || !code) {
       return Response.json({ error: 'Session token and code are required' }, { status: 400 });
@@ -72,12 +73,7 @@ export async function POST(req: NextRequest) {
     // Reset failed attempts on success
     await supabase.from('totp_secrets').update({ failed_attempts: 0, locked_until: null }).eq('user_id', user.id);
 
-    const { data: membership } = await supabase
-      .from('organization_members')
-      .select('org_id, role, organizations(id, name)')
-      .eq('user_id', user.id)
-      .limit(1)
-      .single();
+    const membership = await fetchPrimaryOrgMembership(supabase, user.id);
 
     await supabase.from('user_sessions').insert({
       user_id: user.id,
@@ -86,12 +82,29 @@ export async function POST(req: NextRequest) {
       user_agent: req.headers.get('user-agent'),
     });
 
+    if (!refresh_token) {
+      return Response.json({ error: 'Refresh token required' }, { status: 400 });
+    }
+
+    const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession({
+      refresh_token,
+    });
+    if (refreshError || !refreshed.session) {
+      return Response.json({ error: 'Session renewal failed' }, { status: 401 });
+    }
+
+    const sessionPayload = {
+      access_token: refreshed.session.access_token,
+      refresh_token: refreshed.session.refresh_token,
+      expires_at: refreshed.session.expires_at,
+    };
+
     return Response.json({
       success: true,
-      session: { access_token: session_token },
+      session: sessionPayload,
       user: { id: user.id, email: user.email, full_name: user.user_metadata?.full_name },
       organization: membership
-        ? { id: membership.org_id, name: (membership.organizations as any)?.name, role: membership.role }
+        ? { id: membership.org_id, name: membership.organizations?.name, role: membership.role }
         : null,
     });
   } catch (error) {

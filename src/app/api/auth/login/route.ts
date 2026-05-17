@@ -1,4 +1,6 @@
 import { NextRequest } from 'next/server';
+import { DEMO_ACCOUNT_EMAIL } from '@/lib/demo-account';
+import { fetchPrimaryOrgMembership } from '@/lib/auth/org-membership';
 import { getSupabaseAdmin } from '@/lib/supabase';
 
 export async function POST(req: NextRequest) {
@@ -25,26 +27,29 @@ export async function POST(req: NextRequest) {
 
     const userId = authData.user.id;
 
-    const { data: totpData } = await supabase
-      .from('totp_secrets')
-      .select('id, verified_at')
-      .eq('user_id', userId)
-      .single();
+    const isDemoLogin =
+      typeof email === 'string' &&
+      email.trim().toLowerCase() === DEMO_ACCOUNT_EMAIL.toLowerCase();
 
-    if (totpData?.verified_at) {
-      return Response.json({
-        requires_2fa: true,
-        session_token: authData.session.access_token,
-        user: { id: userId, email },
-      });
+    if (!isDemoLogin) {
+      const { data: totpData } = await supabase
+        .from('totp_secrets')
+        .select('id, verified_at')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (totpData?.verified_at) {
+        return Response.json({
+          requires_2fa: true,
+          session_token: authData.session.access_token,
+          refresh_token: authData.session.refresh_token,
+          expires_at: authData.session.expires_at,
+          user: { id: userId, email },
+        });
+      }
     }
 
-    const { data: membership } = await supabase
-      .from('organization_members')
-      .select('org_id, role, organizations(id, name)')
-      .eq('user_id', userId)
-      .limit(1)
-      .single();
+    const membership = await fetchPrimaryOrgMembership(supabase, userId);
 
     await supabase.from('user_sessions').insert({
       user_id: userId,
@@ -66,7 +71,7 @@ export async function POST(req: NextRequest) {
         full_name: authData.user.user_metadata?.full_name,
       },
       organization: membership
-        ? { id: membership.org_id, name: (membership.organizations as any)?.name, role: membership.role }
+        ? { id: membership.org_id, name: membership.organizations?.name, role: membership.role }
         : null,
     });
   } catch (error) {

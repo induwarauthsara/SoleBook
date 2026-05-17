@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { requireRole, handleAuthError } from '@/lib/auth/middleware';
+import { normalizeObligationRecurrence } from '@/lib/obligations-recurrence';
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -9,6 +10,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     const { id } = await params;
 
     const body = await req.json();
+    if (Object.prototype.hasOwnProperty.call(body, 'recurrence')) {
+      const recurrenceNorm = normalizeObligationRecurrence(body.recurrence);
+      if (!recurrenceNorm.ok) {
+        return Response.json({ error: recurrenceNorm.error }, { status: 400 });
+      }
+      body.recurrence = recurrenceNorm.recurrence;
+    }
     const supabase = getSupabaseAdmin();
     if (!supabase) return Response.json({ error: 'Server error' }, { status: 500 });
 

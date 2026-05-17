@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { initiateLankaQR } from '@/lib/seylan/client';
 import { requireAuth, handleAuthError } from '@/lib/auth/middleware';
+import { wantsMockPaymentGateway } from '@/lib/dev/mock-payment-gateway';
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,6 +10,17 @@ export async function POST(req: NextRequest) {
 
     if (!body.amount) {
       return Response.json({ error: 'Amount required' }, { status: 400 });
+    }
+
+    if (wantsMockPaymentGateway(req)) {
+      const ref = `MOCK-LQR-${Date.now()}`;
+      return Response.json({
+        LankaQR_Initiate_Response: {
+          Status: { Code: '0000', Message: 'Mock LankaQR' },
+          Retrieval_reference: ref,
+        },
+        mock: true,
+      });
     }
 
     const now = new Date();

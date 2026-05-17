@@ -2,10 +2,18 @@ import { NextRequest } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { getAuthenticationOptions, StoredCredential } from '@/lib/auth/webauthn';
 
+type WebAuthnCredentialRow = {
+  credential_id: string;
+  public_key: string;
+  sign_count: number;
+  transports: string[] | null;
+};
+
 export async function POST(req: NextRequest) {
   try {
     const { email } = await req.json();
-    if (!email) {
+    const emailKey = typeof email === 'string' ? email.trim().toLowerCase() : '';
+    if (!emailKey) {
       return Response.json({ error: 'Email required' }, { status: 400 });
     }
 
@@ -15,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { data: { users } } = await supabase.auth.admin.listUsers();
-    const user = users.find(u => u.email === email);
+    const user = users.find((u) => u.email?.toLowerCase() === emailKey);
     if (!user) {
       return Response.json({ error: 'User not found' }, { status: 404 });
     }
@@ -29,7 +37,7 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: 'No biometric credentials registered' }, { status: 400 });
     }
 
-    const credentials: StoredCredential[] = creds.map((c: any) => ({
+    const credentials: StoredCredential[] = (creds as WebAuthnCredentialRow[]).map((c) => ({
       credentialID: c.credential_id,
       publicKey: c.public_key,
       counter: c.sign_count,

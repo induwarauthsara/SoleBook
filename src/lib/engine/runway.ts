@@ -7,7 +7,8 @@ export interface RunwayInput {
 }
 
 export interface RunwayResult {
-  daysUntilZero: number;
+  /** Estimated days until cash hits zero at recent daily burn; null when burn is unknown or zero. */
+  daysUntilZero: number | null;
   riskBand: 'low' | 'medium' | 'high';
   status: 'comfortable' | 'balanced' | 'tight';
   forecast: { date: string; projectedBalance: number; riskLevel: string }[];
@@ -17,13 +18,19 @@ export interface RunwayResult {
 export function computeRunway(input: RunwayInput): RunwayResult {
   const { currentBalance, avgDailyOutflow, avgDailyInflow, obligationsDueNext30Days, projectedInflow30Days } = input;
 
-  // Days until zero (without any inflow)
-  const daysUntilZero = avgDailyOutflow > 0
-    ? Math.floor(currentBalance / avgDailyOutflow)
-    : 999;
+  // Days until zero (without any inflow). No meaningful runway when daily outflow is zero.
+  const daysUntilZero: number | null =
+    avgDailyOutflow > 0 ? Math.floor(currentBalance / avgDailyOutflow) : null;
 
   // Status bands
-  const status = daysUntilZero > 30 ? 'comfortable' : daysUntilZero > 14 ? 'balanced' : 'tight';
+  const status: RunwayResult['status'] =
+    daysUntilZero === null
+      ? 'comfortable'
+      : daysUntilZero > 30
+        ? 'comfortable'
+        : daysUntilZero > 14
+          ? 'balanced'
+          : 'tight';
   const riskBand = status === 'comfortable' ? 'low' : status === 'balanced' ? 'medium' : 'high';
 
   // Obligation coverage ratio

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAccountBalance, inquireMerchantQRTransaction } from "@/lib/seylan/client";
+import { wantsMockPaymentGateway } from "@/lib/dev/mock-payment-gateway";
 
 export const runtime = "nodejs";
 
@@ -37,6 +38,16 @@ export async function GET(req: NextRequest) {
     }
 
     if (transactionRef) {
+      if (wantsMockPaymentGateway(req)) {
+        return NextResponse.json({
+          ok: true,
+          ref: transactionRef,
+          status: "success",
+          transactions: [],
+          mock: true,
+        });
+      }
+
       const result = await inquireMerchantQRTransaction({
         Institution_id: process.env.SEYLAN_INSTITUTION_ID || '',
         Channel_user_id: process.env.SEYLAN_CHANNEL_USER_ID || '',
