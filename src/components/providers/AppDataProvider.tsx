@@ -13,14 +13,19 @@ import {
   emptyBusiness,
   emptyDashboardMetrics,
   emptyDisciplineScore,
+  mockAccounts,
   mockMetrics,
+  mockPaymentCards,
+  sumAccountBalances,
 } from "@/lib/mock-data";
+import { isDemoAccountEmail } from "@/lib/demo-account";
 import { messageFromApiBody, readJsonSafe } from "@/lib/api-error";
 import { mapApiRowToObligation } from "@/lib/map-obligation";
 import { useAuth } from "./AuthProvider";
 import type {
   AIInsight,
   BankAccount,
+  LinkedPaymentCard,
   Bucket,
   Business,
   BusinessType,
@@ -44,6 +49,7 @@ interface AppDataContextValue {
   insights: AIInsight[];
   score: DisciplineScore;
   accounts: BankAccount[];
+  paymentCards: LinkedPaymentCard[];
   withdrawals: OwnerWithdrawal[];
   metrics: typeof mockMetrics;
   cashFlowForecast: CashRunwayForecastPoint[];
@@ -96,6 +102,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   const [insights, setInsights] = useState<AIInsight[]>([]);
   const [score, setScore] = useState<DisciplineScore>(emptyDisciplineScore);
   const [accounts, setAccounts] = useState<BankAccount[]>([]);
+  const [paymentCards, setPaymentCards] = useState<LinkedPaymentCard[]>([]);
   const [withdrawals, setWithdrawals] = useState<OwnerWithdrawal[]>([]);
   const [metrics, setMetrics] = useState(emptyDashboardMetrics);
   const [cashFlowForecast, setCashFlowForecast] = useState<CashRunwayForecastPoint[]>([]);
@@ -124,6 +131,24 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       const payload =
         data && typeof data === "object" ? (data as Record<string, unknown>) : {};
 
+      const accountsPayload = payload.accounts as unknown[] | undefined;
+      const accountsFromApi: BankAccount[] = Array.isArray(accountsPayload)
+        ? accountsPayload.map((a: any) => ({
+            id: String(a.id),
+            bank: a.bank_name || "Bank",
+            alias: a.name,
+            last4: a.account_mask || "****",
+            type: "current",
+            balance: Number(a.current_balance),
+            currency: "LKR" as const,
+          }))
+        : [];
+
+      const demoUser = isDemoAccountEmail(user?.email);
+      const useSandboxBankingMocks =
+        accountsFromApi.length === 0 &&
+        (demoUser || process.env.NODE_ENV === "development");
+
       const org = payload.organization as { id?: string; name?: string } | undefined;
       const bp = payload.business_profile as Record<string, unknown> | null | undefined;
 
@@ -142,8 +167,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
         const m = payload.metrics as Record<string, unknown>;
         const disc = payload.discipline_score as { score?: number } | undefined;
         const discScore = finiteNum(disc?.score);
+        let currentBalance = finiteNum(m.current_balance);
+        if (useSandboxBankingMocks && currentBalance === 0) {
+          currentBalance = sumAccountBalances(mockAccounts);
+        }
         setMetrics({
-          currentBalance: finiteNum(m.current_balance),
+          currentBalance,
           monthlyRevenue: finiteNum(m.monthly_revenue),
           monthlyExpenses: finiteNum(m.monthly_expenses),
           reserveHealth: finiteNum(m.reserve_health),
@@ -270,26 +299,19 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
         setScore(emptyDisciplineScore);
       }
 
-      const accountsPayload = payload.accounts as unknown[] | undefined;
-      if (Array.isArray(accountsPayload)) {
-        setAccounts(
-          accountsPayload.map((a: any) => ({
-            id: a.id,
-            bank: a.bank_name || "Bank",
-            alias: a.name,
-            last4: a.account_mask || "****",
-            type: "current",
-            balance: Number(a.current_balance),
-            currency: "LKR" as const,
-          })),
-        );
+      if (useSandboxBankingMocks) {
+        setAccounts(mockAccounts);
+        setPaymentCards(mockPaymentCards);
+      } else {
+        setAccounts(accountsFromApi);
+        setPaymentCards([]);
       }
     } catch (e: any) {
       setError(e.message);
     } finally {
       setLoading(false);
     }
-  }, [session?.access_token, user?.id]);
+  }, [session?.access_token, user?.id, user?.email]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -318,6 +340,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       insights,
       score,
       accounts,
+      paymentCards,
       withdrawals,
       metrics,
       cashFlowForecast,
@@ -336,6 +359,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       insights,
       score,
       accounts,
+      paymentCards,
       withdrawals,
       metrics,
       cashFlowForecast,

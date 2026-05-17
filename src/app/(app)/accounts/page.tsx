@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Landmark, ArrowUpRight, ArrowDownLeft } from "lucide-react";
+import { Plus, Landmark, ArrowUpRight, ArrowDownLeft, CreditCard } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -9,9 +9,29 @@ import { useLocale } from "@/components/providers/LocaleProvider";
 import { formatShortCurrency } from "@/lib/utils";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
+import type { PaymentCardBrand } from "@/types/app";
+
+function CardBrandLogo({ brand }: { brand: PaymentCardBrand }) {
+  if (brand === "visa") {
+    return (
+      <span
+        className="text-lg font-black italic tracking-tighter text-white"
+        translate="no"
+      >
+        VISA
+      </span>
+    );
+  }
+  return (
+    <div className="flex items-center gap-2" aria-label="Mastercard">
+      <span className="size-8 rounded-full bg-[#EB001B]" />
+      <span className="-ml-5 size-8 rounded-full bg-[#FF5F00]" />
+    </div>
+  );
+}
 
 export default function AccountsPage() {
-  const { accounts, transactions } = useAppData();
+  const { accounts, paymentCards, transactions } = useAppData();
   const { t } = useLocale();
 
   return (
@@ -80,6 +100,60 @@ export default function AccountsPage() {
           </article>
         ))}
       </section>
+
+      {paymentCards.length > 0 && (
+        <section className="space-y-3">
+          <div>
+            <h3 className="text-sm font-semibold text-ink-300">
+              {t.accounts.cardsTitle}
+            </h3>
+            <p className="text-xs text-ink-50">{t.accounts.cardsSub}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {paymentCards.map((card, idx) => (
+              <article
+                key={card.id}
+                className="relative overflow-hidden rounded-3xl border border-snow-300 p-6 shadow-[0_30px_50px_-30px_rgba(15,23,42,0.18)] text-white min-h-[180px]"
+                style={{
+                  background:
+                    idx === 0
+                      ? "linear-gradient(135deg, #1A1F71 0%, #2D3795 48%, #0C1454 100%)"
+                      : "linear-gradient(135deg, #0F172A 0%, #1E293B 55%, #334155 100%)",
+                }}
+              >
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -right-8 -bottom-14 size-40 rounded-full bg-white/10 blur-2xl"
+                />
+                <div className="relative flex flex-col h-full justify-between gap-10">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.22em] text-white/70">
+                        {t.accounts.cardKindDebit}
+                      </p>
+                      <p className="mt-1 text-base font-semibold text-white">
+                        {card.label}
+                      </p>
+                    </div>
+                    <CreditCard className="size-6 text-white/80 shrink-0" />
+                  </div>
+                  <div className="flex items-end justify-between gap-3">
+                    <div>
+                      <p className="text-xs tracking-[0.35em] text-white/80 font-mono">
+                        •••• •••• •••• {card.last4}
+                      </p>
+                      <p className="mt-2 text-[11px] text-white/60">
+                        {t.accounts.expires} {card.expiry}
+                      </p>
+                    </div>
+                    <CardBrandLogo brand={card.brand} />
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       <Card>
         <CardHeader>

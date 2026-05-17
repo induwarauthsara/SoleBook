@@ -1,6 +1,7 @@
 import type {
   AIInsight,
   BankAccount,
+  LinkedPaymentCard,
   Bucket,
   Business,
   CashForecastPoint,
@@ -421,6 +422,28 @@ export const mockAccounts: BankAccount[] = [
     currency: "LKR",
   },
 ];
+
+/** Sample debit cards for demo sandbox UI (paired with linked accounts conceptually). */
+export const mockPaymentCards: LinkedPaymentCard[] = [
+  {
+    id: "pc-1",
+    brand: "visa",
+    label: "Business debit",
+    last4: "4821",
+    expiry: "08/27",
+  },
+  {
+    id: "pc-2",
+    brand: "mastercard",
+    label: "Operating card",
+    last4: "9012",
+    expiry: "03/26",
+  },
+];
+
+export function sumAccountBalances(accts: Pick<BankAccount, "balance">[]): number {
+  return accts.reduce((s, a) => s + a.balance, 0);
+}
 
 export function generateForecast(): CashForecastPoint[] {
   // Deterministic, seeded by index so the same demo renders identically

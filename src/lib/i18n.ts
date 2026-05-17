@@ -388,6 +388,10 @@ export const dictionary = {
       current: "Current",
       savings: "Savings",
       balance: "Balance",
+      cardsTitle: "Cards",
+      cardsSub: "Debit cards registered for SoleBook payouts and spend alerts.",
+      expires: "Exp.",
+      cardKindDebit: "Debit",
     },
     loan: {
       title: "Loan readiness",
@@ -853,6 +857,11 @@ export const dictionary = {
       current: "ජංගම",
       savings: "ඉතුරුම්",
       balance: "ශේෂය",
+      cardsTitle: "කාඩ්පත්",
+      cardsSub:
+        "SoleBook ගෙවීම් සහ වියදම් විශේෂිත දැන්වීම් සඳහා ලියාපදිංචි ඩැබිට් කාඩ්පත්.",
+      expires: "කල් ඉකුත් වෙනි.",
+      cardKindDebit: "ඩැබිට්",
     },
     loan: {
       title: "ණය සූදානම",
@@ -1320,6 +1329,10 @@ export const dictionary = {
       current: "நடப்பு",
       savings: "சேமிப்பு",
       balance: "இருப்பு",
+      cardsTitle: "கார்டுகள்",
+      cardsSub: "SoleBook கொடுப்பனவுகள் மற்றும் செலவு எச்சரிக்கைகளுக்கு பதிவுசெய்யப்பட்ட டெபிட் கார்டுகள்.",
+      expires: "காலாவதி",
+      cardKindDebit: "டெபிட்",
     },
     loan: {
       title: "கடன் தயார்நிலை",

@@ -134,6 +134,18 @@ export interface BankAccount {
   currency: "LKR";
 }
 
+/** Payment card facade for UI — never store full PAN. */
+export type PaymentCardBrand = "visa" | "mastercard";
+
+export interface LinkedPaymentCard {
+  id: string;
+  brand: PaymentCardBrand;
+  label: string;
+  last4: string;
+  /** Display-only expiry (MM/YY) */
+  expiry: string;
+}
+
 export interface OnboardingState {
   step: number;
   ownerName: string;
