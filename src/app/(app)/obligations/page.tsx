@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { format, parseISO } from "date-fns";
-import { Check, Download, Loader2, Plus } from "lucide-react";
+import { Check, Download, Eye, EyeOff, Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -33,6 +33,7 @@ export default function ObligationsPage() {
   const { session } = useAuth();
   const { t } = useLocale();
   const [tab, setTab] = useState<Tab>("all");
+  const [showPaidObligations, setShowPaidObligations] = useState(true);
   const [paidIds, setPaidIds] = useState<Set<string>>(new Set());
   const [payingId, setPayingId] = useState<string | null>(null);
   const [rows, setRows] = useState<Obligation[]>([]);
@@ -126,8 +127,12 @@ export default function ObligationsPage() {
     return o.group === tab;
   };
 
+  const isPaidRow = (o: Obligation) =>
+    o.status === "paid" || paidIds.has(o.id);
+
   const filtered = rows
     .filter(filter)
+    .filter((o) => showPaidObligations || !isPaidRow(o))
     .sort(
       (a, b) =>
         new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(),
@@ -154,6 +159,24 @@ export default function ObligationsPage() {
               {t.obligations.addObligation}
             </Button>
           </AddObligationDialog>
+          <Button
+            size="sm"
+            variant="outline"
+            aria-pressed={showPaidObligations}
+            onClick={() => setShowPaidObligations((v) => !v)}
+          >
+            {showPaidObligations ? (
+              <>
+                <EyeOff className="size-4" aria-hidden />
+                {t.obligations.hidePaid}
+              </>
+            ) : (
+              <>
+                <Eye className="size-4" aria-hidden />
+                {t.obligations.showPaid}
+              </>
+            )}
+          </Button>
           <Button
             size="sm"
             variant="outline"

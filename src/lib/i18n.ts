@@ -334,6 +334,8 @@ export const dictionary = {
       loadError:
         "Could not load the full obligations list. Showing a shorter summary instead.",
       payFromBank: "Pay from bank",
+      showPaid: "Show paid",
+      hidePaid: "Hide paid",
       bankPaySuccess: "Bank transfer completed. Obligation marked paid.",
       bankPayError: "Bank payment failed. The obligation was not updated.",
       bankPayNeedAuth: "Sign in to pay from your bank.",
@@ -797,6 +799,8 @@ export const dictionary = {
       empty: "මෙම පෙරහනට ගැලපෙන වගකීම් නැත.",
       loadError: "සම්පූර්ණ වගකීම් ලේඛනය ලබා ගත නොහැක. කෙටි සාරාංශයක් පෙන්වයි.",
       payFromBank: "බැංකුවෙන් ගෙවන්න",
+      showPaid: "ගෙවූ දෑ පෙන්වන්න",
+      hidePaid: "ගෙවූ දෑ සඟවන්න",
       bankPaySuccess: "බැංකු මාරුව සිදු විය. වගකීම ගෙවූ බවට සලකුණු විය.",
       bankPayError: "බැංකු ගෙවීම අසාර්ථකයි. වගකීම යාවත්කාලීන නොවීය.",
       bankPayNeedAuth: "බැංකුවෙන් ගෙවීමට පළමුව පිවිසෙන්න.",
@@ -1262,6 +1266,8 @@ export const dictionary = {
       loadError:
         "முழு கடமை பட்டியலை ஏற்ற முடியவில்லை. குறுகிய சுருக்கத்தைக் காட்டுகிறோம்.",
       payFromBank: "வங்கியில் இருந்து செலுத்து",
+      showPaid: "செலுத்தியவற்றைக் காட்டு",
+      hidePaid: "செலுத்தியவற்றை மறை",
       bankPaySuccess: "வங்கி பரிமாற்றம் முடிந்தது. கடமை செலுத்தப்பட்டதாகக் குறிக்கப்பட்டது.",
       bankPayError: "வங்கி கட்டணம் தோல்வி. கடமை புதுப்பிக்கப்படவில்லை.",
       bankPayNeedAuth: "வங்கியில் இருந்து செலுத்த உள்நுழையவும்.",
