@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase';
+import type { AuthenticatorTransportFuture } from '@simplewebauthn/types';
 import { getAuthenticationOptions, StoredCredential } from '@/lib/auth/webauthn';
 
 type WebAuthnCredentialRow = {
@@ -41,7 +42,8 @@ export async function POST(req: NextRequest) {
       credentialID: c.credential_id,
       publicKey: c.public_key,
       counter: c.sign_count,
-      transports: c.transports,
+      transports:
+        c.transports === null ? undefined : (c.transports as AuthenticatorTransportFuture[]),
     }));
 
     const options = await getAuthenticationOptions(credentials);
