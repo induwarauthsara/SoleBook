@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { transferFunds } from "@/lib/seylan/client";
-import { wantsMockPaymentGateway } from "@/lib/dev/mock-payment-gateway";
+import {
+  useSubscriptionPaymentAutoMock,
+  wantsMockPaymentGateway,
+} from "@/lib/dev/mock-payment-gateway";
 
 export const runtime = "nodejs";
 
@@ -30,6 +33,20 @@ export async function POST(req: Request) {
   try {
     if (method === "bank_transfer" && wantsMockPaymentGateway(req)) {
       const ref = `MOCK-SUB-${planId}-${Date.now()}`;
+      return NextResponse.json({
+        ok: true,
+        transactionReference: ref,
+        timestamp: new Date().toISOString(),
+        status: "success",
+        mock: true,
+      });
+    }
+
+    if (
+      method === "justpay" &&
+      (wantsMockPaymentGateway(req) || useSubscriptionPaymentAutoMock())
+    ) {
+      const ref = `MOCK-JP-SUB-${planId}-${Date.now()}`;
       return NextResponse.json({
         ok: true,
         transactionReference: ref,

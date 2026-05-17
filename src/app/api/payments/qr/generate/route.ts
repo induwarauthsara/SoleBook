@@ -4,6 +4,7 @@ import { generateQRChecksum } from "@/lib/seylan/checksum";
 import {
   mockQrRefNo,
   mockSvgQrDataUrl,
+  useSubscriptionPaymentAutoMock,
   wantsMockPaymentGateway,
 } from "@/lib/dev/mock-payment-gateway";
 
@@ -37,7 +38,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "amount is required." }, { status: 422 });
   }
 
-  if (wantsMockPaymentGateway(req)) {
+  if (wantsMockPaymentGateway(req) || useSubscriptionPaymentAutoMock()) {
     const requestRefNo = mockQrRefNo();
     const label = (purposeOfTransaction ?? "SoleBook").slice(0, 40);
     return NextResponse.json({
